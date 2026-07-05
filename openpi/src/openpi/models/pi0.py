@@ -222,6 +222,38 @@ class Pi0(_model.BaseModel):
         num_steps: int | at.Int[at.Array, ""] = 10,
         noise: at.Float[at.Array, "b ah ad"] | None = None,
     ) -> _model.Actions:
+        actions, _ = self._sample_actions_with_last_hidden_state(
+            rng,
+            observation,
+            num_steps=num_steps,
+            noise=noise,
+        )
+        return actions
+
+    @at.typecheck
+    def sample_actions_with_last_hidden_state(
+        self,
+        rng: at.KeyArrayLike,
+        observation: _model.Observation,
+        *,
+        num_steps: int | at.Int[at.Array, ""] = 10,
+        noise: at.Float[at.Array, "b ah ad"] | None = None,
+    ) -> tuple[_model.Actions, at.Float[at.Array, "b ah hd"]]:
+        return self._sample_actions_with_last_hidden_state(
+            rng,
+            observation,
+            num_steps=num_steps,
+            noise=noise,
+        )
+
+    def _sample_actions_with_last_hidden_state(
+        self,
+        rng: at.KeyArrayLike,
+        observation: _model.Observation,
+        *,
+        num_steps: int | at.Int[at.Array, ""] = 10,
+        noise: at.Float[at.Array, "b ah ad"] | None = None,
+    ) -> tuple[_model.Actions, at.Float[at.Array, "b ah hd"]]:
         observation = _model.preprocess_observation(None, observation, train=False)
         # note that we use the convention more common in diffusion literature, where t=1 is noise and t=0 is the target
         # distribution. yes, this is the opposite of the pi0 paper, and I'm sorry.
@@ -235,9 +267,13 @@ class Pi0(_model.BaseModel):
         prefix_attn_mask = make_attn_mask(prefix_mask, prefix_ar_mask)
         positions = jnp.cumsum(prefix_mask, axis=1) - 1
         _, kv_cache = self.PaliGemma.llm([prefix_tokens, None], mask=prefix_attn_mask, positions=positions)
+        init_last_hidden_state = jnp.zeros(
+            (batch_size, self.action_horizon, self.action_in_proj.out_features),
+            dtype=prefix_tokens.dtype,
+        )
 
         def step(carry):
-            x_t, time = carry
+            x_t, time, _ = carry
             suffix_tokens, suffix_mask, suffix_ar_mask, adarms_cond = self.embed_suffix(
                 observation, x_t, jnp.broadcast_to(time, batch_size)
             )
@@ -266,14 +302,15 @@ class Pi0(_model.BaseModel):
                 adarms_cond=[None, adarms_cond],
             )
             assert prefix_out is None
-            v_t = self.action_out_proj(suffix_out[:, -self.action_horizon :])
+            last_hidden_state = suffix_out[:, -self.action_horizon :]
+            v_t = self.action_out_proj(last_hidden_state)
 
-            return x_t + dt * v_t, time + dt
+            return x_t + dt * v_t, time + dt, last_hidden_state
 
         def cond(carry):
-            x_t, time = carry
+            _, time, _ = carry
             # robust to floating-point error
             return time >= -dt / 2
 
-        x_0, _ = jax.lax.while_loop(cond, step, (noise, 1.0))
-        return x_0
+        x_0, _, last_hidden_state = jax.lax.while_loop(cond, step, (noise, 1.0, init_last_hidden_state))
+        return x_0, last_hidden_state.astype(jnp.float32)

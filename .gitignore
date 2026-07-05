@@ -1,0 +1,23 @@
+# Python/runtime artifacts
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local environments
+.venv/
+.aegis_venv/
+main/.venv/
+openpi/.venv/
+
+# IDE metadata
+.idea/
+
+# Generated experiment outputs
+logs/
+results/
+MLP-classifier/logs/
+MLP-classifier/runs/

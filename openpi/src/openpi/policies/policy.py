@@ -59,15 +59,24 @@ class Policy(BasePolicy):
             self._model = self._model.to(pytorch_device)
             self._model.eval()
             self._sample_actions = model.sample_actions
+            self._sample_actions_with_last_hidden_state = getattr(model, "sample_actions_with_last_hidden_state", None)
         else:
             # JAX model setup
             self._sample_actions = nnx_utils.module_jit(model.sample_actions)
+            sample_actions_with_last_hidden_state = getattr(model, "sample_actions_with_last_hidden_state", None)
+            self._sample_actions_with_last_hidden_state = (
+                nnx_utils.module_jit(sample_actions_with_last_hidden_state)
+                if sample_actions_with_last_hidden_state is not None
+                else None
+            )
             self._rng = rng or jax.random.key(0)
 
     @override
     def infer(self, obs: dict, *, noise: np.ndarray | None = None) -> dict:  # type: ignore[misc]
+        inputs = dict(obs)
+        return_last_hidden_state = bool(inputs.pop("__debug_return_last_hidden_state__", False))
         # Make a copy since transformations may modify the inputs in place.
-        inputs = jax.tree.map(lambda x: x, obs)
+        inputs = jax.tree.map(lambda x: x, inputs)
         inputs = self._input_transform(inputs)
         if not self._is_pytorch_model:
             # Make a batch and convert to jax.Array.
@@ -89,17 +98,32 @@ class Policy(BasePolicy):
 
         observation = _model.Observation.from_dict(inputs)
         start_time = time.monotonic()
-        outputs = {
+        base_outputs = {
             "state": inputs["state"],
-            "actions": self._sample_actions(sample_rng_or_pytorch_device, observation, **sample_kwargs),
         }
+        extra_outputs = {}
+        if return_last_hidden_state:
+            if self._sample_actions_with_last_hidden_state is None:
+                raise NotImplementedError("This policy does not expose last hidden state debugging outputs.")
+            actions, last_hidden_state = self._sample_actions_with_last_hidden_state(
+                sample_rng_or_pytorch_device,
+                observation,
+                **sample_kwargs,
+            )
+            base_outputs["actions"] = actions
+            extra_outputs["last_layer_hidden_state"] = last_hidden_state
+        else:
+            base_outputs["actions"] = self._sample_actions(sample_rng_or_pytorch_device, observation, **sample_kwargs)
         model_time = time.monotonic() - start_time
         if self._is_pytorch_model:
-            outputs = jax.tree.map(lambda x: np.asarray(x[0, ...].detach().cpu()), outputs)
+            base_outputs = jax.tree.map(lambda x: np.asarray(x[0, ...].detach().cpu()), base_outputs)
+            extra_outputs = jax.tree.map(lambda x: np.asarray(x[0, ...].detach().cpu()), extra_outputs)
         else:
-            outputs = jax.tree.map(lambda x: np.asarray(x[0, ...]), outputs)
+            base_outputs = jax.tree.map(lambda x: np.asarray(x[0, ...]), base_outputs)
+            extra_outputs = jax.tree.map(lambda x: np.asarray(x[0, ...]), extra_outputs)
 
-        outputs = self._output_transform(outputs)
+        outputs = self._output_transform(base_outputs)
+        outputs.update(extra_outputs)
         outputs["policy_timing"] = {
             "infer_ms": model_time * 1000,
         }

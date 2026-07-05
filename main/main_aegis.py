@@ -52,6 +52,7 @@ class Args:
     episode_index: List[int] = dataclasses.field(default_factory=lambda: [0]) # Options: [0, 1, 2, 3, 4, ..., 49]
     num_steps_wait: int = 20  # Number of steps to wait for objects to stabilize i n sim
     num_trials_per_task: int = 50  # Number of rollouts per task
+    disable_safety_layer: bool = False  # Run the nominal pi0.5 policy without AEGIS intervention
 
     #################################################################################################################
     # Utils
@@ -71,7 +72,12 @@ def eval_libero(args: Args) -> None:
     benchmark_dict = benchmark.get_benchmark_dict()
     task_suite = benchmark_dict[args.task_suite_name](safety_level=safety_level)
     num_tasks_in_suite = task_suite.n_tasks
-    logging.info(f"Task suite: {args.task_suite_name}, safety level: {safety_level}")
+    logging.info(
+        "Task suite: %s, safety level: %s, safety layer enabled: %s",
+        args.task_suite_name,
+        safety_level,
+        not args.disable_safety_layer,
+    )
 
     pathlib.Path(args.video_out_path).mkdir(parents=True, exist_ok=True)
 
@@ -88,15 +94,13 @@ def eval_libero(args: Args) -> None:
 
     print("OK")
     client = _websocket_client_policy.WebsocketClientPolicy(args.host, args.port)
-    from groundingdino.util.inference import load_model, load_image, predict, annotate
-    import cv2
-    CONFIG_PATH = "GroundingDINO/GroundingDINO_SwinT_OGC.py"    # Source code config file
-    CHECKPOINT_PATH = "GroundingDINO/groundingdino_swint_ogc.pth"   # Downloaded weights file
-    DEVICE = "cuda"   # Select cpu/cuda
-    BOX_TRESHOLD = 0.35     # Source code bounding box threshold
-    TEXT_TRESHOLD = 0.25    # Source code text threshold for key attributes
+    model_groundingdino = None
+    if not args.disable_safety_layer:
+        from groundingdino.util.inference import load_model
 
-    model_groundingdino = load_model(CONFIG_PATH, CHECKPOINT_PATH)
+        CONFIG_PATH = "GroundingDINO/GroundingDINO_SwinT_OGC.py"    # Source code config file
+        CHECKPOINT_PATH = "GroundingDINO/groundingdino_swint_ogc.pth"   # Downloaded weights file
+        model_groundingdino = load_model(CONFIG_PATH, CHECKPOINT_PATH)
     # Start evaluation
     total_episodes, total_successes, total_safesuccesses = 0, 0, 0
     # for task_id in tqdm.tqdm(range(num_tasks_in_suite)):
@@ -123,7 +127,8 @@ def eval_libero(args: Args) -> None:
 
         _out_dir = pathlib.Path(args.video_out_path) / f"{task_segment}"
         _out_dir.mkdir(parents=True, exist_ok=True)
-        out_dir = _out_dir / f"ours_{safety_level}"
+        run_name = "pi05_no_safety" if args.disable_safety_layer else "ours"
+        out_dir = _out_dir / f"{run_name}_{safety_level}"
         out_dir.mkdir(parents=True, exist_ok=True)
 
 
@@ -142,6 +147,9 @@ def eval_libero(args: Args) -> None:
             # Setup
             t = 0
             replay_images = []
+            chunk_start_steps = []
+            last_layer_hidden_states = []
+            chunk_infer_ms = []
             model = env.sim.model
             data = env.sim.data
             eef_body_id = model.body_name2id("eef_marker")
@@ -182,55 +190,69 @@ def eval_libero(args: Args) -> None:
 
             
             # Detect obstacles
-            agentview_img = np.ascontiguousarray(obs["agentview_image"][::-1, ::-1])
-            agentview_depth = np.ascontiguousarray(obs["agentview_depth"][::-1, ::-1])
- 
-
-            img_out_dir = out_dir/f"{episode_idx}"
+            img_out_dir = out_dir / f"{episode_idx}"
             img_out_dir.mkdir(parents=True, exist_ok=True)
-            # Get the obstacle most likely to be hit
-            obstacle_infromation = obstacle_detection(agentview_img, task_description, args.task_suite_name)
-            # obstacle_infromation = "white storage box"
-            agent_view_points = get_point_cloud(agentview_img, agentview_depth, env, "agentview", obstacle_infromation, model_groundingdino, img_out_dir)
-      
-            
-            backview_img = np.ascontiguousarray(obs["backview_image"][::-1, ::-1])
-            backview_depth = np.ascontiguousarray(obs["backview_depth"][::-1, ::-1])
-            back_view_points = get_point_cloud(backview_img, backview_depth, env, "backview", obstacle_infromation, model_groundingdino, img_out_dir)
-            
-            # df = pd.DataFrame(back_view_points, columns=["X", "Y", "Z"])
-            # df.to_csv("back_view_points.csv", index=False)
-            
-            if agent_view_points.shape[1] > 0 and back_view_points.shape[1] > 0:
-                full_points = np.vstack([agent_view_points, back_view_points])    # (Na + Nb, 3)
-            elif agent_view_points.shape[1] == 0 and back_view_points.shape[1] > 0:
-                full_points = back_view_points
-            elif agent_view_points.shape[1] > 0 and back_view_points.shape[1] == 0:
-                full_points = agent_view_points
-            else:
-                full_points = np.array([[]])
+            flag_safety_control = False
+            if not args.disable_safety_layer:
+                agentview_img = np.ascontiguousarray(obs["agentview_image"][::-1, ::-1])
+                agentview_depth = np.ascontiguousarray(obs["agentview_depth"][::-1, ::-1])
 
-            # df = pd.DataFrame(full_points, columns=["X", "Y", "Z"])
-            # df.to_csv("full_points.csv", index=False)
+                # Get the obstacle most likely to be hit
+                obstacle_infromation = obstacle_detection(agentview_img, task_description, args.task_suite_name)
+                # obstacle_infromation = "white storage box"
+                agent_view_points = get_point_cloud(
+                    agentview_img,
+                    agentview_depth,
+                    env,
+                    "agentview",
+                    obstacle_infromation,
+                    model_groundingdino,
+                    img_out_dir,
+                )
 
-            # Point cloud filtering
-            filter_points = filtering_points(full_points, args.task_suite_name)
-            # print("Number of points after filtering:", filter_points.shape[0])
-            flag_safety_control = True
-            if filter_points.shape[0] == 0:
-                flag_safety_control = False
-            # import pandas as pd
-            # df = pd.DataFrame(filter_points, columns=["X", "Y", "Z"])
-            # df.to_csv("filter_points.csv", index=False)
+                backview_img = np.ascontiguousarray(obs["backview_image"][::-1, ::-1])
+                backview_depth = np.ascontiguousarray(obs["backview_depth"][::-1, ::-1])
+                back_view_points = get_point_cloud(
+                    backview_img,
+                    backview_depth,
+                    env,
+                    "backview",
+                    obstacle_infromation,
+                    model_groundingdino,
+                    img_out_dir,
+                )
 
-            if flag_safety_control:
-                p2, R2, Q2_diag = fit_ellipse(filter_points, plot=True, save_path=img_out_dir)
-                # Control parameter settings
-                z_fixed = (p2 - p1)
-                z_fixed /= np.linalg.norm(z_fixed)
-                p_target = np.array([-0.05, 0.15, 1.05])
-                Kp_pos = 1
-                dt = 0.05
+                # df = pd.DataFrame(back_view_points, columns=["X", "Y", "Z"])
+                # df.to_csv("back_view_points.csv", index=False)
+
+                if agent_view_points.shape[1] > 0 and back_view_points.shape[1] > 0:
+                    full_points = np.vstack([agent_view_points, back_view_points])    # (Na + Nb, 3)
+                elif agent_view_points.shape[1] == 0 and back_view_points.shape[1] > 0:
+                    full_points = back_view_points
+                elif agent_view_points.shape[1] > 0 and back_view_points.shape[1] == 0:
+                    full_points = agent_view_points
+                else:
+                    full_points = np.array([[]])
+
+                # df = pd.DataFrame(full_points, columns=["X", "Y", "Z"])
+                # df.to_csv("full_points.csv", index=False)
+
+                # Point cloud filtering
+                filter_points = filtering_points(full_points, args.task_suite_name)
+                # print("Number of points after filtering:", filter_points.shape[0])
+                flag_safety_control = filter_points.shape[0] > 0
+                # import pandas as pd
+                # df = pd.DataFrame(filter_points, columns=["X", "Y", "Z"])
+                # df.to_csv("filter_points.csv", index=False)
+
+                if flag_safety_control:
+                    p2, R2, Q2_diag = fit_ellipse(filter_points, plot=True, save_path=img_out_dir)
+                    # Control parameter settings
+                    z_fixed = (p2 - p1)
+                    z_fixed /= np.linalg.norm(z_fixed)
+                    p_target = np.array([-0.05, 0.15, 1.05])
+                    Kp_pos = 1
+                    dt = 0.05
             t = 0
             # print("Joint names (qpos):", env.sim.model.joint_names)
 
@@ -284,10 +306,16 @@ def eval_libero(args: Args) -> None:
                                 )
                             ),
                             "prompt": str(task_description),
+                            "__debug_return_last_hidden_state__": True,
                         }
 
                         # Query model to get action
-                        action_chunk = client.infer(element)["actions"]
+                        response = client.infer(element)
+                        action_chunk = response["actions"]
+                        if "last_layer_hidden_state" in response:
+                            chunk_start_steps.append(t)
+                            last_layer_hidden_states.append(np.asarray(response["last_layer_hidden_state"], dtype=np.float32))
+                            chunk_infer_ms.append(float(response.get("policy_timing", {}).get("infer_ms", np.nan)))
                         assert (
                             len(action_chunk) >= args.replan_steps
                         ), f"We want to replan every {args.replan_steps} steps, but policy only predicts {len(action_chunk)} steps."
@@ -412,6 +440,21 @@ def eval_libero(args: Args) -> None:
                 video_path,
                 [np.asarray(x) for x in replay_images],
                 fps=30,
+            )
+            hidden_state_path = video_path.parent / f"{video_path.stem}_last_layer_hidden_states.npz"
+            hidden_state_array = (
+                np.stack(last_layer_hidden_states, axis=0)
+                if last_layer_hidden_states
+                else np.empty((0, 0, 0), dtype=np.float32)
+            )
+            np.savez_compressed(
+                hidden_state_path,
+                last_layer_hidden_states=hidden_state_array,
+                chunk_start_steps=np.asarray(chunk_start_steps, dtype=np.int32),
+                chunk_infer_ms=np.asarray(chunk_infer_ms, dtype=np.float32),
+                success=np.asarray(done),
+                collision=np.asarray(collide_flag),
+                safe_success=np.asarray(done and not collide_flag),
             )
 
             # Log current results
