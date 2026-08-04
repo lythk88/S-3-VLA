@@ -1,0 +1,162 @@
+[
+  {
+    "file": "safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_level_I.pruned_init",
+    "shape": [
+      80,
+      170
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_goal/put_the_bowl_on_the_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      170
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_goal/put_the_bowl_on_the_stove_level_I.pruned_init",
+    "shape": [
+      80,
+      170
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_goal/put_the_bowl_on_top_of_the_cabinet_level_I.pruned_init",
+    "shape": [
+      80,
+      170
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_level_I.pruned_init",
+    "shape": [
+      80,
+      175
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_level_I.pruned_init",
+    "shape": [
+      80,
+      214
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      175
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      162
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_level_I.pruned_init",
+    "shape": [
+      80,
+      201
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_level_I.pruned_init",
+    "shape": [
+      80,
+      201
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_level_I.pruned_init",
+    "shape": [
+      80,
+      201
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_level_I.pruned_init",
+    "shape": [
+      80,
+      201
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      183
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      183
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      183
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  },
+  {
+    "file": "safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_level_I.pruned_init",
+    "shape": [
+      80,
+      183
+    ],
+    "active_obstacles": 2,
+    "safety_level": "I",
+    "box_base": "parked_at_y_-30"
+  }
+]

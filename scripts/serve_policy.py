@@ -51,6 +51,9 @@ class Args:
     # Record the policy's behavior for debugging.
     record: bool = False
 
+    # Directory containing jax_guidance_model.npz for residual-flow guidance.
+    safety_value_run_dir: str | None = None
+
     # Specifies how to load the policy. If not provided, the default policy for the environment will be used.
     policy: Checkpoint | Default = dataclasses.field(default_factory=Default)
 
@@ -76,11 +79,17 @@ DEFAULT_CHECKPOINT: dict[EnvMode, Checkpoint] = {
 }
 
 
-def create_default_policy(env: EnvMode, *, default_prompt: str | None = None) -> _policy.Policy:
+def create_default_policy(
+    env: EnvMode,
+    *,
+    default_prompt: str | None = None,
+    safety_value_run_dir: str | None = None,
+) -> _policy.Policy:
     """Create a default policy for the given environment."""
     if checkpoint := DEFAULT_CHECKPOINT.get(env):
         return _policy_config.create_trained_policy(
-            _config.get_config(checkpoint.config), checkpoint.dir, default_prompt=default_prompt
+            _config.get_config(checkpoint.config), checkpoint.dir, default_prompt=default_prompt,
+            safety_value_run_dir=safety_value_run_dir,
         )
     raise ValueError(f"Unsupported environment mode: {env}")
 
@@ -90,10 +99,15 @@ def create_policy(args: Args) -> _policy.Policy:
     match args.policy:
         case Checkpoint():
             return _policy_config.create_trained_policy(
-                _config.get_config(args.policy.config), args.policy.dir, default_prompt=args.default_prompt
+                _config.get_config(args.policy.config), args.policy.dir, default_prompt=args.default_prompt,
+                safety_value_run_dir=args.safety_value_run_dir,
             )
         case Default():
-            return create_default_policy(args.env, default_prompt=args.default_prompt)
+            return create_default_policy(
+                args.env,
+                default_prompt=args.default_prompt,
+                safety_value_run_dir=args.safety_value_run_dir,
+            )
 
 
 def main(args: Args) -> None:
@@ -105,7 +119,13 @@ def main(args: Args) -> None:
         policy = _policy.PolicyRecorder(policy, "policy_records")
 
     hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
+    try:
+        local_ip = socket.gethostbyname(hostname)
+    except socket.gaierror:
+        # Containers and batch nodes do not always publish their transient
+        # hostname through DNS. The server binds to all interfaces below, so
+        # loopback is a safe value for logging and local clients.
+        local_ip = "127.0.0.1"
     logging.info("Creating server (host: %s, ip: %s)", hostname, local_ip)
 
     server = websocket_policy_server.WebsocketPolicyServer(

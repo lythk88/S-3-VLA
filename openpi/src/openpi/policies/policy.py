@@ -33,6 +33,7 @@ class Policy(BasePolicy):
         metadata: dict[str, Any] | None = None,
         pytorch_device: str = "cpu",
         is_pytorch: bool = False,
+        safety_value_run_dir: pathlib.Path | str | None = None,
     ):
         """Initialize the Policy.
 
@@ -54,6 +55,13 @@ class Policy(BasePolicy):
         self._metadata = metadata or {}
         self._is_pytorch_model = is_pytorch
         self._pytorch_device = pytorch_device
+        self._safety_value_parameters = None
+        if safety_value_run_dir is not None:
+            archive_path = pathlib.Path(safety_value_run_dir) / "jax_guidance_model.npz"
+            with np.load(archive_path) as archive:
+                self._safety_value_parameters = {
+                    key: jnp.asarray(archive[key]) for key in archive.files
+                }
 
         if self._is_pytorch_model:
             self._model = self._model.to(pytorch_device)
@@ -69,12 +77,20 @@ class Policy(BasePolicy):
                 if sample_actions_with_last_hidden_state is not None
                 else None
             )
+            safety_guided_sampler = getattr(model, "sample_actions_with_safety_value_guidance", None)
+            self._sample_actions_with_safety_value_guidance = (
+                nnx_utils.module_jit(safety_guided_sampler)
+                if safety_guided_sampler is not None
+                else None
+            )
             self._rng = rng or jax.random.key(0)
 
     @override
     def infer(self, obs: dict, *, noise: np.ndarray | None = None) -> dict:  # type: ignore[misc]
         inputs = dict(obs)
         return_last_hidden_state = bool(inputs.pop("__debug_return_last_hidden_state__", False))
+        debug_noise = inputs.pop("__debug_noise__", None)
+        flow_guidance = inputs.pop("__safety_value_flow_guidance__", None)
         # Make a copy since transformations may modify the inputs in place.
         inputs = jax.tree.map(lambda x: x, inputs)
         inputs = self._input_transform(inputs)
@@ -89,6 +105,8 @@ class Policy(BasePolicy):
 
         # Prepare kwargs for sample_actions
         sample_kwargs = dict(self._sample_kwargs)
+        if debug_noise is not None:
+            noise = debug_noise
         if noise is not None:
             noise = torch.from_numpy(noise).to(self._pytorch_device) if self._is_pytorch_model else jnp.asarray(noise)
 
@@ -102,7 +120,26 @@ class Policy(BasePolicy):
             "state": inputs["state"],
         }
         extra_outputs = {}
-        if return_last_hidden_state:
+        if flow_guidance is not None:
+            if self._is_pytorch_model or self._sample_actions_with_safety_value_guidance is None:
+                raise NotImplementedError("Safety-value residual flow guidance requires the JAX pi0.5 sampler.")
+            if self._safety_value_parameters is None:
+                raise RuntimeError("The policy server was not given --safety-value-run-dir.")
+            actions, last_hidden_state, safety_score, residual_ratio = (
+                self._sample_actions_with_safety_value_guidance(
+                    sample_rng_or_pytorch_device,
+                    observation,
+                    safety_value_parameters=self._safety_value_parameters,
+                    guidance_scale=jnp.asarray(flow_guidance.get("scale", 0.25), dtype=jnp.float32),
+                    guidance_start_time=jnp.asarray(flow_guidance.get("start_time", 0.5), dtype=jnp.float32),
+                    **sample_kwargs,
+                )
+            )
+            base_outputs["actions"] = actions
+            extra_outputs["last_layer_hidden_state"] = last_hidden_state
+            extra_outputs["safety_value_score"] = safety_score
+            extra_outputs["safety_residual_ratio"] = residual_ratio
+        elif return_last_hidden_state:
             if self._sample_actions_with_last_hidden_state is None:
                 raise NotImplementedError("This policy does not expose last hidden state debugging outputs.")
             actions, last_hidden_state = self._sample_actions_with_last_hidden_state(

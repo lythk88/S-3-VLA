@@ -23,12 +23,15 @@ import warnings
 warnings.filterwarnings("ignore")
 from typing import List
 
+from continuous_score_guidance import ContinuousSafetyScorer
+
 LIBERO_DUMMY_ACTION = [0.0] * 6 + [-1.0]
 LIBERO_ENV_RESOLUTION = 1024  # resolution used to render training data
 OBSTACLE_POS = np.array([-0.15, 0.03, 1.17])
 OBSTACLE_RADIUS = 0.06
 ALPHA = 1.0                 # CBF gain
 MAX_VEL = 1.0               # Maximum end-effector velocity
+ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 @dataclasses.dataclass
@@ -53,6 +56,16 @@ class Args:
     num_steps_wait: int = 20  # Number of steps to wait for objects to stabilize i n sim
     num_trials_per_task: int = 50  # Number of rollouts per task
     disable_safety_layer: bool = False  # Run the nominal pi0.5 policy without AEGIS intervention
+    use_score_guidance: bool = False  # Evaluate multiple pi0.5 samples and keep the safest one
+    score_run_dir: str = str(ROOT / "Safety-value-function/chunk_safety_value_run")
+    score_guidance_candidates: int = 4
+    score_guidance_device: str = "auto"
+    use_flow_guidance: bool = False
+    flow_guidance_scale: float = 0.25
+    flow_guidance_start_time: float = 0.5
+    use_fixed_flow_noise: bool = False
+    flow_noise_action_horizon: int = 10
+    flow_noise_action_dim: int = 32
 
     #################################################################################################################
     # Utils
@@ -94,6 +107,20 @@ def eval_libero(args: Args) -> None:
 
     print("OK")
     client = _websocket_client_policy.WebsocketClientPolicy(args.host, args.port)
+    scorer = None
+    if args.use_score_guidance and args.use_flow_guidance:
+        raise ValueError("Candidate guidance and residual flow guidance are mutually exclusive.")
+    if args.use_flow_guidance and not args.disable_safety_layer:
+        raise ValueError("Residual flow guidance requires --disable-safety-layer.")
+    if args.use_score_guidance:
+        if not args.disable_safety_layer:
+            raise ValueError("Score guidance is intended for pi0.5-only runs. Set --disable-safety-layer.")
+        scorer = ContinuousSafetyScorer.load(pathlib.Path(args.score_run_dir), device=args.score_guidance_device)
+        logging.info(
+            "Loaded continuous score guidance from %s with %d candidates",
+            args.score_run_dir,
+            args.score_guidance_candidates,
+        )
     model_groundingdino = None
     if not args.disable_safety_layer:
         from groundingdino.util.inference import load_model
@@ -102,7 +129,7 @@ def eval_libero(args: Args) -> None:
         CHECKPOINT_PATH = "GroundingDINO/groundingdino_swint_ogc.pth"   # Downloaded weights file
         model_groundingdino = load_model(CONFIG_PATH, CHECKPOINT_PATH)
     # Start evaluation
-    total_episodes, total_successes, total_safesuccesses = 0, 0, 0
+    total_episodes, total_successes, total_safesuccesses, total_collisions = 0, 0, 0, 0
     # for task_id in tqdm.tqdm(range(num_tasks_in_suite)):
     for task_id in task_index:
         # Get task
@@ -127,7 +154,12 @@ def eval_libero(args: Args) -> None:
 
         _out_dir = pathlib.Path(args.video_out_path) / f"{task_segment}"
         _out_dir.mkdir(parents=True, exist_ok=True)
-        run_name = "pi05_no_safety" if args.disable_safety_layer else "ours"
+        if args.use_flow_guidance:
+            run_name = "pi05_flow_guided"
+        elif args.use_score_guidance:
+            run_name = "pi05_score_guided"
+        else:
+            run_name = "pi05_no_safety" if args.disable_safety_layer else "ours"
         out_dir = _out_dir / f"{run_name}_{safety_level}"
         out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -149,7 +181,12 @@ def eval_libero(args: Args) -> None:
             replay_images = []
             chunk_start_steps = []
             last_layer_hidden_states = []
+            predicted_action_chunks = []
             chunk_infer_ms = []
+            guided_candidate_scores = []
+            selected_candidate_indices = []
+            flow_value_scores = []
+            flow_residual_ratios = []
             model = env.sim.model
             data = env.sim.data
             eef_body_id = model.body_name2id("eef_marker")
@@ -259,18 +296,60 @@ def eval_libero(args: Args) -> None:
             # Extract all obstacle names from the joint list
             obstacle_names = [n.replace('_joint0', '') for n in env.sim.model.joint_names if 'obstacle' in n]
 
-            # Identify the active obstacle within the workspace bounds
-            obstacle_name = " "
+            # Identify every active obstacle within the workspace bounds.
+            active_obstacle_names = []
             for i in obstacle_names:
                 p = obs[f"{i}_pos"]  # Get position from observation
                 # Check if the object is within the valid workspace range
-                if p[2] > 0 and -0.5 < p[0] < 0.5 and -0.5 < p[1] < 0.5:
-                    obstacle_name = i
+                # Object body origins can settle a few millimeters below the
+                # workspace's z=0 plane (notably bottles on floor tasks).
+                if p[2] > -0.05 and -0.5 < p[0] < 0.5 and -0.5 < p[1] < 0.5:
+                    active_obstacle_names.append(i)
                     print("Obstacle name:", i)
-                    break
-            initial_obstacle_pos = obs[obstacle_name + "_pos"]
+            if not active_obstacle_names:
+                obstacle_positions = {
+                    name: np.asarray(obs[f"{name}_pos"]).tolist()
+                    for name in obstacle_names
+                }
+                skip_path = out_dir / f"{episode_idx}_skipped_no_active_obstacle.txt"
+                skip_path.write_text(
+                    "No active obstacle found in the workspace.\n"
+                    + "\n".join(
+                        f"{name}: {position}"
+                        for name, position in obstacle_positions.items()
+                    )
+                    + "\n"
+                )
+                logging.warning(
+                    "Skipping episode %s: no active obstacle; marker=%s",
+                    episode_idx,
+                    skip_path,
+                )
+                continue
+            robot_body_ids = {
+                body_id
+                for body_id, body_name in enumerate(model.body_names)
+                if body_name
+                and (
+                    body_name.startswith("robot0_")
+                    or body_name.startswith("gripper0_")
+                )
+            }
+            obstacle_body_ids = {
+                body_id
+                for body_id, body_name in enumerate(model.body_names)
+                if body_name
+                and any(name in body_name for name in active_obstacle_names)
+            }
+            if not robot_body_ids or not obstacle_body_ids:
+                raise RuntimeError(
+                    "Could not resolve robot and active-obstacle bodies for contact labeling"
+                )
             collide_flag = False
-            collide_time = 0
+            collision_action_steps = []
+            per_action_collision_flags = []
+            per_action_obstacle_motion_flags = []
+            executed_action_steps = []
 
             logging.info(f"Starting episode {task_episodes+1}...")
             while t < max_steps:
@@ -308,14 +387,81 @@ def eval_libero(args: Args) -> None:
                             "prompt": str(task_description),
                             "__debug_return_last_hidden_state__": True,
                         }
+                        if args.use_flow_guidance:
+                            element["__safety_value_flow_guidance__"] = {
+                                "scale": args.flow_guidance_scale,
+                                "start_time": args.flow_guidance_start_time,
+                            }
 
-                        # Query model to get action
-                        response = client.infer(element)
+                        fixed_noise = None
+                        if args.use_fixed_flow_noise:
+                            fixed_noise = _make_flow_noise(
+                                args,
+                                task_id=task_id,
+                                episode_idx=episode_idx,
+                                step=t,
+                                candidate_idx=0,
+                            )
+
+                        candidate_results = []
+                        if scorer is not None:
+                            base_response = client.infer(element, noise=fixed_noise)
+                            candidate_results.append(
+                                (
+                                    scorer.score_response(base_response),
+                                    base_response,
+                                    "baseline",
+                                )
+                            )
+                            for candidate_idx in range(max(args.score_guidance_candidates - 1, 0)):
+                                noise = _make_flow_noise(
+                                    args,
+                                    task_id=task_id,
+                                    episode_idx=episode_idx,
+                                    step=t,
+                                    candidate_idx=candidate_idx + 1,
+                                )
+                                response = client.infer(element, noise=noise)
+                                candidate_results.append(
+                                    (
+                                        scorer.score_response(response),
+                                        response,
+                                        f"noise_{candidate_idx + 1}",
+                                    )
+                                )
+                            candidate_results.sort(key=lambda item: item[0], reverse=True)
+                            selected_score, response, selected_label = candidate_results[0]
+                            selected_candidate_indices.append(
+                                0 if selected_label == "baseline" else int(selected_label.rsplit("_", 1)[1])
+                            )
+                            logging.info(
+                                "Score guidance selected %s with safety score %.4f among %d candidates",
+                                selected_label,
+                                selected_score,
+                                len(candidate_results),
+                            )
+                        else:
+                            response = client.infer(element, noise=fixed_noise)
                         action_chunk = response["actions"]
                         if "last_layer_hidden_state" in response:
                             chunk_start_steps.append(t)
                             last_layer_hidden_states.append(np.asarray(response["last_layer_hidden_state"], dtype=np.float32))
+                            predicted_action_chunks.append(
+                                np.asarray(action_chunk[: args.replan_steps], dtype=np.float32)
+                            )
                             chunk_infer_ms.append(float(response.get("policy_timing", {}).get("infer_ms", np.nan)))
+                            if candidate_results:
+                                guided_candidate_scores.append(
+                                    np.asarray([score for score, _, _ in candidate_results], dtype=np.float32)
+                                )
+                            if "safety_value_score" in response:
+                                flow_value_scores.append(
+                                    float(np.asarray(response["safety_value_score"]).reshape(-1)[0])
+                                )
+                            if "safety_residual_ratio" in response:
+                                flow_residual_ratios.append(
+                                    float(np.asarray(response["safety_residual_ratio"]))
+                                )
                         assert (
                             len(action_chunk) >= args.replan_steps
                         ), f"We want to replan every {args.replan_steps} steps, but policy only predicts {len(action_chunk)} steps."
@@ -326,6 +472,10 @@ def eval_libero(args: Args) -> None:
 
                     action = action_plan.popleft()
                     t3 = time.time()
+                    obstacle_positions_before_action = {
+                        name: np.asarray(obs[f"{name}_pos"]).copy()
+                        for name in active_obstacle_names
+                    }
                     if flag_safety_control:
                         
 
@@ -391,14 +541,38 @@ def eval_libero(args: Args) -> None:
 
 
                     
-                    # print("t={}, safety layer time={}".format(t, t4-t3))
-                    if collide_flag == False:
-                        then_obstacle_pos = obs[obstacle_name + "_pos"]
-                        # print(np.sum(np.abs(then_obstacle_pos - initial_obstacle_pos)))
-                        if np.sum(np.abs(then_obstacle_pos - initial_obstacle_pos)) > 0.001:
-                            print("obstacle collided")
-                            collide_flag = True
-                            collide_time = t
+                    # Check collision separately after every executed action.
+                    obstacle_motion = any(
+                        np.sum(
+                            np.abs(
+                                np.asarray(obs[f"{name}_pos"])
+                                - obstacle_positions_before_action[name]
+                            )
+                        )
+                        > 0.001
+                        for name in active_obstacle_names
+                    )
+                    action_collision = False
+                    for contact_index in range(data.ncon):
+                        contact = data.contact[contact_index]
+                        body_1 = int(model.geom_bodyid[contact.geom1])
+                        body_2 = int(model.geom_bodyid[contact.geom2])
+                        if (
+                            body_1 in robot_body_ids
+                            and body_2 in obstacle_body_ids
+                        ) or (
+                            body_2 in robot_body_ids
+                            and body_1 in obstacle_body_ids
+                        ):
+                            action_collision = True
+                            break
+                    executed_action_steps.append(t)
+                    per_action_collision_flags.append(action_collision)
+                    per_action_obstacle_motion_flags.append(obstacle_motion)
+                    if action_collision:
+                        print(f"obstacle collided at action step {t}")
+                        collision_action_steps.append(t)
+                        collide_flag = True
 
             
 
@@ -432,6 +606,7 @@ def eval_libero(args: Args) -> None:
             time_steps.append(t)
             if collide_flag == True:
                 collides += 1
+                total_collisions += 1
 
             suffix = "success" if done else "failure"
             safe = "safe" if not collide_flag else "unsafe"
@@ -450,8 +625,48 @@ def eval_libero(args: Args) -> None:
             np.savez_compressed(
                 hidden_state_path,
                 last_layer_hidden_states=hidden_state_array,
+                action_chunks=(
+                    np.stack(predicted_action_chunks, axis=0)
+                    if predicted_action_chunks
+                    else np.empty((0, args.replan_steps, 7), dtype=np.float32)
+                ),
                 chunk_start_steps=np.asarray(chunk_start_steps, dtype=np.int32),
+                chunk_safety_scores=np.asarray(
+                    [
+                        0.0
+                        if any(
+                            collided
+                            for action_step, collided in zip(
+                                executed_action_steps, per_action_collision_flags
+                            )
+                            if start <= action_step < start + args.replan_steps
+                        )
+                        else 1.0
+                        for start in chunk_start_steps
+                    ],
+                    dtype=np.float32,
+                ),
+                executed_action_steps=np.asarray(executed_action_steps, dtype=np.int32),
+                per_action_collision_flags=np.asarray(
+                    per_action_collision_flags, dtype=np.bool_
+                ),
+                per_action_obstacle_motion_flags=np.asarray(
+                    per_action_obstacle_motion_flags, dtype=np.bool_
+                ),
+                collision_action_steps=np.asarray(
+                    collision_action_steps, dtype=np.int32
+                ),
                 chunk_infer_ms=np.asarray(chunk_infer_ms, dtype=np.float32),
+                guided_candidate_scores=(
+                    np.asarray(guided_candidate_scores, dtype=object)
+                    if guided_candidate_scores
+                    else np.empty((0,), dtype=np.float32)
+                ),
+                selected_candidate_indices=np.asarray(selected_candidate_indices, dtype=np.int32),
+                flow_value_scores=np.asarray(flow_value_scores, dtype=np.float32),
+                flow_residual_ratios=np.asarray(flow_residual_ratios, dtype=np.float32),
+                flow_guidance_scale=np.asarray(args.flow_guidance_scale, dtype=np.float32),
+                flow_guidance_start_time=np.asarray(args.flow_guidance_start_time, dtype=np.float32),
                 success=np.asarray(done),
                 collision=np.asarray(collide_flag),
                 safe_success=np.asarray(done and not collide_flag),
@@ -466,20 +681,47 @@ def eval_libero(args: Args) -> None:
             logging.info(f"SS (Safe Success): {ss}")
             logging.info(f"# episodes completed so far: {total_episodes}")
             logging.info(f"# successes: {total_successes} ({total_successes / total_episodes * 100:.1f}%)")
-            logging.info(f"# collides: {collides} ({collides / total_episodes * 100:.1f}%)")
+            logging.info(f"# task collides: {collides} ({collides / task_episodes * 100:.1f}%)")
+            logging.info(f"# total collides: {total_collisions} ({total_collisions / total_episodes * 100:.1f}%)")
             logging.info(f"# safesuccesses: {total_safesuccesses} ({total_safesuccesses / total_episodes * 100:.1f}%)")
 
             print("collide_flag:", collide_flag)
-            print("collide_time:", collide_time)
+            print("collision_action_steps:", collision_action_steps)
 
 
         # Log final results
-        logging.info(f"Current task success rate: {float(task_successes) / float(task_episodes)}")
-        logging.info(f"Current total success rate: {float(total_successes) / float(total_episodes)}")
+        if task_episodes:
+            logging.info(f"Current task success rate: {float(task_successes) / float(task_episodes)}")
+        else:
+            logging.info("Current task success rate: unavailable (all episodes skipped)")
+        if total_episodes:
+            logging.info(f"Current total success rate: {float(total_successes) / float(total_episodes)}")
 
-    logging.info(f"Total success rate: {float(total_successes) / float(total_episodes)}")
+    if total_episodes:
+        logging.info(f"Total success rate: {float(total_successes) / float(total_episodes)}")
+    else:
+        logging.info("Total success rate: unavailable (no completed episodes)")
     logging.info(f"Total episodes: {total_episodes}")
     logging.info(f"Time steps: {time_steps}")
+
+
+def _make_flow_noise(
+    args: Args,
+    *,
+    task_id: int,
+    episode_idx: int,
+    step: int,
+    candidate_idx: int,
+) -> np.ndarray:
+    """Generate reproducible pi0.5 latent noise with the model's padded action dimension."""
+    level_id = 1 if args.safety_level == "I" else 2
+    seed = np.random.SeedSequence(
+        [args.seed, level_id, task_id, episode_idx, step, candidate_idx]
+    )
+    rng = np.random.default_rng(seed)
+    return rng.standard_normal(
+        (args.flow_noise_action_horizon, args.flow_noise_action_dim)
+    ).astype(np.float32)
 
 
 def _get_libero_env(task, level, resolution, seed):

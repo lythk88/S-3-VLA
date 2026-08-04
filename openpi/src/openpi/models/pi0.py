@@ -9,6 +9,7 @@ from typing_extensions import override
 
 from openpi.models import model as _model
 from openpi.models import pi0_config
+from openpi.models import safety_value as _safety_value
 import openpi.models.gemma as _gemma
 import openpi.models.siglip as _siglip
 from openpi.shared import array_typing as at
@@ -314,3 +315,126 @@ class Pi0(_model.BaseModel):
 
         x_0, _, last_hidden_state = jax.lax.while_loop(cond, step, (noise, 1.0, init_last_hidden_state))
         return x_0, last_hidden_state.astype(jnp.float32)
+
+    def sample_actions_with_safety_value_guidance(
+        self,
+        rng: at.KeyArrayLike,
+        observation: _model.Observation,
+        *,
+        safety_value_parameters: dict[str, jax.Array],
+        guidance_scale: float | jax.Array = 0.25,
+        guidance_start_time: float | jax.Array = 0.5,
+        num_steps: int | at.Int[at.Array, ""] = 10,
+        noise: at.Float[at.Array, "b ah ad"] | None = None,
+    ):
+        """Sample actions with a value-gradient residual added to the task flow.
+
+        Sampling integrates from t=1 (noise) to t=0 (actions), hence dt is
+        negative.  ``v_safe`` is the *negative* value gradient so that the
+        Euler state update ascends the learned log safety probability.
+        """
+        observation = _model.preprocess_observation(None, observation, train=False)
+        dt = -1.0 / num_steps
+        batch_size = observation.state.shape[0]
+        if noise is None:
+            noise = jax.random.normal(rng, (batch_size, self.action_horizon, self.action_dim))
+
+        prefix_tokens, prefix_mask, prefix_ar_mask = self.embed_prefix(observation)
+        prefix_attn_mask = make_attn_mask(prefix_mask, prefix_ar_mask)
+        positions = jnp.cumsum(prefix_mask, axis=1) - 1
+        _, kv_cache = self.PaliGemma.llm([prefix_tokens, None], mask=prefix_attn_mask, positions=positions)
+        init_hidden = jnp.zeros(
+            (batch_size, self.action_horizon, self.action_in_proj.out_features),
+            dtype=prefix_tokens.dtype,
+        )
+        init_score = jnp.zeros((batch_size,), dtype=jnp.float32)
+
+        def task_flow_and_value(x_t, time):
+            suffix_tokens, suffix_mask, suffix_ar_mask, adarms_cond = self.embed_suffix(
+                observation, x_t, jnp.broadcast_to(time, batch_size)
+            )
+            suffix_attn_mask = make_attn_mask(suffix_mask, suffix_ar_mask)
+            prefix_to_suffix_mask = einops.repeat(prefix_mask, "b p -> b s p", s=suffix_tokens.shape[1])
+            full_attn_mask = jnp.concatenate([prefix_to_suffix_mask, suffix_attn_mask], axis=-1)
+            suffix_positions = (
+                jnp.sum(prefix_mask, axis=-1)[:, None]
+                + jnp.cumsum(suffix_mask, axis=-1)
+                - 1
+            )
+            (prefix_out, suffix_out), _ = self.PaliGemma.llm(
+                [None, suffix_tokens],
+                mask=full_attn_mask,
+                positions=suffix_positions,
+                kv_cache=kv_cache,
+                adarms_cond=[None, adarms_cond],
+            )
+            assert prefix_out is None
+            hidden_state = suffix_out[:, -self.action_horizon :]
+            task_flow = self.action_out_proj(hidden_state)
+            logits = _safety_value.safety_value_logit(hidden_state, safety_value_parameters)
+            # log(sigmoid(logit)) provides a useful gradient even when the
+            # classifier is confident that a state is unsafe.
+            objective = jnp.mean(jax.nn.log_sigmoid(logits))
+            return objective, (task_flow, hidden_state, jax.nn.sigmoid(logits))
+
+        def step(carry):
+            x_t, time, _, _, residual_ratio_sum, step_count = carry
+            (_, (v_task, hidden_state, safety_score)), value_gradient = jax.value_and_grad(
+                task_flow_and_value,
+                has_aux=True,
+            )(x_t, time)
+            value_gradient = jnp.nan_to_num(
+                value_gradient,
+                nan=0.0,
+                posinf=0.0,
+                neginf=0.0,
+            )
+
+            reduce_axes = tuple(range(1, value_gradient.ndim))
+            gradient_rms = jnp.sqrt(jnp.mean(jnp.square(value_gradient), axis=reduce_axes, keepdims=True))
+            task_rms = jnp.sqrt(jnp.mean(jnp.square(v_task), axis=reduce_axes, keepdims=True))
+            normalized_gradient = value_gradient / jnp.maximum(gradient_rms, 1e-6)
+            schedule = jnp.where(
+                time <= guidance_start_time,
+                jnp.power(jnp.maximum(1.0 - time, 0.0), 2.0),
+                0.0,
+            )
+            v_safe = -guidance_scale * schedule * task_rms * normalized_gradient
+            v_total = v_task + v_safe
+            residual_ratio = jnp.sqrt(jnp.mean(jnp.square(v_safe))) / jnp.maximum(
+                jnp.sqrt(jnp.mean(jnp.square(v_task))),
+                1e-6,
+            )
+            return (
+                x_t + dt * v_total,
+                time + dt,
+                hidden_state,
+                safety_score,
+                residual_ratio_sum + residual_ratio,
+                step_count + 1,
+            )
+
+        def cond(carry):
+            return carry[1] >= -dt / 2
+
+        x_0, _, last_hidden, final_score, residual_ratio_sum, step_count = jax.lax.while_loop(
+            cond,
+            step,
+            (
+                noise,
+                jnp.asarray(1.0, dtype=jnp.float32),
+                init_hidden,
+                init_score,
+                jnp.asarray(0.0, dtype=jnp.float32),
+                jnp.asarray(0, dtype=jnp.int32),
+            ),
+        )
+        return (
+            x_0,
+            last_hidden.astype(jnp.float32),
+            final_score,
+            jnp.broadcast_to(
+                residual_ratio_sum / jnp.maximum(step_count, 1),
+                (batch_size,),
+            ),
+        )

@@ -41,8 +41,11 @@ class WebsocketClientPolicy(_base_policy.BasePolicy):
                 time.sleep(5)
 
     @override
-    def infer(self, obs: Dict) -> Dict:  # noqa: UP006
-        data = self._packer.pack(obs)
+    def infer(self, obs: Dict, noise=None) -> Dict:  # noqa: UP006
+        payload = dict(obs)
+        if noise is not None:
+            payload["__debug_noise__"] = noise
+        data = self._packer.pack(payload)
         self._ws.send(data)
         response = self._ws.recv()
         if isinstance(response, str):
