@@ -132,6 +132,12 @@ class Policy(BasePolicy):
                     safety_value_parameters=self._safety_value_parameters,
                     guidance_scale=jnp.asarray(flow_guidance.get("scale", 0.25), dtype=jnp.float32),
                     guidance_start_time=jnp.asarray(flow_guidance.get("start_time", 0.5), dtype=jnp.float32),
+                    guidance_translation_only=jnp.asarray(
+                        flow_guidance.get("translation_only", False), dtype=jnp.bool_
+                    ),
+                    guidance_orthogonal=jnp.asarray(
+                        flow_guidance.get("orthogonal", False), dtype=jnp.bool_
+                    ),
                     **sample_kwargs,
                 )
             )

@@ -143,7 +143,14 @@ class Benchmark(abc.ABC):
         init_states_path = init_states_path.replace(".pruned_init", f"_level_{self.safety_level}.pruned_init")
 
 
-        init_states = torch.load(init_states_path)
+        # SafeLIBERO init-state files contain NumPy arrays rather than model
+        # weights. PyTorch 2.6 changed torch.load's default to
+        # weights_only=True, which rejects these trusted, repository-provided
+        # files. Keep compatibility with both new and old PyTorch releases.
+        try:
+            init_states = torch.load(init_states_path, weights_only=False)
+        except TypeError:
+            init_states = torch.load(init_states_path)
         
         return init_states
 
@@ -180,5 +187,4 @@ class SAFELIBERO_LONG(Benchmark):
         super().__init__(task_order_index=task_order_index, safety_level=safety_level)
         self.name = "safelibero_long"
         self._make_benchmark()
-
 

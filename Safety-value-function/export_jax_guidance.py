@@ -4,10 +4,20 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import pathlib
 
 import numpy as np
 import torch
+
+
+def sha256(path: pathlib.Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def main() -> None:
@@ -29,6 +39,14 @@ def main() -> None:
     ).astype(np.float32)
     output = args.run_dir / "jax_guidance_model.npz"
     np.savez_compressed(output, **arrays)
+    manifest_path = args.run_dir / "training_manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text())
+        manifest.setdefault("artifacts", {})[output.name] = {
+            "sha256": sha256(output),
+            "bytes": output.stat().st_size,
+        }
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"Exported {output}")
 
 

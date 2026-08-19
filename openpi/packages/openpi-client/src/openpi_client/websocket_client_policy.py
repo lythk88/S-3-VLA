@@ -1,4 +1,5 @@
 import logging
+import inspect
 import time
 from typing import Dict, Optional, Tuple
 
@@ -31,9 +32,20 @@ class WebsocketClientPolicy(_base_policy.BasePolicy):
         while True:
             try:
                 headers = {"Authorization": f"Api-Key {self._api_key}"} if self._api_key else None
-                conn = websockets.sync.client.connect(
-                    self._uri, compression=None, max_size=None, additional_headers=headers
-                )
+                connect_kwargs = {
+                    "compression": None,
+                    "max_size": None,
+                    "additional_headers": headers,
+                }
+                # websockets >=15 exposes keepalive on the sync client, while
+                # websockets 13 forwards unknown kwargs to socket.create_connection.
+                # Disable keepalive only when the installed API supports it; the
+                # older sync client has no keepalive thread to disable.
+                if "ping_interval" in inspect.signature(
+                    websockets.sync.client.connect
+                ).parameters:
+                    connect_kwargs["ping_interval"] = None
+                conn = websockets.sync.client.connect(self._uri, **connect_kwargs)
                 metadata = msgpack_numpy.unpackb(conn.recv())
                 return conn, metadata
             except ConnectionRefusedError:

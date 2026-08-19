@@ -159,7 +159,10 @@ def get_point_cloud(image, depth, env, view, TEXT_PROMPT, model, save_path):
     # import cv2
     # CONFIG_PATH = "GroundingDINO/GroundingDINO_SwinT_OGC.py"    # Config file included in source code
     # CHECKPOINT_PATH = "GroundingDINO/groundingdino_swint_ogc.pth"   # Downloaded weights file
-    DEVICE = "cuda"   # Select cpu/cuda
+    # The simulator environment may use a CUDA build that predates the assigned
+    # GPU architecture. Keep this configurable so detection can safely fall
+    # back to CPU while the policy server continues to use the GPU.
+    DEVICE = os.environ.get("GROUNDINGDINO_DEVICE", "cuda")
     BOX_TRESHOLD = 0.35     # Bounding box threshold given by source code
     TEXT_TRESHOLD = 0.25    # Text threshold for key attributes given by source code
 
@@ -181,8 +184,19 @@ def get_point_cloud(image, depth, env, view, TEXT_PROMPT, model, save_path):
         text_threshold=TEXT_TRESHOLD,
         device=DEVICE,
     )
-    annotated_frame = annotate(image_source=image_source, boxes=boxes, logits=logits, phrases=phrases)
-    cv2.imwrite(str(save_path / f"annotated_ {view}_image.jpg"), annotated_frame)
+    try:
+        annotated_frame = annotate(
+            image_source=image_source,
+            boxes=boxes,
+            logits=logits,
+            phrases=phrases,
+        )
+        cv2.imwrite(str(save_path / f"annotated_ {view}_image.jpg"), annotated_frame)
+    except (AttributeError, TypeError) as exc:
+        # Annotation is diagnostic-only. Some installed supervision releases do
+        # not expose the API expected by GroundingDINO, but the predicted boxes
+        # below remain valid inputs to the safety geometry pipeline.
+        print(f"Skipping GroundingDINO annotation for {view}: {exc}")
     from groundingdino.util.box_ops import box_cxcywh_to_xyxy
     import torch
     image = image[::-1, ::-1]

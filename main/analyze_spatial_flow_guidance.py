@@ -15,20 +15,33 @@ from continuous_score_guidance import ContinuousSafetyScorer
 VIDEO_PATTERN = re.compile(r"^(\d+)_(success|failure)_(safe|unsafe)\.mp4$")
 
 
-def collect(root: pathlib.Path, run_prefix: str) -> dict[tuple[str, str, int], dict]:
+def collect(root: pathlib.Path, run_name: str) -> dict[tuple[str, str, int], dict]:
     records = {}
-    for video in root.glob(f"*/{run_prefix}_*/*.mp4"):
-        match = VIDEO_PATTERN.match(video.name)
-        if not match:
-            continue
-        run_name = video.parent.name
-        level = run_name.rsplit("_", 1)[-1]
-        key = (video.parent.parent.name, level, int(match.group(1)))
-        records[key] = {
-            "success": match.group(2) == "success",
-            "safe": match.group(3) == "safe",
-            "npz": video.with_name(f"{video.stem}_last_layer_hidden_states.npz"),
-        }
+    for level in ("I", "II"):
+        expected_directory = f"{run_name}_{level}"
+        for video in root.glob(f"*/{expected_directory}/*.mp4"):
+            match = VIDEO_PATTERN.match(video.name)
+            if not match:
+                continue
+            if video.parent.name != expected_directory:
+                raise RuntimeError(f"run-name mismatch for {video}")
+            key = (video.parent.parent.name, level, int(match.group(1)))
+            if key in records:
+                raise RuntimeError(f"duplicate rollout key {key} for {run_name}")
+            manifest = video.parent / "manifest.json"
+            if manifest.exists():
+                import json
+
+                manifest_run_name = json.loads(manifest.read_text()).get("run_name")
+                if manifest_run_name != run_name:
+                    raise RuntimeError(
+                        f"manifest run_name={manifest_run_name!r} does not match {run_name!r}"
+                    )
+            records[key] = {
+                "success": match.group(2) == "success",
+                "safe": match.group(3) == "safe",
+                "npz": video.with_name(f"{video.stem}_last_layer_hidden_states.npz"),
+            }
     return records
 
 
@@ -63,10 +76,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results-root", type=pathlib.Path, required=True)
     parser.add_argument("--score-run-dir", type=pathlib.Path, required=True)
+    parser.add_argument("--baseline-run-name", default="pi05_no_safety")
+    parser.add_argument("--guided-run-name", default="pi05_flow_guided")
     args = parser.parse_args()
 
-    baseline = collect(args.results_root, "pi05_no_safety")
-    guided = collect(args.results_root, "pi05_flow_guided")
+    baseline = collect(args.results_root, args.baseline_run_name)
+    guided = collect(args.results_root, args.guided_run_name)
     paired_keys = sorted(baseline.keys() & guided.keys())
     scorer = ContinuousSafetyScorer.load(args.score_run_dir, device="cpu")
     baseline_records = [baseline[key] for key in paired_keys]

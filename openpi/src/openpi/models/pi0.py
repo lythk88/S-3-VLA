@@ -324,6 +324,8 @@ class Pi0(_model.BaseModel):
         safety_value_parameters: dict[str, jax.Array],
         guidance_scale: float | jax.Array = 0.25,
         guidance_start_time: float | jax.Array = 0.5,
+        guidance_translation_only: bool | jax.Array = False,
+        guidance_orthogonal: bool | jax.Array = False,
         num_steps: int | at.Int[at.Array, ""] = 10,
         noise: at.Float[at.Array, "b ah ad"] | None = None,
     ):
@@ -391,9 +393,37 @@ class Pi0(_model.BaseModel):
             )
 
             reduce_axes = tuple(range(1, value_gradient.ndim))
-            gradient_rms = jnp.sqrt(jnp.mean(jnp.square(value_gradient), axis=reduce_axes, keepdims=True))
+            # Spatial avoidance should not exploit rotation, gripper, or padded
+            # action channels. Renormalize after masking so guidance_scale keeps
+            # its meaning as a residual/task RMS trust-region ratio.
+            translation_mask = (jnp.arange(value_gradient.shape[-1]) < 3).astype(value_gradient.dtype)
+            gradient_mask = jnp.where(
+                guidance_translation_only,
+                translation_mask[None, None, :],
+                jnp.ones_like(translation_mask)[None, None, :],
+            )
+            masked_gradient = value_gradient * gradient_mask
+            # A steering residual should change direction without fighting the
+            # nominal task flow. Remove its per-token component parallel to
+            # v_task when orthogonal guidance is requested.
+            masked_task_flow = v_task * gradient_mask
+            parallel_scale = jnp.sum(
+                masked_gradient * masked_task_flow, axis=-1, keepdims=True
+            ) / jnp.maximum(
+                jnp.sum(jnp.square(masked_task_flow), axis=-1, keepdims=True),
+                1e-6,
+            )
+            steering_gradient = masked_gradient - parallel_scale * masked_task_flow
+            masked_gradient = jnp.where(
+                guidance_orthogonal, steering_gradient, masked_gradient
+            )
+            active_count = jnp.sum(gradient_mask) * value_gradient.shape[-2]
+            gradient_rms = jnp.sqrt(
+                jnp.sum(jnp.square(masked_gradient), axis=reduce_axes, keepdims=True)
+                / jnp.maximum(active_count, 1.0)
+            )
             task_rms = jnp.sqrt(jnp.mean(jnp.square(v_task), axis=reduce_axes, keepdims=True))
-            normalized_gradient = value_gradient / jnp.maximum(gradient_rms, 1e-6)
+            normalized_gradient = masked_gradient / jnp.maximum(gradient_rms, 1e-6)
             schedule = jnp.where(
                 time <= guidance_start_time,
                 jnp.power(jnp.maximum(1.0 - time, 0.0), 2.0),

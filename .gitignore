@@ -1,23 +1,20 @@
-# Python/runtime artifacts
-__pycache__/
-*.py[cod]
-*.so
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.ipynb_checkpoints/
-
-# Local environments
-.venv/
-.aegis_venv/
-main/.venv/
-openpi/.venv/
-
-# IDE metadata
-.idea/
-
-# Generated experiment outputs
-logs/
+# Evaluation and training artifacts: large binaries that should not live in git.
+# Rollout videos, telemetry archives, value-model checkpoints and scene caches
+# are reproducible from the scripts in scripts/ and training_dataset_generator/.
 results/
-MLP-classifier/logs/
-MLP-classifier/runs/
+training_dataset/
+logs/
+.worker_tmp/
+initial_state_rgb_comparison/
+
+*.npz
+*.npy
+*.pt
+*.pth
+*.mp4
+*.pruned_init
+
+MUJOCO_LOG.TXT
+__pycache__/
+*.pyc
+.venv/

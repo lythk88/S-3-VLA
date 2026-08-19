@@ -70,6 +70,18 @@ class ChocolatePuddingObstacle(ObstacleObject):
     def __init__(self, name="chocolate_pudding_obstacle", obj_name="chocolate_pudding_obstacle"):
         super().__init__(name, obj_name)
 
+
+@register_object
+class ChocolatePuddingObstacleFixed(ObstacleObject):
+    """Table-aligned enlarged pudding with collision geometry matching its mesh."""
+
+    def __init__(
+        self,
+        name="chocolate_pudding_obstacle_fixed",
+        obj_name="chocolate_pudding_obstacle_fixed",
+    ):
+        super().__init__(name, obj_name)
+
 @register_object
 class CreamCheeseObstacle(ObstacleObject):
     def __init__(self, name="cream_cheese_obstacle", obj_name="cream_cheese_obstacle"):
