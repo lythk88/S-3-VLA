@@ -1,0 +1,952 @@
+{
+  "schema_version": 2,
+  "description": "SafeLIBERO tasks with one upright, surface-aligned chocolate-pudding obstacle; task_index follows the benchmark task order of each suite",
+  "config": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/config/config.yaml",
+  "suites": {
+    "safelibero_spatial": 4,
+    "safelibero_goal": 5,
+    "safelibero_object": 4,
+    "safelibero_long": 4
+  },
+  "records": [
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 0,
+      "task_stem": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "seed": 31,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_spatial/task_0_pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.png",
+      "pudding_xy": [
+        -0.08,
+        -0.08
+      ],
+      "pudding_pose": [
+        -0.08,
+        -0.08,
+        1.0254709548372143,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136698,
+        "collision_min_z": 0.8999709548372142,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366974822,
+        "collision_clearance_above_table_m": -2.904516278579017e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.06481432525108162,
+          0.20888187341771178,
+          0.898404150188853
+        ],
+        "plate_1": [
+          0.07876545825895731,
+          0.20691498066124048,
+          0.9024998346667837
+        ]
+      },
+      "bowl_position": [
+        -0.06481432525108162,
+        0.20888187341771178,
+        0.898404150188853
+      ],
+      "plate_position": [
+        0.07876545825895731,
+        0.20691498066124048,
+        0.9024998346667837
+      ]
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 1,
+      "task_stem": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "seed": 32,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_spatial/task_1_pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate.png",
+      "pudding_xy": [
+        -0.08,
+        -0.08
+      ],
+      "pudding_pose": [
+        -0.08,
+        -0.08,
+        1.0254709548372143,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136698,
+        "collision_min_z": 0.8999709548372142,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366974822,
+        "collision_clearance_above_table_m": -2.904516278579017e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.21727900974467707,
+          0.21392757988093503,
+          0.934401659634996
+        ],
+        "plate_1": [
+          0.07225457777025775,
+          0.20464214671618994,
+          0.9024998346667837
+        ]
+      },
+      "bowl_position": [
+        -0.21727900974467707,
+        0.21392757988093503,
+        0.934401659634996
+      ],
+      "plate_position": [
+        0.07225457777025775,
+        0.20464214671618994,
+        0.9024998346667837
+      ]
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 2,
+      "task_stem": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "seed": 33,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_spatial/task_2_pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate.png",
+      "pudding_xy": [
+        -0.08,
+        -0.08
+      ],
+      "pudding_pose": [
+        -0.08,
+        -0.08,
+        1.0254709548372143,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136698,
+        "collision_min_z": 0.8999709548372142,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366974822,
+        "collision_clearance_above_table_m": -2.904516278579017e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.26238660353771326,
+          -0.15628205679102045,
+          0.9289041501888531
+        ],
+        "plate_1": [
+          0.046057297218165164,
+          0.20319577184170165,
+          0.9024998346667837
+        ]
+      },
+      "bowl_position": [
+        -0.26238660353771326,
+        -0.15628205679102045,
+        0.9289041501888531
+      ],
+      "plate_position": [
+        0.046057297218165164,
+        0.20319577184170165,
+        0.9024998346667837
+      ]
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 3,
+      "task_stem": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "seed": 34,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_spatial/task_3_pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate.png",
+      "pudding_xy": [
+        -0.08,
+        -0.08
+      ],
+      "pudding_pose": [
+        -0.08,
+        -0.08,
+        1.0254709548372143,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136698,
+        "collision_min_z": 0.8999709548372142,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366974822,
+        "collision_clearance_above_table_m": -2.904516278579017e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          0.05966124763280351,
+          -0.28256433494536903,
+          1.1263999683946322
+        ],
+        "plate_1": [
+          0.06553700399571998,
+          0.18839167886014824,
+          0.9024998346667837
+        ]
+      },
+      "bowl_position": [
+        0.05966124763280351,
+        -0.28256433494536903,
+        1.1263999683946322
+      ],
+      "plate_position": [
+        0.06553700399571998,
+        0.18839167886014824,
+        0.9024998346667837
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 0,
+      "task_stem": "put_the_bowl_on_the_plate",
+      "seed": 131,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_goal/put_the_bowl_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_goal/task_0_put_the_bowl_on_the_plate.png",
+      "pudding_xy": [
+        0.02,
+        0.08
+      ],
+      "pudding_pose": [
+        0.020542628178069715,
+        0.08187533082559875,
+        1.0254709548372143,
+        0.4999106273698245,
+        -0.5000893566580952,
+        -0.4999106273698255,
+        -0.5000893566580961
+      ],
+      "post_settle_max_delta": 3.122502256758253e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136699,
+        "collision_min_z": 0.8999709548372141,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366985925,
+        "collision_clearance_above_table_m": -2.904516278590119e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.15608548399885167,
+          -0.0165775379021789,
+          0.898404150188853
+        ],
+        "plate_1": [
+          0.04343648323495757,
+          -0.0929985833910835,
+          0.9244134964517677
+        ]
+      },
+      "bowl_position": [
+        -0.15608548399885167,
+        -0.0165775379021789,
+        0.898404150188853
+      ],
+      "plate_position": [
+        0.04343648323495757,
+        -0.0929985833910835,
+        0.9244134964517677
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 1,
+      "task_stem": "put_the_bowl_on_top_of_the_cabinet",
+      "seed": 132,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_goal/put_the_bowl_on_top_of_the_cabinet.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_top_of_the_cabinet_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_goal/task_1_put_the_bowl_on_top_of_the_cabinet.png",
+      "pudding_xy": [
+        0.02,
+        0.08
+      ],
+      "pudding_pose": [
+        0.019478866670998837,
+        0.07990162044742147,
+        1.0254709548372143,
+        0.4965432456154941,
+        -0.5034330196099867,
+        -0.49654324561549384,
+        -0.5034330196099888
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136702,
+        "collision_min_z": 0.8999709548372142,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301367019231,
+        "collision_clearance_above_table_m": -2.904516278579017e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "wooden_cabinet_1_top_side"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.1367631086590187,
+          -0.08617574278829555,
+          0.8984041501888531
+        ],
+        "wooden_cabinet_1_top_side": null
+      },
+      "bowl_position": [
+        -0.1367631086590187,
+        -0.08617574278829555,
+        0.8984041501888531
+      ],
+      "plate_position": [
+        0.06528302631465274,
+        -0.06078387220512597,
+        0.9024998346667839
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 2,
+      "task_stem": "put_the_bowl_on_the_stove",
+      "seed": 133,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_goal/put_the_bowl_on_the_stove.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_the_stove_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_goal/task_2_put_the_bowl_on_the_stove.png",
+      "pudding_xy": [
+        0.02,
+        0.08
+      ],
+      "pudding_pose": [
+        0.020148771662458154,
+        0.08008240027336834,
+        1.0254709548372143,
+        0.5036881951594078,
+        -0.49628439634654714,
+        -0.5036881951594099,
+        -0.49628439634654714
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.90022455301367,
+        "collision_min_z": 0.8999709548372141,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366997027,
+        "collision_clearance_above_table_m": -2.904516278590119e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "flat_stove_1_cook_region"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.09814442359107711,
+          -0.005952424975037142,
+          0.898404150188853
+        ],
+        "flat_stove_1_cook_region": null
+      },
+      "bowl_position": [
+        -0.09814442359107711,
+        -0.005952424975037142,
+        0.898404150188853
+      ],
+      "plate_position": [
+        0.05183251265034755,
+        -0.08311394891094709,
+        0.9190685427664701
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 3,
+      "task_stem": "open_the_top_drawer_and_put_the_bowl_inside",
+      "seed": 134,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_goal/task_3_open_the_top_drawer_and_put_the_bowl_inside.png",
+      "pudding_xy": [
+        0.02,
+        0.08
+      ],
+      "pudding_pose": [
+        0.020246993204939754,
+        0.08311489372723913,
+        1.0254709548372143,
+        0.4915161134015355,
+        -0.5083423160299073,
+        -0.49151611340153456,
+        -0.5083423160299062
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136695,
+        "collision_min_z": 0.899970954837214,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366952618,
+        "collision_clearance_above_table_m": -2.9045162786012213e-05
+      },
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "wooden_cabinet_1_top_region"
+      ],
+      "object_positions": {
+        "akita_black_bowl_1": [
+          -0.34435435874382964,
+          0.20254294486652089,
+          0.9289041501888531
+        ],
+        "wooden_cabinet_1_top_region": null
+      },
+      "bowl_position": [
+        -0.34435435874382964,
+        0.20254294486652089,
+        0.9289041501888531
+      ],
+      "plate_position": [
+        0.05155867220961988,
+        -0.05946686600189607,
+        0.9024998346667839
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 4,
+      "task_stem": "put_the_cream_cheese_in_the_bowl",
+      "seed": 135,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_goal/put_the_cream_cheese_in_the_bowl.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_cream_cheese_in_the_bowl_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_goal/task_4_put_the_cream_cheese_in_the_bowl.png",
+      "pudding_xy": [
+        0.02,
+        0.08
+      ],
+      "pudding_pose": [
+        0.020346041937436467,
+        0.08054565589005332,
+        1.0254709548372145,
+        0.502504669114393,
+        -0.4974827208237839,
+        -0.5025046691143932,
+        -0.4974827208237828
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.9002245530136699,
+        "collision_min_z": 0.8999709548372143,
+        "table_surface_z": 0.9,
+        "visual_clearance_above_table_m": 0.00022455301366985925,
+        "collision_clearance_above_table_m": -2.9045162785679146e-05
+      },
+      "objects_of_interest": [
+        "cream_cheese_1",
+        "akita_black_bowl_1"
+      ],
+      "object_positions": {
+        "cream_cheese_1": [
+          -0.05912390543217301,
+          0.14835642034822993,
+          0.9089069548372153
+        ],
+        "akita_black_bowl_1": [
+          -0.14983401631994378,
+          -0.04581724335030613,
+          0.898404150188853
+        ]
+      },
+      "bowl_position": [
+        -0.14983401631994378,
+        -0.04581724335030613,
+        0.898404150188853
+      ],
+      "plate_position": [
+        0.04764501427519931,
+        -0.06891513951708872,
+        0.9024998346667837
+      ]
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 0,
+      "task_stem": "pick_up_the_orange_juice_and_place_it_in_the_basket",
+      "seed": 231,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_object/task_0_pick_up_the_orange_juice_and_place_it_in_the_basket.png",
+      "pudding_xy": [
+        -0.02,
+        0.04
+      ],
+      "pudding_pose": [
+        -0.02,
+        0.04,
+        0.12548547741860805,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.00023907559506347598,
+        "collision_min_z": -1.452258139197915e-05,
+        "table_surface_z": 0.0,
+        "visual_clearance_above_table_m": 0.00023907559506347598,
+        "collision_clearance_above_table_m": -1.452258139197915e-05
+      },
+      "objects_of_interest": [
+        "orange_juice_1",
+        "basket_1"
+      ],
+      "object_positions": {
+        "orange_juice_1": [
+          0.050000065205688414,
+          -0.10000162784603495,
+          0.06973547730149801
+        ],
+        "basket_1": [
+          -0.0019119465136752983,
+          0.2720985305846175,
+          -0.004582345326536154
+        ]
+      }
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 1,
+      "task_stem": "pick_up_the_chocolate_pudding_and_place_it_in_the_basket",
+      "seed": 232,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_object/task_1_pick_up_the_chocolate_pudding_and_place_it_in_the_basket.png",
+      "pudding_xy": [
+        -0.02,
+        0.04
+      ],
+      "pudding_pose": [
+        -0.02,
+        0.04,
+        0.12548547741860805,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.00023907559506347598,
+        "collision_min_z": -1.452258139197915e-05,
+        "table_surface_z": 0.0,
+        "visual_clearance_above_table_m": 0.00023907559506347598,
+        "collision_clearance_above_table_m": -1.452258139197915e-05
+      },
+      "objects_of_interest": [
+        "chocolate_pudding_1",
+        "basket_1"
+      ],
+      "object_positions": {
+        "chocolate_pudding_1": [
+          -0.12000011255647869,
+          -0.24,
+          0.013065477418608112
+        ],
+        "basket_1": [
+          1.0958802691055214e-05,
+          0.26968142423538244,
+          -0.004582345326536154
+        ]
+      }
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 2,
+      "task_stem": "pick_up_the_milk_and_place_it_in_the_basket",
+      "seed": 233,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_object/task_2_pick_up_the_milk_and_place_it_in_the_basket.png",
+      "pudding_xy": [
+        -0.02,
+        0.04
+      ],
+      "pudding_pose": [
+        -0.02,
+        0.04,
+        0.12548547741860805,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.00023907559506347598,
+        "collision_min_z": -1.452258139197915e-05,
+        "table_surface_z": 0.0,
+        "visual_clearance_above_table_m": 0.00023907559506347598,
+        "collision_clearance_above_table_m": -1.452258139197915e-05
+      },
+      "objects_of_interest": [
+        "milk_1",
+        "basket_1"
+      ],
+      "object_positions": {
+        "milk_1": [
+          -0.12384386209259647,
+          -0.24431565001321276,
+          0.06973547730149791
+        ],
+        "basket_1": [
+          -0.0019298170216083307,
+          0.2681149914695139,
+          -0.004582345326536154
+        ]
+      }
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 3,
+      "task_stem": "pick_up_the_bbq_sauce_and_place_it_in_the_basket",
+      "seed": 234,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_object/task_3_pick_up_the_bbq_sauce_and_place_it_in_the_basket.png",
+      "pudding_xy": [
+        -0.02,
+        0.04
+      ],
+      "pudding_pose": [
+        -0.02,
+        0.04,
+        0.12548547741860805,
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "post_settle_max_delta": 0.0,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.00023907559506347598,
+        "collision_min_z": -1.452258139197915e-05,
+        "table_surface_z": 0.0,
+        "visual_clearance_above_table_m": 0.00023907559506347598,
+        "collision_clearance_above_table_m": -1.452258139197915e-05
+      },
+      "objects_of_interest": [
+        "bbq_sauce_1",
+        "basket_1"
+      ],
+      "object_positions": {
+        "bbq_sauce_1": [
+          0.05601238062840268,
+          -0.09981494649926424,
+          0.05462547741860812
+        ],
+        "basket_1": [
+          -0.001273368820691946,
+          0.2528325723070414,
+          -0.004582345326536154
+        ]
+      }
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 0,
+      "task_stem": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "seed": 331,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_long/task_0_LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket.png",
+      "pudding_xy": [
+        -0.08,
+        -0.02
+      ],
+      "pudding_pose": [
+        -0.07966337218944017,
+        -0.0178687545887071,
+        0.5622598430400005,
+        0.500075806502165,
+        -0.49992418200284006,
+        -0.5000758065021658,
+        -0.49992418200284017
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.43701344121645597,
+        "collision_min_z": 0.4367598430400005,
+        "table_surface_z": 0.43676000000000015,
+        "visual_clearance_above_table_m": 0.00025344121645581863,
+        "collision_clearance_above_table_m": -1.5695999966425234e-07
+      },
+      "objects_of_interest": [
+        "alphabet_soup_1",
+        "cream_cheese_1",
+        "basket_1"
+      ],
+      "object_positions": {
+        "alphabet_soup_1": [
+          0.031785659579520516,
+          -0.10776159687676198,
+          0.47517012396052544
+        ],
+        "cream_cheese_1": [
+          -0.13928728944519186,
+          0.08394897022626652,
+          0.44569592152000004
+        ],
+        "basket_1": [
+          0.002017550167949342,
+          0.2657532753415689,
+          0.43219202665003076
+        ]
+      }
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 1,
+      "task_stem": "LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket",
+      "seed": 332,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_long/task_1_LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket.png",
+      "pudding_xy": [
+        -0.08,
+        -0.02
+      ],
+      "pudding_pose": [
+        -0.07933057162000262,
+        -0.020101185387168253,
+        0.5622598430399999,
+        0.5040662259835293,
+        -0.4959004333762185,
+        -0.5040662259835302,
+        -0.4959004333762185
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.43701344121645525,
+        "collision_min_z": 0.4367598430399997,
+        "table_surface_z": 0.43676000000000015,
+        "visual_clearance_above_table_m": 0.000253441216455097,
+        "collision_clearance_above_table_m": -1.5696000044140845e-07
+      },
+      "objects_of_interest": [
+        "alphabet_soup_1",
+        "tomato_sauce_1",
+        "basket_1"
+      ],
+      "object_positions": {
+        "alphabet_soup_1": [
+          -0.11479766713121722,
+          -0.1539242155360195,
+          0.4751701239605255
+        ],
+        "tomato_sauce_1": [
+          -0.09916682678811459,
+          0.16133366682044042,
+          0.47706801970782386
+        ],
+        "basket_1": [
+          -0.009836395665958425,
+          0.256892653026223,
+          0.4321920217989296
+        ]
+      }
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 2,
+      "task_stem": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "seed": 333,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_long/task_2_LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.png",
+      "pudding_xy": [
+        -0.08,
+        -0.02
+      ],
+      "pudding_pose": [
+        -0.07968377909802596,
+        -0.018022922594511628,
+        0.5622598430399997,
+        0.4997859628001811,
+        -0.500213945615169,
+        -0.4997859628001812,
+        -0.5002139456151697
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.43701344121645525,
+        "collision_min_z": 0.4367598430399996,
+        "table_surface_z": 0.43676000000000015,
+        "visual_clearance_above_table_m": 0.000253441216455097,
+        "collision_clearance_above_table_m": -1.5696000055243076e-07
+      },
+      "objects_of_interest": [
+        "plate_1",
+        "plate_2",
+        "white_yellow_mug_1",
+        "porcelain_mug_1"
+      ],
+      "object_positions": {
+        "plate_1": [
+          -0.016270122331193067,
+          -0.30423333896839333,
+          0.43927283236836456
+        ],
+        "plate_2": [
+          0.0037098055486602336,
+          0.33537504631394793,
+          0.43927283236836456
+        ],
+        "white_yellow_mug_1": [
+          -0.06904520863246057,
+          0.22753524590162824,
+          0.4368570012643121
+        ],
+        "porcelain_mug_1": [
+          -0.11738045187526355,
+          -0.1663992301455899,
+          0.4343699608590306
+        ]
+      },
+      "plate_position": [
+        -0.016270122331193067,
+        -0.30423333896839333,
+        0.43927283236836456
+      ]
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 3,
+      "task_stem": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "seed": 334,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/observations/safelibero_long/task_3_LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate.png",
+      "pudding_xy": [
+        -0.08,
+        -0.02
+      ],
+      "pudding_pose": [
+        -0.07970121415435441,
+        -0.01778653632774939,
+        0.56225992152,
+        0.5002455308432454,
+        -0.4997543485267133,
+        -0.5002455308432456,
+        -0.4997543485267136
+      ],
+      "post_settle_max_delta": 4.163336342344337e-14,
+      "invalid_contacts": [],
+      "geometry_alignment": {
+        "visual_min_z": 0.43701351969645535,
+        "collision_min_z": 0.43675992152,
+        "table_surface_z": 0.43676000000000015,
+        "visual_clearance_above_table_m": 0.00025351969645520667,
+        "collision_clearance_above_table_m": -7.848000016519308e-08
+      },
+      "objects_of_interest": [
+        "plate_1",
+        "chocolate_pudding_1",
+        "porcelain_mug_1"
+      ],
+      "object_positions": {
+        "plate_1": [
+          0.16615348623353277,
+          0.005454349228324394,
+          0.43927283236836456
+        ],
+        "chocolate_pudding_1": [
+          -0.048680957581209015,
+          0.111507892623087,
+          0.44983992152
+        ],
+        "porcelain_mug_1": [
+          -0.09415335902390884,
+          -0.16203929688901905,
+          0.4343699608590306
+        ]
+      },
+      "bowl_position": [
+        -0.22478136975923294,
+        0.0011160621546839114,
+        0.4351699683946329
+      ],
+      "plate_position": [
+        0.16615348623353277,
+        0.005454349228324394,
+        0.43927283236836456
+      ]
+    }
+  ]
+}
