@@ -1,0 +1,5 @@
+assets: /home/lythk/safe-flow-matching/safelibero/libero/libero/assets
+bddl_files: /home/lythk/safe-flow-matching/results/yellow_rectangular_book_all_suites/scenes/bddl_files
+benchmark_root: /home/lythk/safe-flow-matching/safelibero/libero/libero
+datasets: /home/lythk/safe-flow-matching/safelibero/libero/datasets
+init_states: /home/lythk/safe-flow-matching/results/yellow_rectangular_book_all_suites/scenes/init_files
