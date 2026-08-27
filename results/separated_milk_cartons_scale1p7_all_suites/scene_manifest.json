@@ -1,0 +1,4476 @@
+{
+  "schema_version": 1,
+  "description": "Original SafeLIBERO tasks 0-3 in four suites with three independent uniformly 1.7x milk cartons placed across a task-relevant route",
+  "object": "milk",
+  "prompt": "milk carton",
+  "num_cartons": 3,
+  "individual_object_scale": 1.7,
+  "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+  "config": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/config/config.yaml",
+  "safety_level": "I",
+  "suites": {
+    "safelibero_spatial": 4,
+    "safelibero_goal": 4,
+    "safelibero_object": 4,
+    "safelibero_long": 4
+  },
+  "records": [
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 0,
+      "task_stem": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "seed": 31,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 35,
+      "layout": "world_x_row",
+      "route_fraction": 0.4,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10521907058974418,
+      "route": {
+        "kind": "gripper_to_target",
+        "start_name": "gripper0_grip_site",
+        "end_name": "akita_black_bowl_1",
+        "start": [
+          -0.2084646605658239,
+          1.9670907490316985e-12,
+          1.17327947572964
+        ],
+        "end": [
+          -0.06481432525108162,
+          0.20888187341771178,
+          0.898404150188853
+        ],
+        "length_xy_m": 0.2535094788715189
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.2562235970296712,
+            0.08355274936826497,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.2563680992653784,
+            0.08355274832241416,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.15100452643992698,
+            0.08355274936826497,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.1511490286756342,
+            0.08355274832241416,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.0457854558501828,
+            0.08355274936826497,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.045929958085890024,
+            0.08355274832241416,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.30133319158763133,
+            0.03892769932652021,
+            0.899970936063026
+          ],
+          [
+            -0.21111410657827112,
+            0.12817771175055498,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.19611412099788741,
+            0.03892769932652021,
+            0.899970936063026
+          ],
+          [
+            -0.10589503598852723,
+            0.12817771175055498,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.09089505040814332,
+            0.03892769932652021,
+            0.899970936063026
+          ],
+          [
+            -0.0006759653987831252,
+            0.12817771175055498,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580383707
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.1202190561701278
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580383915
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383707,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.27902866826046e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 1,
+      "task_stem": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "seed": 32,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 29,
+      "layout": "wall_across_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10530834504507172,
+      "route": {
+        "kind": "gripper_to_target",
+        "start_name": "gripper0_grip_site",
+        "end_name": "akita_black_bowl_1",
+        "start": [
+          -0.2084646605658239,
+          1.967095743501645e-12,
+          1.17327947572964
+        ],
+        "end": [
+          -0.21727900974467707,
+          0.21392757988093503,
+          0.934401659634996
+        ],
+        "length_xy_m": 0.21410908944815715
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.1076527645655063,
+            0.11129907774761945,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.10779726680121353,
+            0.11129907670176864,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.2128718351552505,
+            0.10696378994145106,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.2130163373909577,
+            0.10696378889560025,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.31809090574499466,
+            0.10262850213528267,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.3182354079807019,
+            0.10262850108943186,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.15276235912346664,
+            0.06667402770587472,
+            0.899970936063026
+          ],
+          [
+            -0.06254327411410643,
+            0.15592404012990954,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.2579814297132109,
+            0.0623387398997063,
+            0.899970936063026
+          ],
+          [
+            -0.16776234470385074,
+            0.15158875232374108,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.3632005003029548,
+            0.05800345209353791,
+            0.899970936063026
+          ],
+          [
+            -0.2729814152935946,
+            0.14725346451757268,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580384095
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021905617012796
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580383679
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383679,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.279441421580777e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 2,
+      "task_stem": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "seed": 33,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 4,
+      "layout": "world_y_row",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10425000763479385,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "akita_black_bowl_1",
+        "end_name": "plate_1",
+        "start": [
+          -0.26238660353771326,
+          -0.15628205679102045,
+          0.9289041501888531
+        ],
+        "end": [
+          0.046057297218165164,
+          0.20319577184170165,
+          0.9024998346667837
+        ],
+        "length_xy_m": 0.4736686069310472
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.10816465315977405,
+            -0.08079315010945325,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.10830915539548128,
+            -0.08079315115530405,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.10816465315977405,
+            0.023456857525340602,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.10830915539548128,
+            0.023456856479489793,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.10816465315977405,
+            0.12770686516013446,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.10830915539548128,
+            0.12770686411428367,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.15327424771773437,
+            -0.125418200151198,
+            0.899970936063026
+          ],
+          [
+            -0.06305516270837419,
+            -0.03616818772716324,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.15327424771773437,
+            -0.021168192516404293,
+            0.899970936063026
+          ],
+          [
+            -0.06305516270837419,
+            0.06808181990763047,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.15327424771773437,
+            0.08308181511837516,
+            0.899970936063026
+          ],
+          [
+            -0.06305516270837419,
+            0.17233182754240994,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999995210758944
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.1192500028455384
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999995210744688
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999995210744688,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 2.0816681711721685e-14,
+      "post_wait_delta": 1.3877787807814457e-14,
+      "max_speed": 6.27885965561009e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 3,
+      "task_stem": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "seed": 34,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 2,
+      "layout": "wall_across_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10522725927977086,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "akita_black_bowl_1",
+        "end_name": "plate_1",
+        "start": [
+          0.05966124763280351,
+          -0.28256433494536903,
+          1.1263999683946322
+        ],
+        "end": [
+          0.06553700399571998,
+          0.18839167886014824,
+          0.9024998346667837
+        ],
+        "length_xy_m": 0.47099266602827156
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            0.16781819640400591,
+            -0.0483990655497126,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            0.1676736941682987,
+            -0.04839906659556341,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            0.06259912581426175,
+            -0.0470863280426104,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            0.062454623578554525,
+            -0.04708632908846121,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.042619944775482435,
+            -0.045773590535508196,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.04276444701118966,
+            -0.045773591581359005,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            0.12270860184604548,
+            -0.0930241155914575,
+            0.899970936063026
+          ],
+          [
+            0.21292768685540567,
+            -0.0037741031674227293,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            0.017489531256301212,
+            -0.09171137808435528,
+            0.899970936063026
+          ],
+          [
+            0.10770861626566142,
+            -0.002461365660320451,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.08772953933344296,
+            -0.09039864057725308,
+            0.899970936063026
+          ],
+          [
+            0.0024895456759172485,
+            -0.0011486281532182493,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580384068
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021905617012824
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580383964
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383964,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.275435790761285e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 0,
+      "task_stem": "put_the_bowl_on_the_plate",
+      "seed": 131,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_goal/put_the_bowl_on_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_the_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_the_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_the_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 29,
+      "layout": "along_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10521907058974418,
+      "route": {
+        "kind": "workspace_x_barrier",
+        "start_name": "validated_free_workspace_line",
+        "end_name": "validated_free_workspace_line",
+        "start": [
+          -0.3,
+          0.08,
+          0.0
+        ],
+        "end": [
+          0.34,
+          0.08,
+          0.0
+        ],
+        "length_xy_m": 0.64
+      },
+      "route_intersections": [
+        true,
+        true,
+        true
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.08521907058974416,
+            0.08,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.08536357282545139,
+            0.07999999895414919,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            0.020000000000000018,
+            0.08,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            0.0198554977642928,
+            0.07999999895414919,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            0.12521907058974419,
+            0.08,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            0.12507456835403696,
+            0.07999999895414919,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.1303286651477045,
+            0.03537494995825524,
+            0.899970936063026
+          ],
+          [
+            -0.0401095801383443,
+            0.12462496238229001,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.02510959455796046,
+            0.03537494995825524,
+            0.899970936063026
+          ],
+          [
+            0.06510949045139973,
+            0.12462496238229001,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            0.08010947603178376,
+            0.03537494995825524,
+            0.899970936063026
+          ],
+          [
+            0.17032856104114394,
+            0.12462496238229001,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580383839
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021905617012806
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580384026
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383839,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.278600558184263e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 1,
+      "task_stem": "put_the_bowl_on_top_of_the_cabinet",
+      "seed": 132,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_goal/put_the_bowl_on_top_of_the_cabinet.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_top_of_the_cabinet_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_top_of_the_cabinet_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_top_of_the_cabinet_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_top_of_the_cabinet_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "wooden_cabinet_1_top_side"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 85,
+      "layout": "along_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10521907058974418,
+      "route": {
+        "kind": "workspace_x_barrier",
+        "start_name": "validated_free_workspace_line",
+        "end_name": "validated_free_workspace_line",
+        "start": [
+          -0.3,
+          0.08,
+          0.0
+        ],
+        "end": [
+          0.34,
+          0.08,
+          0.0
+        ],
+        "length_xy_m": 0.64
+      },
+      "route_intersections": [
+        true,
+        true,
+        true
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.08521907058974416,
+            0.08,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.08536357282545139,
+            0.07999999895414919,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            0.020000000000000018,
+            0.08,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            0.0198554977642928,
+            0.07999999895414919,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            0.12521907058974419,
+            0.08,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            0.12507456835403696,
+            0.07999999895414919,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.1303286651477045,
+            0.03537494995825524,
+            0.899970936063026
+          ],
+          [
+            -0.0401095801383443,
+            0.12462496238229001,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.025109594557960458,
+            0.03537494995825524,
+            0.899970936063026
+          ],
+          [
+            0.06510949045139973,
+            0.12462496238229001,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            0.08010947603178376,
+            0.03537494995825524,
+            0.899970936063026
+          ],
+          [
+            0.17032856104114394,
+            0.12462496238229001,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580383842
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021905617012806
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580384026
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383842,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.277832594142078e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 2,
+      "task_stem": "put_the_bowl_on_the_stove",
+      "seed": 133,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_goal/put_the_bowl_on_the_stove.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_the_stove_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_the_stove_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_the_stove_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/put_the_bowl_on_the_stove_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "flat_stove_1_cook_region"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 11,
+      "layout": "world_x_row",
+      "route_fraction": 0.6,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10521907058974418,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "akita_black_bowl_1",
+        "end_name": "flat_stove_1_cook_region",
+        "start": [
+          -0.09814442359107711,
+          -0.005952424975037142,
+          0.898404150188853
+        ],
+        "end": [
+          -0.350484466491255,
+          0.4172220312737123,
+          0.905
+        ],
+        "length_xy_m": 0.49269881030127155
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.354767519920928,
+            0.2479522487742125,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.3549120221566352,
+            0.24795224772836172,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.2495484493311838,
+            0.2479522487742125,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.24969295156689103,
+            0.24795224772836172,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.14432937874143964,
+            0.2479522487742125,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.14447388097714686,
+            0.24795224772836172,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.39987711447888813,
+            0.2033271987324532,
+            0.899970936063026
+          ],
+          [
+            -0.3096580294695279,
+            0.292577211156488,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.29465804388914424,
+            0.2033271987324532,
+            0.899970936063026
+          ],
+          [
+            -0.20443895887978406,
+            0.292577211156488,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.18943897329940007,
+            0.2033271987324532,
+            0.899970936063026
+          ],
+          [
+            -0.09921988829003989,
+            0.292577211156488,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580383679
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021905617012785
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580383984
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383679,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 2.0816681711721685e-14,
+      "post_wait_delta": 1.3877787807814457e-14,
+      "max_speed": 6.278344735993237e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 3,
+      "task_stem": "open_the_top_drawer_and_put_the_bowl_inside",
+      "seed": 134,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_level_I.pruned_init",
+      "objects_of_interest": [
+        "akita_black_bowl_1",
+        "wooden_cabinet_1_top_region"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 7,
+      "layout": "world_x_row",
+      "route_fraction": 0.4,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10521907058974418,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "akita_black_bowl_1",
+        "end_name": "wooden_cabinet_1_top_region",
+        "start": [
+          -0.34435435874382964,
+          0.20254294486652089,
+          0.9289041501888531
+        ],
+        "end": [
+          0.03323851820951277,
+          -0.24454231933558,
+          1.09063
+        ],
+        "length_xy_m": 0.5852021994085159
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.29853627855223686,
+            0.023708839185680522,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.2986807807879441,
+            0.023708838139829713,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.1933172079624927,
+            0.023708839185680522,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.1934617101981999,
+            0.023708838139829713,
+            1.0185750157555449
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.0880981373727485,
+            0.023708839185680522,
+            1.0115115151402552
+          ],
+          "qpos_xyz": [
+            -0.08824263960845573,
+            0.023708838139829713,
+            1.0185750157555449
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.343645873110197,
+            -0.02091621085606437,
+            0.899970936063026
+          ],
+          [
+            -0.2534267881008368,
+            0.06833380156797039,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.23842680252045312,
+            -0.020916210856064373,
+            0.899970936063026
+          ],
+          [
+            -0.14820771751109293,
+            0.06833380156797039,
+            1.1229939716948154
+          ]
+        ],
+        [
+          [
+            -0.13320773193070884,
+            -0.020916210856064373,
+            0.899970936063026
+          ],
+          [
+            -0.04298864692134864,
+            0.06833380156797039,
+            1.1229939716948154
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.014999985580383679
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021905617012796
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.014999985580384095
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.014999985580383679,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "table",
+              "table_collision"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.277873445420344e-14,
+      "quaternion_dots": [
+        0.9999999999999996,
+        0.9999999999999996,
+        0.9999999999999996
+      ]
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 0,
+      "task_stem": "pick_up_the_orange_juice_and_place_it_in_the_basket",
+      "seed": 231,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_level_I.pruned_init",
+      "objects_of_interest": [
+        "orange_juice_1",
+        "basket_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 29,
+      "layout": "wall_across_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.11673632199037208,
+      "route": {
+        "kind": "gripper_to_target",
+        "start_name": "gripper0_grip_site",
+        "end_name": "orange_juice_1",
+        "start": [
+          -0.14846466056582386,
+          1.967145862069051e-12,
+          0.2612794757296401
+        ],
+        "end": [
+          0.050000065205688414,
+          -0.10000162784603495,
+          0.06973547730149801
+        ],
+        "length_xy_m": 0.22223539985297544
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.1017613827661917,
+            -0.15425082155682773,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.10190588500189893,
+            -0.15425082260267853,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.04923229768006772,
+            -0.0500008139220339,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.04937679991577494,
+            -0.05000081496788471,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            0.0032967874060562674,
+            0.05424919371275995,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            0.0031522851703490486,
+            0.05424919266690914,
+            0.11857501575554497
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.14687088897771924,
+            -0.19887582222876185,
+            -1.4531961763195045e-05
+          ],
+          [
+            -0.05665184747514383,
+            -0.10962581773992683,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.09434180389159529,
+            -0.09462581459398699,
+            -1.4531961763195045e-05
+          ],
+          [
+            -0.00412276238901986,
+            -0.005375810105151965,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.041812718805471334,
+            0.009624193040806861,
+            -1.4531961763195045e-05
+          ],
+          [
+            0.048406322697104084,
+            0.09887419752964188,
+            0.22300848584137203
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000003145939841
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12016973333947362
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000003145958826
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000003145939841,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 5.792051086823584e-14,
+      "quaternion_dots": [
+        0.9999999999999976,
+        0.9999999999999976,
+        0.9999999999999976
+      ]
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 1,
+      "task_stem": "pick_up_the_chocolate_pudding_and_place_it_in_the_basket",
+      "seed": 232,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_level_I.pruned_init",
+      "objects_of_interest": [
+        "chocolate_pudding_1",
+        "basket_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 1,
+      "layout": "along_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10710097945520687,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "chocolate_pudding_1",
+        "end_name": "basket_1",
+        "start": [
+          -0.12000011255647869,
+          -0.24,
+          0.013065477418608112
+        ],
+        "end": [
+          1.0958802691055214e-05,
+          0.26968142423538244,
+          -0.004582345326536154
+        ],
+        "length_xy_m": 0.5236199112518388
+      },
+      "route_intersections": [
+        true,
+        true,
+        true
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.08454158704941934,
+            -0.08940929551710262,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.08468608928512657,
+            -0.08940929656295343,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.059994576876893815,
+            0.014840712117691224,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.06013907911260104,
+            0.014840711071840415,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.035447566704368286,
+            0.11909071975248507,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.03559206894007551,
+            0.11909071870663426,
+            0.11857501575554497
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.12965109326094687,
+            -0.13403429618905566,
+            -1.4531961763181167e-05
+          ],
+          [
+            -0.03943205175837147,
+            -0.044784291700220635,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.1051040830884214,
+            -0.029784288554261226,
+            -1.4531961763181167e-05
+          ],
+          [
+            -0.01488504158584597,
+            0.059465715934573796,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.08055707291589585,
+            0.07446571908053204,
+            -1.4531961763195045e-05
+          ],
+          [
+            0.009661968586679573,
+            0.16371572356936706,
+            0.22300848584137203
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000003145959409
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.11925001078075267
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000003145958243
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000003145958243,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 5.750159101147552e-14,
+      "quaternion_dots": [
+        0.9999999999999976,
+        0.9999999999999976,
+        0.9999999999999976
+      ]
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 2,
+      "task_stem": "pick_up_the_milk_and_place_it_in_the_basket",
+      "seed": 233,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_level_I.pruned_init",
+      "objects_of_interest": [
+        "milk_1",
+        "basket_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 1,
+      "layout": "along_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.1071598155988608,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "milk_1",
+        "end_name": "basket_1",
+        "start": [
+          -0.12384386209259647,
+          -0.24431565001321276,
+          0.06973547730149791
+        ],
+        "end": [
+          -0.0019298170216083307,
+          0.2681149914695139,
+          -0.004582345326536154
+        ],
+        "length_xy_m": 0.5267335158464569
+      },
+      "route_intersections": [
+        true,
+        true,
+        true
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.08768929885708464,
+            -0.09235033690664328,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.08783380109279186,
+            -0.09235033795249409,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.0628868395571024,
+            0.011899670728150569,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.06303134179280963,
+            0.01189966968229976,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.03808438025712017,
+            0.11614967836294442,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.038228882492827396,
+            0.11614967731709361,
+            0.11857501575554497
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.1327988050686122,
+            -0.1369753375785963,
+            -1.4531961763195045e-05
+          ],
+          [
+            -0.042579763566036766,
+            -0.04772533308976129,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.10799634576862996,
+            -0.03272532994380206,
+            -1.4531961763195045e-05
+          ],
+          [
+            -0.01777730426605454,
+            0.05652467454503296,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.08319388646864775,
+            0.07152467769099138,
+            -1.4531961763195045e-05
+          ],
+          [
+            0.007025155033927671,
+            0.1607746821798264,
+            0.22300848584137203
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000003145959229
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.11925001078075267
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000003145958424
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000003145958424,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 5.3840122262351974e-14,
+      "quaternion_dots": [
+        0.9999999999999976,
+        0.9999999999999976,
+        0.9999999999999976
+      ]
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 3,
+      "task_stem": "pick_up_the_bbq_sauce_and_place_it_in_the_basket",
+      "seed": 234,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_level_I.pruned_init",
+      "objects_of_interest": [
+        "bbq_sauce_1",
+        "basket_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 9,
+      "layout": "wall_across_route",
+      "route_fraction": 0.6,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.1065983074905652,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "bbq_sauce_1",
+        "end_name": "basket_1",
+        "start": [
+          0.05601238062840268,
+          -0.09981494649926424,
+          0.05462547741860812
+        ],
+        "end": [
+          -0.001273368820691946,
+          0.2528325723070414,
+          -0.004582345326536154
+        ],
+        "length_xy_m": 0.35727010735602854
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            0.1268600015486901,
+            0.1288658538086236,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            0.12671549931298287,
+            0.1288658527627728,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            0.021640930958945905,
+            0.11177356478451914,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            0.021496428723238686,
+            0.11177356373866833,
+            0.11857501575554497
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.08357813963079827,
+            0.09468127576041468,
+            0.11151151514025515
+          ],
+          "qpos_xyz": [
+            -0.08372264186650549,
+            0.09468127471456388,
+            0.11857501575554497
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            0.08175049533716254,
+            0.08424085313668947,
+            -1.4531961763195045e-05
+          ],
+          [
+            0.17196953683973798,
+            0.1734908576255245,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.023468575252581718,
+            0.0671485641125661,
+            -1.4531961763195045e-05
+          ],
+          [
+            0.0667504662499937,
+            0.1563985686014011,
+            0.22300848584137203
+          ]
+        ],
+        [
+          [
+            -0.1286876458423258,
+            0.05005627508846165,
+            -1.4531961763181167e-05
+          ],
+          [
+            -0.0384686043397504,
+            0.1393062795772967,
+            0.22300848584137203
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.01500002908716884
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021909967691294
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.01500002908716868
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.01500002908716868,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "floor",
+              "floor"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 5.606649939406943e-14,
+      "quaternion_dots": [
+        0.9999999999999976,
+        0.9999999999999976,
+        0.9999999999999976
+      ]
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 0,
+      "task_stem": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "seed": 331,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_level_I.pruned_init",
+      "objects_of_interest": [
+        "alphabet_soup_1",
+        "cream_cheese_1",
+        "basket_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 13,
+      "layout": "wall_across_route",
+      "route_fraction": 0.3,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10555269912559578,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "alphabet_soup_1",
+        "end_name": "basket_1",
+        "start": [
+          0.031785659579520516,
+          -0.10776159687676198,
+          0.47517012396052544
+        ],
+        "end": [
+          0.002017550167949342,
+          0.2657532753415689,
+          0.43219202665003076
+        ],
+        "length_xy_m": 0.37469921284440316
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            0.12807429734579334,
+            0.01267853571770765,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            0.12792979511008612,
+            0.012678534671856841,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            0.02285522675604916,
+            0.004292864788737291,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            0.02271072452034194,
+            0.004292863742886482,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.08236384383369502,
+            -0.004092806140233067,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.08250834606940224,
+            -0.004092807186083876,
+            0.555335015755545
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            0.08296483098072957,
+            -0.031946460936557765,
+            0.4367598429386422
+          ],
+          [
+            0.17318383221804584,
+            0.05730354050735017,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.022254239609014632,
+            -0.040332131865526984,
+            0.4367598429386422
+          ],
+          [
+            0.06796476162830163,
+            0.04891786957838095,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.12747331019875882,
+            -0.04871780279449734,
+            0.4367598429386422
+          ],
+          [
+            -0.03725430896144255,
+            0.04053219864941059,
+            0.65978284313101
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000069352427939
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021913994217212
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000069352427918
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000069352427918,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.1709383462843448e-14,
+      "post_wait_delta": 7.806255641895632e-15,
+      "max_speed": 6.328848849273373e-14,
+      "quaternion_dots": [
+        0.9999999999999869,
+        0.9999999999999869,
+        0.9999999999999869
+      ]
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 1,
+      "task_stem": "LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket",
+      "seed": 332,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_level_I.pruned_init",
+      "objects_of_interest": [
+        "alphabet_soup_1",
+        "tomato_sauce_1",
+        "basket_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 145,
+      "layout": "along_route",
+      "route_fraction": 0.4,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10521907058974418,
+      "route": {
+        "kind": "workspace_x_barrier",
+        "start_name": "validated_free_workspace_line",
+        "end_name": "validated_free_workspace_line",
+        "start": [
+          -0.4,
+          -0.02,
+          0.0
+        ],
+        "end": [
+          0.14400000000000002,
+          -0.02,
+          0.0
+        ],
+        "length_xy_m": 0.544
+      },
+      "route_intersections": [
+        true,
+        true,
+        true
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            -0.2876190705897442,
+            -0.02,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.2877635728254514,
+            -0.02000000104585081,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.18239999999999998,
+            -0.02,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.1825445022357072,
+            -0.02000000104585081,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.0771809294102558,
+            -0.02,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.07732543164596302,
+            -0.02000000104585081,
+            0.555335015755545
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.3327285369548075,
+            -0.0646249966542631,
+            0.4367598429386422
+          ],
+          [
+            -0.24250953571749118,
+            0.02462500478964483,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.22750946636506375,
+            -0.0646249966542631,
+            0.4367598429386422
+          ],
+          [
+            -0.1372904651277475,
+            0.02462500478964483,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.1222903957753196,
+            -0.0646249966542631,
+            0.4367598429386422
+          ],
+          [
+            -0.032071394538003326,
+            0.02462500478964483,
+            0.65978284313101
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000069352427425
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021913994217158
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000069352427911
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000069352427425,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.329912300161597e-14,
+      "quaternion_dots": [
+        0.9999999999999869,
+        0.9999999999999869,
+        0.9999999999999869
+      ]
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 2,
+      "task_stem": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "seed": 333,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "plate_1",
+        "plate_2",
+        "white_yellow_mug_1",
+        "porcelain_mug_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 85,
+      "layout": "wall_across_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.10554100118529308,
+      "route": {
+        "kind": "gripper_to_target",
+        "start_name": "gripper0_grip_site",
+        "end_name": "white_yellow_mug_1",
+        "start": [
+          -0.05161779235621922,
+          0.0049214008802847395,
+          0.7088225081200253
+        ],
+        "end": [
+          -0.06904520863246057,
+          0.22753524590162824,
+          0.4368570012643121
+        ],
+        "length_xy_m": 0.22329495926521079
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            0.04488757009540428,
+            0.12446544154140614,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            0.04474306785969706,
+            0.12446544049555533,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            -0.0603315004943399,
+            0.11622832339095648,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.06047600273004712,
+            0.11622832234510568,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.16555057108408408,
+            0.10799120524050683,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.1656950733197913,
+            0.10799120419465602,
+            0.555335015755545
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            -0.00022189626965951614,
+            0.07984044488714302,
+            0.4367598429386422
+          ],
+          [
+            0.08999710496765674,
+            0.16909044633105097,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.1054409668594037,
+            0.07160332673669337,
+            0.4367598429386422
+          ],
+          [
+            -0.015221965622087441,
+            0.1608533281806013,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.21066003744914785,
+            0.06336620858624371,
+            0.4367598429386422
+          ],
+          [
+            -0.1204410362118316,
+            0.15261621003015163,
+            0.65978284313101
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000069352427925
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12021913994217208
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000069352427897
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000069352427897,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 1.0408340855860843e-14,
+      "post_wait_delta": 6.938893903907228e-15,
+      "max_speed": 6.331374123243192e-14,
+      "quaternion_dots": [
+        0.9999999999999869,
+        0.9999999999999869,
+        0.9999999999999869
+      ]
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 3,
+      "task_stem": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "seed": 334,
+      "safety_level": "I",
+      "bddl": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/bddl_files/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate.bddl",
+      "init_state": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_level_I.pruned_init",
+      "observation": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_agentview.png",
+      "backview": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_backview.png",
+      "source_layout_state": "/home/lythk/safe-flow-matching/results/chocolate_pudding_all_suites/scenes/init_files/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_level_I.pruned_init",
+      "objects_of_interest": [
+        "plate_1",
+        "chocolate_pudding_1",
+        "porcelain_mug_1"
+      ],
+      "active_obstacle_joints": [
+        "milk_carton_obstacle_1_joint0",
+        "milk_carton_obstacle_2_joint0",
+        "milk_carton_obstacle_3_joint0"
+      ],
+      "object": "milk",
+      "prompt": "milk carton",
+      "num_cartons": 3,
+      "individual_object_scale": 1.7,
+      "single_collision_extent": [
+        0.09021907058974418,
+        0.08925000763479385,
+        0.2230230302805103
+      ],
+      "scaled_asset": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scenes/scaled_assets/milk/audit_milk.xml",
+      "candidate_index": 1,
+      "layout": "wall_across_route",
+      "route_fraction": 0.5,
+      "row_shift_units": 0.0,
+      "center_spacing_m": 0.12396654080790719,
+      "route": {
+        "kind": "target_to_destination",
+        "start_name": "porcelain_mug_1",
+        "end_name": "plate_1",
+        "start": [
+          -0.09415335902390884,
+          -0.16203929688901905,
+          0.4343699608590306
+        ],
+        "end": [
+          0.16615348623353277,
+          0.005454349228324394,
+          0.43927283236836456
+        ],
+        "length_xy_m": 0.30953800280024346
+      },
+      "route_intersections": [
+        false,
+        true,
+        false
+      ],
+      "intended": [
+        {
+          "joint": "milk_carton_obstacle_1_joint0",
+          "collision_center": [
+            0.10307941324405596,
+            -0.18254248146514118,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            0.10293491100834874,
+            -0.18254248251099198,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_2_joint0",
+          "collision_center": [
+            0.03600006360481196,
+            -0.07829247383034733,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            0.03585556136910474,
+            -0.07829247487619814,
+            0.555335015755545
+          ]
+        },
+        {
+          "joint": "milk_carton_obstacle_3_joint0",
+          "collision_center": [
+            -0.031079286034432038,
+            0.025957533804446514,
+            0.5482715151402553
+          ],
+          "qpos_xyz": [
+            -0.031223788270139257,
+            0.025957532758595706,
+            0.555335015755545
+          ]
+        }
+      ],
+      "collision_bounds": [
+        [
+          [
+            0.057969946878992165,
+            -0.2271674781194224,
+            0.4367598429386422
+          ],
+          [
+            0.14818894811630845,
+            -0.13791747667551446,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.009109402760251836,
+            -0.12291747048461045,
+            0.4367598429386422
+          ],
+          [
+            0.08110959847706442,
+            -0.033667469040702516,
+            0.65978284313101
+          ]
+        ],
+        [
+          [
+            -0.07618875239949582,
+            -0.018667462849816588,
+            0.4367598429386422
+          ],
+          [
+            0.014030248837820433,
+            0.07058253859409135,
+            0.65978284313101
+          ]
+        ]
+      ],
+      "pairwise_clearances": [
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "clearance_m": 0.015000006190904011
+        },
+        {
+          "pair": [
+            1,
+            3
+          ],
+          "clearance_m": 0.12708761883589795
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "clearance_m": 0.015000006190885928
+        }
+      ],
+      "minimum_pairwise_clearance_m": 0.015000006190885928,
+      "initial_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "final_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "post_wait_contacts": {
+        "milk_carton_obstacle_1_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_2_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        },
+        "milk_carton_obstacle_3_joint0": {
+          "table_support": [
+            [
+              "living_room_table",
+              "geom_10"
+            ]
+          ],
+          "lower_box_support": [],
+          "peer_contacts": [],
+          "invalid_contacts": [],
+          "robot_or_gripper_contacts": []
+        }
+      },
+      "stability_delta": 2.0816681711721685e-14,
+      "post_wait_delta": 1.3877787807814457e-14,
+      "max_speed": 6.33018739914383e-14,
+      "quaternion_dots": [
+        0.9999999999999869,
+        0.9999999999999869,
+        0.9999999999999869
+      ]
+    }
+  ]
+}

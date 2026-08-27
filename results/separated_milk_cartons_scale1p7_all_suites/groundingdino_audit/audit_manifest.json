@@ -1,0 +1,2121 @@
+{
+  "schema_version": 1,
+  "description": "Agent-view GroundingDINO audit for 16 SafeLIBERO tasks; every panel contains only the highest-confidence prediction",
+  "scene_manifest": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/scene_manifest.json",
+  "object_scale": 1.7,
+  "resolution": 512,
+  "box_threshold": 0.35,
+  "text_threshold": 0.25,
+  "iou_threshold": 0.5,
+  "summary_figure": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/groundingdino_highest_confidence_16_tasks.png",
+  "clean_summary_figure": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/clean_16_tasks.png",
+  "selected_localized_tasks": 10,
+  "records": [
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 0,
+      "task_stem": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "prompt": "milk carton",
+      "num_detections": 1,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.7613774538040161,
+      "selected_iou": 0.658918918918919,
+      "highest_iou_over_all_detections": 0.658918918918919,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            178,
+            117,
+            235,
+            247
+          ],
+          "visible_pixels": 1853
+        },
+        {
+          "box": [
+            171,
+            147,
+            234,
+            292
+          ],
+          "visible_pixels": 2388
+        },
+        {
+          "box": [
+            163,
+            184,
+            232,
+            343
+          ],
+          "visible_pixels": 9030
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.7613774538040161,
+        "box_cxcywh_normalized": [
+          0.38884055614471436,
+          0.4528322219848633,
+          0.14467932283878326,
+          0.4399460554122925
+        ],
+        "box_xyxy_pixels": [
+          162,
+          119,
+          236,
+          344
+        ],
+        "iou_by_instance": [
+          0.4352183249821045,
+          0.5486486486486486,
+          0.658918918918919
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.7613774538040161,
+          "box_cxcywh_normalized": [
+            0.38884055614471436,
+            0.4528322219848633,
+            0.14467932283878326,
+            0.4399460554122925
+          ],
+          "box_xyxy_pixels": [
+            162,
+            119,
+            236,
+            344
+          ],
+          "iou_by_instance": [
+            0.4352183249821045,
+            0.5486486486486486,
+            0.658918918918919
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_spatial/task_0_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 1,
+      "task_stem": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "prompt": "milk carton",
+      "num_detections": 2,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6038480401039124,
+      "selected_iou": 0.6241545893719807,
+      "highest_iou_over_all_detections": 0.6241545893719807,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            149,
+            163,
+            217,
+            315
+          ],
+          "visible_pixels": 8393
+        },
+        {
+          "box": [
+            160,
+            129,
+            222,
+            273
+          ],
+          "visible_pixels": 2427
+        },
+        {
+          "box": [
+            170,
+            109,
+            226,
+            237
+          ],
+          "visible_pixels": 1883
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6038480401039124,
+        "box_cxcywh_normalized": [
+          0.3669562041759491,
+          0.4151138663291931,
+          0.15650628507137299,
+          0.40513554215431213
+        ],
+        "box_xyxy_pixels": [
+          148,
+          109,
+          228,
+          316
+        ],
+        "iou_by_instance": [
+          0.6241545893719807,
+          0.5391304347826087,
+          0.43285024154589374
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6038480401039124,
+          "box_cxcywh_normalized": [
+            0.3669562041759491,
+            0.4151138663291931,
+            0.15650628507137299,
+            0.40513554215431213
+          ],
+          "box_xyxy_pixels": [
+            148,
+            109,
+            228,
+            316
+          ],
+          "iou_by_instance": [
+            0.6241545893719807,
+            0.5391304347826087,
+            0.43285024154589374
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.37573111057281494,
+          "box_cxcywh_normalized": [
+            0.8352496027946472,
+            0.5914468765258789,
+            0.32686084508895874,
+            0.5125131607055664
+          ],
+          "box_xyxy_pixels": [
+            344,
+            172,
+            511,
+            434
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_spatial/task_1_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 2,
+      "task_stem": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "prompt": "milk carton",
+      "num_detections": 3,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.7050134539604187,
+      "selected_iou": 0.9659962117795616,
+      "highest_iou_over_all_detections": 0.9659962117795616,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            277,
+            161,
+            342,
+            315
+          ],
+          "visible_pixels": 8184
+        },
+        {
+          "box": [
+            209,
+            161,
+            270,
+            315
+          ],
+          "visible_pixels": 7940
+        },
+        {
+          "box": [
+            137,
+            162,
+            208,
+            315
+          ],
+          "visible_pixels": 8462
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.7050134539604187,
+        "box_cxcywh_normalized": [
+          0.33517393469810486,
+          0.4665766656398773,
+          0.13866695761680603,
+          0.3003731667995453
+        ],
+        "box_xyxy_pixels": [
+          136,
+          162,
+          207,
+          316
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.9659962117795616
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.7050134539604187,
+          "box_cxcywh_normalized": [
+            0.33517393469810486,
+            0.4665766656398773,
+            0.13866695761680603,
+            0.3003731667995453
+          ],
+          "box_xyxy_pixels": [
+            136,
+            162,
+            207,
+            316
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.9659962117795616
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6795521378517151,
+          "box_cxcywh_normalized": [
+            0.6059033274650574,
+            0.4733016788959503,
+            0.12858444452285767,
+            0.2863039970397949
+          ],
+          "box_xyxy_pixels": [
+            277,
+            169,
+            343,
+            316
+          ],
+          "iou_by_instance": [
+            0.9283897476032088,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6530593037605286,
+          "box_cxcywh_normalized": [
+            0.46880394220352173,
+            0.4728333353996277,
+            0.12211325019598007,
+            0.28818657994270325
+          ],
+          "box_xyxy_pixels": [
+            209,
+            168,
+            271,
+            316
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.9337706966572946,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_spatial/task_2_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_spatial",
+      "task_index": 3,
+      "task_stem": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "prompt": "milk carton",
+      "num_detections": 1,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.7585080862045288,
+      "selected_iou": 0.6148395336381989,
+      "highest_iou_over_all_detections": 0.6148395336381989,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            258,
+            283,
+            340,
+            465
+          ],
+          "visible_pixels": 12499
+        },
+        {
+          "box": [
+            257,
+            229,
+            330,
+            391
+          ],
+          "visible_pixels": 3929
+        },
+        {
+          "box": [
+            256,
+            185,
+            322,
+            335
+          ],
+          "visible_pixels": 2901
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.7585080862045288,
+        "box_cxcywh_normalized": [
+          0.5827473998069763,
+          0.6395595669746399,
+          0.1685808002948761,
+          0.5460221767425537
+        ],
+        "box_xyxy_pixels": [
+          255,
+          188,
+          342,
+          467
+        ],
+        "iou_by_instance": [
+          0.6148395336381989,
+          0.4872080088987764,
+          0.3964692901802133
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.7585080862045288,
+          "box_cxcywh_normalized": [
+            0.5827473998069763,
+            0.6395595669746399,
+            0.1685808002948761,
+            0.5460221767425537
+          ],
+          "box_xyxy_pixels": [
+            255,
+            188,
+            342,
+            467
+          ],
+          "iou_by_instance": [
+            0.6148395336381989,
+            0.4872080088987764,
+            0.3964692901802133
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_spatial/pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_spatial/task_3_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 0,
+      "task_stem": "put_the_bowl_on_the_plate",
+      "prompt": "milk carton",
+      "num_detections": 1,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.7569715976715088,
+      "selected_iou": 0.6283524904214559,
+      "highest_iou_over_all_detections": 0.6283524904214559,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            169,
+            171,
+            235,
+            320
+          ],
+          "visible_pixels": 2790
+        },
+        {
+          "box": [
+            160,
+            210,
+            233,
+            372
+          ],
+          "visible_pixels": 3716
+        },
+        {
+          "box": [
+            149,
+            261,
+            231,
+            437
+          ],
+          "visible_pixels": 11907
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.7569715976715088,
+        "box_cxcywh_normalized": [
+          0.37311887741088867,
+          0.6017249822616577,
+          0.17230823636054993,
+          0.509567141532898
+        ],
+        "box_xyxy_pixels": [
+          147,
+          178,
+          235,
+          439
+        ],
+        "iou_by_instance": [
+          0.4,
+          0.5148902821316614,
+          0.6283524904214559
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.7569715976715088,
+          "box_cxcywh_normalized": [
+            0.37311887741088867,
+            0.6017249822616577,
+            0.17230823636054993,
+            0.509567141532898
+          ],
+          "box_xyxy_pixels": [
+            147,
+            178,
+            235,
+            439
+          ],
+          "iou_by_instance": [
+            0.4,
+            0.5148902821316614,
+            0.6283524904214559
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_the_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_goal/task_0_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 1,
+      "task_stem": "put_the_bowl_on_top_of_the_cabinet",
+      "prompt": "milk carton",
+      "num_detections": 1,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.7417525053024292,
+      "selected_iou": 0.6355749328400934,
+      "highest_iou_over_all_detections": 0.6355749328400934,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            169,
+            171,
+            235,
+            320
+          ],
+          "visible_pixels": 2790
+        },
+        {
+          "box": [
+            160,
+            210,
+            233,
+            372
+          ],
+          "visible_pixels": 3716
+        },
+        {
+          "box": [
+            149,
+            261,
+            231,
+            437
+          ],
+          "visible_pixels": 11907
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.7417525053024292,
+        "box_cxcywh_normalized": [
+          0.37357789278030396,
+          0.60185307264328,
+          0.17028756439685822,
+          0.5093747973442078
+        ],
+        "box_xyxy_pixels": [
+          148,
+          178,
+          235,
+          439
+        ],
+        "iou_by_instance": [
+          0.40450602097630456,
+          0.5208085612366231,
+          0.6355749328400934
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.7417525053024292,
+          "box_cxcywh_normalized": [
+            0.37357789278030396,
+            0.60185307264328,
+            0.17028756439685822,
+            0.5093747973442078
+          ],
+          "box_xyxy_pixels": [
+            148,
+            178,
+            235,
+            439
+          ],
+          "iou_by_instance": [
+            0.40450602097630456,
+            0.5208085612366231,
+            0.6355749328400934
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_top_of_the_cabinet_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_goal/task_1_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 2,
+      "task_stem": "put_the_bowl_on_the_stove",
+      "prompt": "milk carton",
+      "num_detections": 1,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.5143537521362305,
+      "selected_iou": 0.5658814869341185,
+      "highest_iou_over_all_detections": 0.5658814869341185,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            90,
+            92,
+            156,
+            225
+          ],
+          "visible_pixels": 2254
+        },
+        {
+          "box": [
+            76,
+            118,
+            149,
+            260
+          ],
+          "visible_pixels": 2826
+        },
+        {
+          "box": [
+            60,
+            149,
+            142,
+            299
+          ],
+          "visible_pixels": 8707
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.5143537521362305,
+        "box_cxcywh_normalized": [
+          0.20695102214813232,
+          0.3843151330947876,
+          0.20320160686969757,
+          0.4073845148086548
+        ],
+        "box_xyxy_pixels": [
+          54,
+          92,
+          158,
+          301
+        ],
+        "iou_by_instance": [
+          0.40384615384615385,
+          0.47690467427309535,
+          0.5658814869341185
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5143537521362305,
+          "box_cxcywh_normalized": [
+            0.20695102214813232,
+            0.3843151330947876,
+            0.20320160686969757,
+            0.4073845148086548
+          ],
+          "box_xyxy_pixels": [
+            54,
+            92,
+            158,
+            301
+          ],
+          "iou_by_instance": [
+            0.40384615384615385,
+            0.47690467427309535,
+            0.5658814869341185
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/put_the_bowl_on_the_stove_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_goal/task_2_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_goal",
+      "task_index": 3,
+      "task_stem": "open_the_top_drawer_and_put_the_bowl_inside",
+      "prompt": "milk carton",
+      "num_detections": 2,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6597755551338196,
+      "selected_iou": 0.7116409952606635,
+      "highest_iou_over_all_detections": 0.7116409952606635,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            216,
+            109,
+            268,
+            162
+          ],
+          "visible_pixels": 1253
+        },
+        {
+          "box": [
+            213,
+            134,
+            269,
+            197
+          ],
+          "visible_pixels": 1837
+        },
+        {
+          "box": [
+            208,
+            168,
+            270,
+            323
+          ],
+          "visible_pixels": 8170
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6597755551338196,
+        "box_cxcywh_normalized": [
+          0.46818533539772034,
+          0.42754068970680237,
+          0.12557776272296906,
+          0.4123232662677765
+        ],
+        "box_xyxy_pixels": [
+          208,
+          113,
+          272,
+          324
+        ],
+        "iou_by_instance": [
+          0.18582263710618435,
+          0.2612559241706161,
+          0.7116409952606635
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6597755551338196,
+          "box_cxcywh_normalized": [
+            0.46818533539772034,
+            0.42754068970680237,
+            0.12557776272296906,
+            0.4123232662677765
+          ],
+          "box_xyxy_pixels": [
+            208,
+            113,
+            272,
+            324
+          ],
+          "iou_by_instance": [
+            0.18582263710618435,
+            0.2612559241706161,
+            0.7116409952606635
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.3679780662059784,
+          "box_cxcywh_normalized": [
+            0.8377610445022583,
+            0.592890202999115,
+            0.3222445547580719,
+            0.4666385352611542
+          ],
+          "box_xyxy_pixels": [
+            346,
+            184,
+            511,
+            423
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_goal/open_the_top_drawer_and_put_the_bowl_inside_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_goal/task_3_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 0,
+      "task_stem": "pick_up_the_orange_juice_and_place_it_in_the_basket",
+      "prompt": "milk carton",
+      "num_detections": 7,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6603384613990784,
+      "selected_iou": 0.13783044667274386,
+      "highest_iou_over_all_detections": 0.9601531650113677,
+      "selected_localized": false,
+      "ground_truth": [
+        {
+          "box": [
+            312,
+            144,
+            371,
+            280
+          ],
+          "visible_pixels": 5727
+        },
+        {
+          "box": [
+            258,
+            154,
+            313,
+            296
+          ],
+          "visible_pixels": 6085
+        },
+        {
+          "box": [
+            193,
+            167,
+            251,
+            314
+          ],
+          "visible_pixels": 6100
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6603384613990784,
+        "box_cxcywh_normalized": [
+          0.46161678433418274,
+          0.6213159561157227,
+          0.08335469663143158,
+          0.17883826792240143
+        ],
+        "box_xyxy_pixels": [
+          215,
+          272,
+          258,
+          364
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.13783044667274386
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6603384613990784,
+          "box_cxcywh_normalized": [
+            0.46161678433418274,
+            0.6213159561157227,
+            0.08335469663143158,
+            0.17883826792240143
+          ],
+          "box_xyxy_pixels": [
+            215,
+            272,
+            258,
+            364
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.13783044667274386
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6332263350486755,
+          "box_cxcywh_normalized": [
+            0.6690971255302429,
+            0.4132313132286072,
+            0.11926259100437164,
+            0.2689369320869446
+          ],
+          "box_xyxy_pixels": [
+            312,
+            143,
+            373,
+            280
+          ],
+          "iou_by_instance": [
+            0.9601531650113677,
+            0.007854871890779876,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6115492582321167,
+          "box_cxcywh_normalized": [
+            0.6188244223594666,
+            0.5581492185592651,
+            0.07451348006725311,
+            0.15939557552337646
+          ],
+          "box_xyxy_pixels": [
+            298,
+            245,
+            336,
+            327
+          ],
+          "iou_by_instance": [
+            0.08155339805825243,
+            0.07528786536758193,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6114870309829712,
+          "box_cxcywh_normalized": [
+            0.4344876706600189,
+            0.47748884558677673,
+            0.11615762114524841,
+            0.2764565348625183
+          ],
+          "box_xyxy_pixels": [
+            193,
+            174,
+            252,
+            315
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.9306590257879657
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5702816247940063,
+          "box_cxcywh_normalized": [
+            0.5582166314125061,
+            0.4499545097351074,
+            0.11097226291894913,
+            0.26597580313682556
+          ],
+          "box_xyxy_pixels": [
+            257,
+            162,
+            314,
+            298
+          ],
+          "iou_by_instance": [
+            0.015186615186615187,
+            0.899658203125,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5114221572875977,
+          "box_cxcywh_normalized": [
+            0.176810622215271,
+            0.5195958018302917,
+            0.23834186792373657,
+            0.22834575176239014
+          ],
+          "box_xyxy_pixels": [
+            30,
+            208,
+            152,
+            324
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5859922766685486,
+          "box_cxcywh_normalized": [
+            0.7334688901901245,
+            0.6027499437332153,
+            0.06468775123357773,
+            0.13141237199306488
+          ],
+          "box_xyxy_pixels": [
+            359,
+            275,
+            392,
+            342
+          ],
+          "iou_by_instance": [
+            0.005896805896805897,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_object/task_0_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 1,
+      "task_stem": "pick_up_the_chocolate_pudding_and_place_it_in_the_basket",
+      "prompt": "milk carton",
+      "num_detections": 7,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6688186526298523,
+      "selected_iou": 0.0,
+      "highest_iou_over_all_detections": 0.9753881105641803,
+      "selected_localized": false,
+      "ground_truth": [
+        {
+          "box": [
+            279,
+            147,
+            335,
+            285
+          ],
+          "visible_pixels": 5189
+        },
+        {
+          "box": [
+            220,
+            152,
+            274,
+            293
+          ],
+          "visible_pixels": 5940
+        },
+        {
+          "box": [
+            155,
+            158,
+            216,
+            301
+          ],
+          "visible_pixels": 7037
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6688186526298523,
+        "box_cxcywh_normalized": [
+          0.7410956025123596,
+          0.5832963585853577,
+          0.08482524007558823,
+          0.17301003634929657
+        ],
+        "box_xyxy_pixels": [
+          358,
+          254,
+          401,
+          343
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6688186526298523,
+          "box_cxcywh_normalized": [
+            0.7410956025123596,
+            0.5832963585853577,
+            0.08482524007558823,
+            0.17301003634929657
+          ],
+          "box_xyxy_pixels": [
+            358,
+            254,
+            401,
+            343
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5945764780044556,
+          "box_cxcywh_normalized": [
+            0.6181347370147705,
+            0.5579515099525452,
+            0.07565060257911682,
+            0.15931230783462524
+          ],
+          "box_xyxy_pixels": [
+            297,
+            245,
+            336,
+            326
+          ],
+          "iou_by_instance": [
+            0.16227180527383367,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5891014337539673,
+          "box_cxcywh_normalized": [
+            0.3619321584701538,
+            0.44818681478500366,
+            0.12068108469247818,
+            0.2821703255176544
+          ],
+          "box_xyxy_pixels": [
+            154,
+            157,
+            216,
+            302
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.9703003337041157
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5913571715354919,
+          "box_cxcywh_normalized": [
+            0.462607741355896,
+            0.621137261390686,
+            0.08352454006671906,
+            0.17935803532600403
+          ],
+          "box_xyxy_pixels": [
+            215,
+            272,
+            258,
+            364
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.07408095061269959,
+            0.002292490118577075
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5460270643234253,
+          "box_cxcywh_normalized": [
+            0.6004813313484192,
+            0.42239195108413696,
+            0.11188975721597672,
+            0.2722265422344208
+          ],
+          "box_xyxy_pixels": [
+            279,
+            147,
+            336,
+            286
+          ],
+          "iou_by_instance": [
+            0.9753881105641803,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5275672078132629,
+          "box_cxcywh_normalized": [
+            0.48031482100486755,
+            0.43668651580810547,
+            0.1135009229183197,
+            0.27249136567115784
+          ],
+          "box_xyxy_pixels": [
+            217,
+            154,
+            275,
+            293
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.9187270501835986,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5066648125648499,
+          "box_cxcywh_normalized": [
+            0.17904384434223175,
+            0.5203964114189148,
+            0.23829840123653412,
+            0.22837404906749725
+          ],
+          "box_xyxy_pixels": [
+            31,
+            208,
+            153,
+            325
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_object/task_1_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 2,
+      "task_stem": "pick_up_the_milk_and_place_it_in_the_basket",
+      "prompt": "milk carton",
+      "num_detections": 8,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6905859112739563,
+      "selected_iou": 0.0,
+      "highest_iou_over_all_detections": 0.9930555555555556,
+      "selected_localized": false,
+      "ground_truth": [
+        {
+          "box": [
+            280,
+            146,
+            336,
+            284
+          ],
+          "visible_pixels": 6391
+        },
+        {
+          "box": [
+            222,
+            151,
+            275,
+            292
+          ],
+          "visible_pixels": 6093
+        },
+        {
+          "box": [
+            157,
+            157,
+            218,
+            300
+          ],
+          "visible_pixels": 6995
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6905859112739563,
+        "box_cxcywh_normalized": [
+          0.7516255974769592,
+          0.4550919532775879,
+          0.0748584195971489,
+          0.14484550058841705
+        ],
+        "box_xyxy_pixels": [
+          366,
+          196,
+          404,
+          270
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6905859112739563,
+          "box_cxcywh_normalized": [
+            0.7516255974769592,
+            0.4550919532775879,
+            0.0748584195971489,
+            0.14484550058841705
+          ],
+          "box_xyxy_pixels": [
+            366,
+            196,
+            404,
+            270
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6579836010932922,
+          "box_cxcywh_normalized": [
+            0.365454763174057,
+            0.4472828805446625,
+            0.11923161149024963,
+            0.28132984042167664
+          ],
+          "box_xyxy_pixels": [
+            157,
+            157,
+            218,
+            301
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.9930555555555556
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6144305467605591,
+          "box_cxcywh_normalized": [
+            0.6032854318618774,
+            0.4207397401332855,
+            0.11205893009901047,
+            0.27362877130508423
+          ],
+          "box_xyxy_pixels": [
+            280,
+            145,
+            338,
+            285
+          ],
+          "iou_by_instance": [
+            0.9517241379310345,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5395618081092834,
+          "box_cxcywh_normalized": [
+            0.45973771810531616,
+            0.6320684552192688,
+            0.07342909276485443,
+            0.16840481758117676
+          ],
+          "box_xyxy_pixels": [
+            217,
+            281,
+            254,
+            367
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.03416480636707755,
+            0.0015985192663637894
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.546459436416626,
+          "box_cxcywh_normalized": [
+            0.48619234561920166,
+            0.43494468927383423,
+            0.10809461027383804,
+            0.26816612482070923
+          ],
+          "box_xyxy_pixels": [
+            221,
+            154,
+            277,
+            291
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.9209791983764587,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.4537412226200104,
+          "box_cxcywh_normalized": [
+            0.74433434009552,
+            0.6470113396644592,
+            0.06321733444929123,
+            0.07475155591964722
+          ],
+          "box_xyxy_pixels": [
+            365,
+            312,
+            397,
+            350
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6221460700035095,
+          "box_cxcywh_normalized": [
+            0.18107762932777405,
+            0.5194526314735413,
+            0.2376757264137268,
+            0.22815093398094177
+          ],
+          "box_xyxy_pixels": [
+            32,
+            208,
+            154,
+            324
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.38299012184143066,
+          "box_cxcywh_normalized": [
+            0.6154306530952454,
+            0.6085786819458008,
+            0.05666222795844078,
+            0.07334953546524048
+          ],
+          "box_xyxy_pixels": [
+            301,
+            293,
+            330,
+            330
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_milk_and_place_it_in_the_basket_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_object/task_2_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_object",
+      "task_index": 3,
+      "task_stem": "pick_up_the_bbq_sauce_and_place_it_in_the_basket",
+      "prompt": "milk carton",
+      "num_detections": 5,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6134158968925476,
+      "selected_iou": 0.0,
+      "highest_iou_over_all_detections": 0.9317392358025689,
+      "selected_localized": false,
+      "ground_truth": [
+        {
+          "box": [
+            132,
+            201,
+            205,
+            362
+          ],
+          "visible_pixels": 9268
+        },
+        {
+          "box": [
+            157,
+            172,
+            218,
+            321
+          ],
+          "visible_pixels": 3143
+        },
+        {
+          "box": [
+            175,
+            147,
+            230,
+            285
+          ],
+          "visible_pixels": 2469
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6134158968925476,
+        "box_cxcywh_normalized": [
+          0.7423637509346008,
+          0.5833613276481628,
+          0.0816471055150032,
+          0.1741395741701126
+        ],
+        "box_xyxy_pixels": [
+          359,
+          254,
+          401,
+          343
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5667402148246765,
+          "box_cxcywh_normalized": [
+            0.6148998141288757,
+            0.5699462890625,
+            0.06058555468916893,
+            0.12862156331539154
+          ],
+          "box_xyxy_pixels": [
+            299,
+            259,
+            330,
+            325
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.4725763201713562,
+          "box_cxcywh_normalized": [
+            0.33000144362449646,
+            0.5549305081367493,
+            0.14691242575645447,
+            0.3115169107913971
+          ],
+          "box_xyxy_pixels": [
+            131,
+            204,
+            207,
+            364
+          ],
+          "iou_by_instance": [
+            0.9317392358025689,
+            0.3798947983635301,
+            0.15106655787387807
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.399438738822937,
+          "box_cxcywh_normalized": [
+            0.46169060468673706,
+            0.6560311913490295,
+            0.09277485311031342,
+            0.1331910341978073
+          ],
+          "box_xyxy_pixels": [
+            213,
+            302,
+            260,
+            370
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.007793273174733388,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6134158968925476,
+          "box_cxcywh_normalized": [
+            0.7423637509346008,
+            0.5833613276481628,
+            0.0816471055150032,
+            0.1741395741701126
+          ],
+          "box_xyxy_pixels": [
+            359,
+            254,
+            401,
+            343
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.35094383358955383,
+          "box_cxcywh_normalized": [
+            0.19592764973640442,
+            0.5194679498672485,
+            0.22941526770591736,
+            0.2274133414030075
+          ],
+          "box_xyxy_pixels": [
+            42,
+            208,
+            159,
+            324
+          ],
+          "iou_by_instance": [
+            0.14112558013788132,
+            0.010073545798974817,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_object/task_3_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 0,
+      "task_stem": "LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket",
+      "prompt": "milk carton",
+      "num_detections": 2,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.5336902141571045,
+      "selected_iou": 0.0,
+      "highest_iou_over_all_detections": 0.0,
+      "selected_localized": false,
+      "ground_truth": [
+        {
+          "box": [
+            192,
+            220,
+            291,
+            459
+          ],
+          "visible_pixels": 19582
+        },
+        {
+          "box": [
+            209,
+            174,
+            294,
+            380
+          ],
+          "visible_pixels": 4083
+        },
+        {
+          "box": [
+            222,
+            146,
+            297,
+            314
+          ],
+          "visible_pixels": 2550
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.5336902141571045,
+        "box_cxcywh_normalized": [
+          0.6623357534408569,
+          0.4408153295516968,
+          0.08766624331474304,
+          0.19376111030578613
+        ],
+        "box_xyxy_pixels": [
+          317,
+          176,
+          362,
+          275
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5336902141571045,
+          "box_cxcywh_normalized": [
+            0.6623357534408569,
+            0.4408153295516968,
+            0.08766624331474304,
+            0.19376111030578613
+          ],
+          "box_xyxy_pixels": [
+            317,
+            176,
+            362,
+            275
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.36784666776657104,
+          "box_cxcywh_normalized": [
+            0.11353492736816406,
+            0.6063673496246338,
+            0.22668083012104034,
+            0.3282625675201416
+          ],
+          "box_xyxy_pixels": [
+            0,
+            226,
+            116,
+            394
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_cream_cheese_box_in_the_basket_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_long/task_0_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 1,
+      "task_stem": "LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket",
+      "prompt": "milk carton",
+      "num_detections": 5,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.5645835399627686,
+      "selected_iou": 0.0,
+      "highest_iou_over_all_detections": 0.8670900964478946,
+      "selected_localized": false,
+      "ground_truth": [
+        {
+          "box": [
+            239,
+            119,
+            296,
+            147
+          ],
+          "visible_pixels": 569
+        },
+        {
+          "box": [
+            238,
+            119,
+            304,
+            177
+          ],
+          "visible_pixels": 1420
+        },
+        {
+          "box": [
+            235,
+            141,
+            311,
+            335
+          ],
+          "visible_pixels": 11808
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.5645835399627686,
+        "box_cxcywh_normalized": [
+          0.8690186738967896,
+          0.587549090385437,
+          0.12819306552410126,
+          0.21172313392162323
+        ],
+        "box_xyxy_pixels": [
+          412,
+          247,
+          478,
+          355
+        ],
+        "iou_by_instance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5645835399627686,
+          "box_cxcywh_normalized": [
+            0.8690186738967896,
+            0.587549090385437,
+            0.12819306552410126,
+            0.21172313392162323
+          ],
+          "box_xyxy_pixels": [
+            412,
+            247,
+            478,
+            355
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5043212175369263,
+          "box_cxcywh_normalized": [
+            0.6365460753440857,
+            0.6430410146713257,
+            0.10268041491508484,
+            0.21761460602283478
+          ],
+          "box_xyxy_pixels": [
+            300,
+            274,
+            352,
+            385
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.03381204333585286
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.499248206615448,
+          "box_cxcywh_normalized": [
+            0.6863744854927063,
+            0.409673810005188,
+            0.08516916632652283,
+            0.18629875779151917
+          ],
+          "box_xyxy_pixels": [
+            330,
+            162,
+            373,
+            257
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.42387789487838745,
+          "box_cxcywh_normalized": [
+            0.8919543623924255,
+            0.8168852925300598,
+            0.11664127558469772,
+            0.13126207888126373
+          ],
+          "box_xyxy_pixels": [
+            427,
+            385,
+            487,
+            452
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.39531776309013367,
+          "box_cxcywh_normalized": [
+            0.533535897731781,
+            0.44327178597450256,
+            0.15117178857326508,
+            0.42558738589286804
+          ],
+          "box_xyxy_pixels": [
+            234,
+            118,
+            312,
+            336
+          ],
+          "iou_by_instance": [
+            0.09386026817219478,
+            0.22512350035285816,
+            0.8670900964478946
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE2_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_long/task_1_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 2,
+      "task_stem": "LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+      "prompt": "milk carton",
+      "num_detections": 1,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.6287177801132202,
+      "selected_iou": 0.6339950372208437,
+      "highest_iou_over_all_detections": 0.6339950372208437,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            88,
+            183,
+            193,
+            402
+          ],
+          "visible_pixels": 17453
+        },
+        {
+          "box": [
+            118,
+            146,
+            205,
+            342
+          ],
+          "visible_pixels": 4758
+        },
+        {
+          "box": [
+            140,
+            119,
+            215,
+            296
+          ],
+          "visible_pixels": 3401
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.6287177801132202,
+        "box_cxcywh_normalized": [
+          0.29522332549095154,
+          0.5160514116287231,
+          0.25333234667778015,
+          0.5450764894485474
+        ],
+        "box_xyxy_pixels": [
+          86,
+          125,
+          216,
+          404
+        ],
+        "iou_by_instance": [
+          0.6339950372208437,
+          0.4701406120760959,
+          0.3492647058823529
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6287177801132202,
+          "box_cxcywh_normalized": [
+            0.29522332549095154,
+            0.5160514116287231,
+            0.25333234667778015,
+            0.5450764894485474
+          ],
+          "box_xyxy_pixels": [
+            86,
+            125,
+            216,
+            404
+          ],
+          "iou_by_instance": [
+            0.6339950372208437,
+            0.4701406120760959,
+            0.3492647058823529
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_long/task_2_highest_confidence.png"
+    },
+    {
+      "suite": "safelibero_long",
+      "task_index": 3,
+      "task_stem": "LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+      "prompt": "milk carton",
+      "num_detections": 3,
+      "selected_box_rule": "highest_confidence",
+      "selected_confidence": 0.7470110654830933,
+      "selected_iou": 0.9765797472404415,
+      "highest_iou_over_all_detections": 0.9765797472404415,
+      "selected_localized": true,
+      "ground_truth": [
+        {
+          "box": [
+            371,
+            208,
+            502,
+            441
+          ],
+          "visible_pixels": 21673
+        },
+        {
+          "box": [
+            282,
+            179,
+            376,
+            396
+          ],
+          "visible_pixels": 16292
+        },
+        {
+          "box": [
+            193,
+            155,
+            273,
+            358
+          ],
+          "visible_pixels": 13449
+        }
+      ],
+      "selected_detection": {
+        "phrase": "milk carton",
+        "confidence": 0.7470110654830933,
+        "box_cxcywh_normalized": [
+          0.8529381155967712,
+          0.6356027722358704,
+          0.25992876291275024,
+          0.45794954895973206
+        ],
+        "box_xyxy_pixels": [
+          370,
+          208,
+          503,
+          443
+        ],
+        "iou_by_instance": [
+          0.9765797472404415,
+          0.022325581395348838,
+          0.0
+        ]
+      },
+      "detections": [
+        {
+          "phrase": "milk carton",
+          "confidence": 0.7470110654830933,
+          "box_cxcywh_normalized": [
+            0.8529381155967712,
+            0.6356027722358704,
+            0.25992876291275024,
+            0.45794954895973206
+          ],
+          "box_xyxy_pixels": [
+            370,
+            208,
+            503,
+            443
+          ],
+          "iou_by_instance": [
+            0.9765797472404415,
+            0.022325581395348838,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.6883230209350586,
+          "box_cxcywh_normalized": [
+            0.6444439888000488,
+            0.5657368898391724,
+            0.18693147599697113,
+            0.42237961292266846
+          ],
+          "box_xyxy_pixels": [
+            282,
+            182,
+            378,
+            398
+          ],
+          "iou_by_instance": [
+            0.026637825712511765,
+            0.9570844038443239,
+            0.0
+          ]
+        },
+        {
+          "phrase": "milk carton",
+          "confidence": 0.5926974415779114,
+          "box_cxcywh_normalized": [
+            0.45492443442344666,
+            0.5114306807518005,
+            0.15944001078605652,
+            0.38212868571281433
+          ],
+          "box_xyxy_pixels": [
+            192,
+            164,
+            274,
+            360
+          ],
+          "iou_by_instance": [
+            0.0,
+            0.0,
+            0.9242496426869938
+          ]
+        }
+      ],
+      "raw_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/observations/safelibero_long/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate_agentview.png",
+      "groundingdino_image": "/home/lythk/safe-flow-matching/results/separated_milk_cartons_scale1p7_all_suites/groundingdino_audit/images/safelibero_long/task_3_highest_confidence.png"
+    }
+  ]
+}
