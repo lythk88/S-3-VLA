@@ -1,3 +1,6 @@
+import pathlib
+import logging
+
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 from robosuite.utils.camera_utils import get_real_depth_map
@@ -152,9 +155,104 @@ def compute_h_coeffs_3d(p_i, Q_i_diag, R_i,
     return a_v, a_omega, a_uz, h, mu_row   # mu_row is dh/d z_ij
 
 ############## Perception Related Functions ##############
-def get_point_cloud(image, depth, env, view, TEXT_PROMPT, model, save_path):
+def overlay_gripper_ellipsoid_on_rgb(
+    image,
+    env,
+    view,
+    center,
+    rotation,
+    radii,
+    save_path,
+):
+    """Project the gripper safety ellipsoid into a saved RGB camera view."""
+    import cv2
+    from robosuite.utils.camera_utils import get_camera_transform_matrix
+
+    image = np.asarray(image, dtype=np.uint8)
+    height, width = image.shape[:2]
+    center = np.asarray(center, dtype=np.float64)
+    rotation = np.asarray(rotation, dtype=np.float64)
+    radii = np.asarray(radii, dtype=np.float64)
+
+    azimuth = np.linspace(0.0, 2.0 * np.pi, 96, endpoint=False)
+    elevation = np.linspace(0.0, np.pi, 48)
+    unit_surface = np.stack(
+        (
+            np.outer(np.cos(azimuth), np.sin(elevation)),
+            np.outer(np.sin(azimuth), np.sin(elevation)),
+            np.outer(np.ones_like(azimuth), np.cos(elevation)),
+        ),
+        axis=-1,
+    ).reshape(-1, 3)
+    world_surface = (unit_surface * radii) @ rotation.T + center
+    world_points = np.vstack((world_surface, center))
+    homogeneous = np.column_stack((world_points, np.ones(len(world_points))))
+    world_to_pixels = get_camera_transform_matrix(
+        env.sim,
+        view,
+        camera_height=height,
+        camera_width=width,
+    )
+    camera_homogeneous = homogeneous @ world_to_pixels.T
+    in_front = camera_homogeneous[:, 2] > 1e-6
+    projected = camera_homogeneous[in_front, :2] / camera_homogeneous[in_front, 2:3]
+
+    # main_aegis saves both simulator image axes reversed. Under that exact
+    # convention, camera (u, v) maps to saved RGB pixel (width - 1 - u, v).
+    pixels = np.column_stack((width - 1 - projected[:, 0], projected[:, 1]))
+    finite = np.all(np.isfinite(pixels), axis=1)
+    pixels = pixels[finite]
+    pixels[:, 0] = np.clip(pixels[:, 0], 0, width - 1)
+    pixels[:, 1] = np.clip(pixels[:, 1], 0, height - 1)
+    pixels = np.rint(pixels).astype(np.int32)
+    if len(pixels) < 3:
+        raise RuntimeError(f"Could not project gripper ellipsoid into {view}")
+
+    surface_pixels = pixels[:-1]
+    center_pixel = tuple(int(value) for value in pixels[-1])
+    hull = cv2.convexHull(surface_pixels.reshape(-1, 1, 2))
+    overlay = image.copy()
+    cv2.fillConvexPoly(overlay, hull, color=(35, 105, 255))
+    result = cv2.addWeighted(overlay, 0.28, image, 0.72, 0.0)
+    cv2.polylines(result, [hull], isClosed=True, color=(0, 55, 255), thickness=5)
+    cv2.drawMarker(
+        result,
+        center_pixel,
+        color=(0, 55, 255),
+        markerType=cv2.MARKER_CROSS,
+        markerSize=24,
+        thickness=4,
+    )
+    cv2.putText(
+        result,
+        "blue = projected gripper safety ellipsoid",
+        (24, 44),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1.0,
+        (0, 55, 255),
+        3,
+        cv2.LINE_AA,
+    )
+    from PIL import Image
+
+    Image.fromarray(result).save(save_path)
+
+
+def get_point_cloud(
+    image,
+    depth,
+    env,
+    view,
+    TEXT_PROMPT,
+    model,
+    save_path,
+    *,
+    save_diagnostics=True,
+    selection_reference_world=None,
+    candidate_top_k=5,
+    vlm_classifier=None,
+):
     # from robosuite.utils.camera_utils import get_real_depth_map
-    from groundingdino.util.inference import load_image, predict, annotate
     depth = get_real_depth_map(env.sim, depth)
     # import cv2
     # CONFIG_PATH = "GroundingDINO/GroundingDINO_SwinT_OGC.py"    # Config file included in source code
@@ -163,52 +261,174 @@ def get_point_cloud(image, depth, env, view, TEXT_PROMPT, model, save_path):
     # GPU architecture. Keep this configurable so detection can safely fall
     # back to CPU while the policy server continues to use the GPU.
     DEVICE = os.environ.get("GROUNDINGDINO_DEVICE", "cuda")
-    BOX_TRESHOLD = 0.35     # Bounding box threshold given by source code
+    # Keep several candidates for the carried-object classifier.  A low
+    # detector threshold is intentional here: GroundingDINO's top score is
+    # often a visually similar bottle (e.g. the wine bottle in BBQ episodes).
+    BOX_TRESHOLD = 0.15 if vlm_classifier is not None else 0.35
     TEXT_TRESHOLD = 0.25    # Text threshold for key attributes given by source code
 
     # model = load_model(CONFIG_PATH, CHECKPOINT_PATH)
 
 
-    import matplotlib
-    matplotlib.use('Agg')          
-    import matplotlib.pyplot as plt
-    plt.imsave(str(save_path / f"{view}.png"), image)
+    import tempfile
+
+    from PIL import Image
+
+    if save_diagnostics:
+        image_path = save_path / f"{view}.png"
+    else:
+        temporary_image = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+        temporary_image.close()
+        image_path = pathlib.Path(temporary_image.name)
+    Image.fromarray(np.asarray(image, dtype=np.uint8)).save(image_path)
     import cv2
-    IMAGE_PATH = str(save_path /f"{view}.png")
-    image_source, image_cv = load_image(IMAGE_PATH)
-    boxes, logits, phrases = predict(
-        model=model,
-        image=image_cv,
-        caption=TEXT_PROMPT,
-        box_threshold=BOX_TRESHOLD,
-        text_threshold=TEXT_TRESHOLD,
-        device=DEVICE,
-    )
-    try:
-        annotated_frame = annotate(
-            image_source=image_source,
-            boxes=boxes,
-            logits=logits,
-            phrases=phrases,
-        )
-        cv2.imwrite(str(save_path / f"annotated_ {view}_image.jpg"), annotated_frame)
-    except (AttributeError, TypeError) as exc:
-        # Annotation is diagnostic-only. Some installed supervision releases do
-        # not expose the API expected by GroundingDINO, but the predicted boxes
-        # below remain valid inputs to the safety geometry pipeline.
-        print(f"Skipping GroundingDINO annotation for {view}: {exc}")
-    from groundingdino.util.box_ops import box_cxcywh_to_xyxy
+    IMAGE_PATH = str(image_path)
     import torch
+    transformer_backend = isinstance(model, dict) and model.get("backend") == "transformers"
+    if transformer_backend:
+        from PIL import Image
+        from PIL import ImageDraw
+
+        image_source = np.asarray(Image.open(IMAGE_PATH).convert("RGB"))
+        caption = TEXT_PROMPT.strip().rstrip(".") + "."
+        inputs = model["processor"](
+            images=image_source, text=caption, return_tensors="pt"
+        ).to(model["device"])
+        with torch.no_grad():
+            outputs = model["model"](**inputs)
+        detection = model["processor"].post_process_grounded_object_detection(
+            outputs,
+            inputs.input_ids,
+            threshold=BOX_TRESHOLD,
+            text_threshold=TEXT_TRESHOLD,
+            target_sizes=[image_source.shape[:2]],
+        )[0]
+        pixel_boxes = detection["boxes"]
+        detection_scores = detection.get("scores", torch.zeros(len(pixel_boxes)))
+        boxes = pixel_boxes
+        annotated_image = Image.fromarray(image_source)
+        drawing = ImageDraw.Draw(annotated_image)
+        labels = detection.get("labels", [TEXT_PROMPT] * len(pixel_boxes))
+        scores = detection.get("scores", [None] * len(pixel_boxes))
+        for box, label, score in zip(pixel_boxes, labels, scores):
+            x1, y1, x2, y2 = [int(value) for value in box.detach().cpu().tolist()]
+            drawing.rectangle((x1, y1, x2, y2), outline=(255, 0, 0), width=3)
+            score_text = "" if score is None else f" {float(score):.3f}"
+            drawing.text(
+                (x1 + 3, max(0, y1 - 12)),
+                f"{label}{score_text}",
+                fill=(255, 0, 0),
+                stroke_width=1,
+                stroke_fill=(255, 255, 255),
+            )
+        if not len(pixel_boxes):
+            drawing.text((5, 5), f"No detection: {TEXT_PROMPT}", fill=(255, 0, 0))
+        if save_diagnostics:
+            annotated_image.save(save_path / f"annotated_{view}.png")
+    else:
+        from groundingdino.util.inference import annotate, load_image, predict
+
+        image_source, image_cv = load_image(IMAGE_PATH)
+        boxes, logits, phrases = predict(
+            model=model,
+            image=image_cv,
+            caption=TEXT_PROMPT,
+            box_threshold=BOX_TRESHOLD,
+            text_threshold=TEXT_TRESHOLD,
+            device=DEVICE,
+        )
+        detection_scores = logits
+        try:
+            annotated_frame = annotate(
+                image_source=image_source,
+                boxes=boxes,
+                logits=logits,
+                phrases=phrases,
+            )
+            if save_diagnostics:
+                cv2.imwrite(str(save_path / f"annotated_{view}.png"), annotated_frame)
+        except (AttributeError, TypeError) as exc:
+            print(f"Skipping GroundingDINO annotation for {view}: {exc}")
+    if not save_diagnostics:
+        image_path.unlink(missing_ok=True)
     image = image[::-1, ::-1]
     depth = depth[::-1, ::-1].squeeze()
     # 2. Check if any object is detected
     if boxes.shape[0] > 0:
 
         h, w, _ = image.shape
-        boxes_xyxy = box_cxcywh_to_xyxy(boxes)
-        size_tensor = torch.tensor([w, h, w, h], device=boxes.device)
-        pixel_boxes = boxes_xyxy * size_tensor
-        first_box = pixel_boxes[0].cpu().numpy().astype(int)
+        if not transformer_backend:
+            from groundingdino.util.box_ops import box_cxcywh_to_xyxy
+            boxes_xyxy = box_cxcywh_to_xyxy(boxes)
+            size_tensor = torch.tensor([w, h, w, h], device=boxes.device)
+            pixel_boxes = boxes_xyxy * size_tensor
+        # Rank candidates by detector score and retain only the requested top-k.
+        # This prevents a low-confidence tail of spurious boxes from reaching
+        # the VLM while preserving alternatives for visual disambiguation.
+        if len(pixel_boxes) > candidate_top_k:
+            score_array = torch.as_tensor(detection_scores).detach().cpu().numpy()
+            keep = np.argsort(-score_array)[:candidate_top_k]
+            pixel_boxes = pixel_boxes[keep]
+            detection_scores = torch.as_tensor(score_array[keep])
+        selected_box_index = 0
+        if vlm_classifier is not None and len(pixel_boxes) > 0:
+            # Work in the same 180-degree-rotated image used for point-cloud
+            # extraction.  The classifier returns the candidate rank.
+            candidate_paths = []
+            for rank, box in enumerate(pixel_boxes):
+                bx1, by1, bx2, by2 = [int(round(v)) for v in box.detach().cpu().tolist()]
+                cx1, cx2 = max(0, w - 1 - bx2), min(w, w - 1 - bx1)
+                cy1, cy2 = max(0, h - 1 - by2), min(h, h - 1 - by1)
+                crop = image[cy1:cy2, cx1:cx2]
+                if crop.size == 0:
+                    continue
+                candidate_path = save_path / f"candidate_{view}_{rank+1}.png"
+                Image.fromarray(crop.astype(np.uint8)).save(candidate_path)
+                candidate_paths.append(candidate_path)
+            if candidate_paths:
+                selected_box_index = int(vlm_classifier(candidate_paths, TEXT_PROMPT))
+                selected_box_index = max(0, min(selected_box_index, len(pixel_boxes) - 1))
+                logging.info(
+                    "VLM selected GroundingDINO candidate %d/%d for %r in %s",
+                    selected_box_index + 1, len(pixel_boxes), TEXT_PROMPT, view,
+                )
+        if selection_reference_world is not None and len(pixel_boxes) > 1 and vlm_classifier is None:
+            from robosuite.utils.camera_utils import get_camera_transform_matrix
+
+            world_to_pixels = get_camera_transform_matrix(
+                env.sim,
+                view,
+                camera_height=h,
+                camera_width=w,
+            )
+            reference = np.append(
+                np.asarray(selection_reference_world, dtype=np.float64), 1.0
+            )
+            projected = world_to_pixels @ reference
+            if projected[2] > 1e-9 and np.all(np.isfinite(projected)):
+                raw_pixel = projected[:2] / projected[2]
+                saved_pixel = np.array([w - 1 - raw_pixel[0], raw_pixel[1]])
+                box_array = pixel_boxes.detach().cpu().numpy()
+                inside = (
+                    (box_array[:, 0] <= saved_pixel[0])
+                    & (saved_pixel[0] <= box_array[:, 2])
+                    & (box_array[:, 1] <= saved_pixel[1])
+                    & (saved_pixel[1] <= box_array[:, 3])
+                )
+                centers = 0.5 * (box_array[:, :2] + box_array[:, 2:])
+                distances = np.linalg.norm(centers - saved_pixel[None, :], axis=1)
+                distances[~inside] += float(max(h, w))
+                selected_box_index = int(np.argmin(distances))
+                logging.info(
+                    "GroundingDINO %r selected box %d/%d nearest projected "
+                    "world target %s in %s",
+                    TEXT_PROMPT,
+                    selected_box_index,
+                    len(pixel_boxes),
+                    np.asarray(selection_reference_world),
+                    view,
+                )
+        first_box = pixel_boxes[selected_box_index].cpu().numpy().astype(int)
         x1, y1, x2, y2 = first_box
         xmin = w - 1 - x2
         xmax = w - 1 - x1
@@ -270,7 +490,11 @@ def get_point_cloud(image, depth, env, view, TEXT_PROMPT, model, save_path):
 
 def filtering_points(pts, task_suite_name):
     import numpy as np
-    import open3d as o3d
+    from sklearn.cluster import DBSCAN
+
+    pts = np.asarray(pts)
+    if pts.ndim != 2 or pts.shape[1] != 3 or len(pts) == 0:
+        return np.empty((0, 3), dtype=np.float64)
 
 # --- Step 1: XYZ Range Filtering ---
     if "spatial" in task_suite_name or "goal" in task_suite_name:
@@ -313,16 +537,13 @@ def filtering_points(pts, task_suite_name):
         return pts  
 
     # --- Step 2: DBSCAN Clustering ---
-    pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(pts))
-    labels = np.array(
-        pcd.cluster_dbscan(eps=0.0001, min_points=50, print_progress=False)
-    )
+    labels = DBSCAN(eps=0.0001, min_samples=50, n_jobs=1).fit_predict(pts)
 
     # If valid clusters exist (labels>=0), take only the largest cluster
     if labels.max() >= 0:
         largest = np.bincount(labels[labels >= 0]).argmax()
         mask = (labels == largest)
-        pts = np.asarray(pcd.points)[mask]
+        pts = pts[mask]
 
 
 
@@ -442,6 +663,107 @@ def plot_points_ellipse(points, center, R, axes_diag, save_path="examples/libero
 
     # print(f"✅ Image saved to: {save_path}")
 
+
+def plot_gripper_obstacle_ellipsoids(
+    gripper_center,
+    gripper_rotation,
+    gripper_radii,
+    obstacle_center,
+    obstacle_rotation,
+    obstacle_radii,
+    *,
+    points=None,
+    save_path="gripper_obstacle_ellipsoids.png",
+):
+    """Plot both safety ellipsoids and report whether the obstacle contains the gripper."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    gripper_center = np.asarray(gripper_center, dtype=np.float64)
+    gripper_rotation = np.asarray(gripper_rotation, dtype=np.float64)
+    gripper_radii = np.asarray(gripper_radii, dtype=np.float64)
+    obstacle_center = np.asarray(obstacle_center, dtype=np.float64)
+    obstacle_rotation = np.asarray(obstacle_rotation, dtype=np.float64)
+    obstacle_radii = np.asarray(obstacle_radii, dtype=np.float64)
+
+    u = np.linspace(0.0, 2.0 * np.pi, 48)
+    v = np.linspace(0.0, np.pi, 32)
+    unit = np.stack(
+        (
+            np.outer(np.cos(u), np.sin(v)),
+            np.outer(np.sin(u), np.sin(v)),
+            np.outer(np.ones_like(u), np.cos(v)),
+        ),
+        axis=-1,
+    )
+
+    def surface(center, rotation, radii):
+        return (unit * radii) @ rotation.T + center
+
+    gripper_surface = surface(gripper_center, gripper_rotation, gripper_radii)
+    obstacle_surface = surface(obstacle_center, obstacle_rotation, obstacle_radii)
+    gripper_in_obstacle = (gripper_surface.reshape(-1, 3) - obstacle_center) @ obstacle_rotation
+    maximum_obstacle_level = float(
+        np.max(np.sum(np.square(gripper_in_obstacle / obstacle_radii), axis=1))
+    )
+    obstacle_covers_gripper = maximum_obstacle_level <= 1.0 + 1e-6
+
+    displacement = obstacle_center - gripper_center
+    center_distance = float(np.linalg.norm(displacement))
+    if center_distance > 1e-12:
+        direction = displacement / center_distance
+
+        def support(rotation, radii):
+            shape = rotation @ np.diag(np.square(radii)) @ rotation.T
+            return float(np.sqrt(max(float(direction @ shape @ direction), 0.0)))
+
+        directional_gap = center_distance - support(gripper_rotation, gripper_radii) - support(
+            obstacle_rotation, obstacle_radii
+        )
+    else:
+        directional_gap = -float(np.max(gripper_radii) + np.max(obstacle_radii))
+
+    figure = plt.figure(figsize=(9, 8))
+    axis = figure.add_subplot(111, projection="3d")
+    axis.plot_surface(*np.moveaxis(gripper_surface, -1, 0), color="royalblue", alpha=0.35)
+    axis.plot_surface(*np.moveaxis(obstacle_surface, -1, 0), color="crimson", alpha=0.35)
+    axis.scatter(*gripper_center, color="navy", s=45, label="gripper ellipsoid")
+    axis.scatter(*obstacle_center, color="darkred", s=45, label="obstacle MVEE")
+    axis.plot(
+        [gripper_center[0], obstacle_center[0]],
+        [gripper_center[1], obstacle_center[1]],
+        [gripper_center[2], obstacle_center[2]],
+        color="black",
+        linestyle="--",
+    )
+    if points is not None and len(points):
+        points = np.asarray(points)
+        axis.scatter(points[:, 0], points[:, 1], points[:, 2], s=1, color="gray", alpha=0.2)
+    combined = np.vstack((gripper_surface.reshape(-1, 3), obstacle_surface.reshape(-1, 3)))
+    midpoint = 0.5 * (np.min(combined, axis=0) + np.max(combined, axis=0))
+    radius = 0.55 * float(np.max(np.ptp(combined, axis=0)))
+    axis.set_xlim(midpoint[0] - radius, midpoint[0] + radius)
+    axis.set_ylim(midpoint[1] - radius, midpoint[1] + radius)
+    axis.set_zlim(midpoint[2] - radius, midpoint[2] + radius)
+    axis.set_xlabel("world x (m)")
+    axis.set_ylabel("world y (m)")
+    axis.set_zlabel("world z (m)")
+    axis.set_title(
+        f"Obstacle covers gripper: {obstacle_covers_gripper} | directional gap: {directional_gap:.4f} m"
+    )
+    axis.legend()
+    figure.tight_layout()
+    figure.savefig(save_path, dpi=220)
+    plt.close(figure)
+    return {
+        "obstacle_covers_gripper": obstacle_covers_gripper,
+        "directional_gap": directional_gap,
+        "maximum_obstacle_level_on_gripper_surface": maximum_obstacle_level,
+    }
+
+
 def fit_ellipse(pts, plot=False, save_path="examples/libero/results/ellipse_plot.png"):
     from scipy.spatial import ConvexHull
     hull = ConvexHull(pts) # Extract convex hull
@@ -459,55 +781,18 @@ def fit_ellipse(pts, plot=False, save_path="examples/libero/results/ellipse_plot
     return center, R, S
 
 def obstacle_detection(image, instruction, task_suite_name):
-    from zai import ZhipuAiClient
-    import base64
-    import matplotlib
-    matplotlib.use('Agg')  # ✅ Crucial: No GUI rendering
-    import matplotlib.pyplot as plt
-    import time
-    api_key = ""
+    """Select the obstacle with local Qwen3-VL using the original VLSA prompt."""
+    from qwen3_vl_obstacle_selector import get_default_qwen3_vl_obstacle_selector
 
-    if api_key is None or api_key == "":
-        raise ValueError("Please enter api_key")
-    client = ZhipuAiClient(api_key=api_key)  # Fill in your own APIKey
-    plt.imsave("obstacle_detection.png", image)
-
-    image_path="obstacle_detection.png"
-    t0 = time.time()
-    with open(image_path, "rb") as image_file:
-        base64_image = base64.b64encode(image_file.read()).decode('utf-8')
-    print("large model is thinking...")
-    prefer_list = ['yellow rectangular book', 'blue moka pot',  'red mug', 'white storage box', 'black wine bottle', 'red milk carton']
-    if "long" in task_suite_name:
-        prefer_list.append('gray rectangular binder')
-    response = client.chat.completions.create(
-        model="glm-4.5v",  # Fill in the model name to call
-        messages=[
-            {
-                "content": [
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{base64_image}"
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "text": f"The robot must follow this instruction: {instruction}. Based on both the instruction and the image, identify exactly one non-robot object that is most likely to obstruct the robot's motion during task execution. You must output a uniquely identifiable obstacle name including both color and object type, preferably from this list when applicable: {prefer_list}. Output only the object name, with no additional words."
-                    }
-                ],
-                "role": "user",
-
-            }
-        ],
-        temperature=0.1, # Reduce randomness for more deterministic answers
-        top_p=0.1,
-        thinking={
-            "type":"enabled"
-        }
+    prediction = get_default_qwen3_vl_obstacle_selector().predict(
+        image,
+        instruction,
+        task_suite_name,
     )
-    clean_output = response.choices[0].message.content.replace("<|begin_of_box|>", "").replace("<|end_of_box|>", "")
-    print(clean_output)  # Output: gray cube
-    t1 = time.time()
-    print(f"large model thinking time: {t1-t0}s")
-    return clean_output
+    logging.info(
+        "Qwen3-VL obstacle answer=%r canonical=%r latency=%.3fs",
+        prediction.raw_answer,
+        prediction.canonical_answer,
+        prediction.latency_s,
+    )
+    return prediction.raw_answer

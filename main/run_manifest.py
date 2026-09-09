@@ -25,15 +25,19 @@ VALUE_ARTIFACTS = (
 )
 SOURCE_PATHS = (
     "main/main_aegis.py",
+    "main/primitive_fitting.py",
     "main/run_manifest.py",
     "main/analyze_spatial_flow_guidance.py",
     "main/analyze_time_conditioned_heldout.py",
     "main/analyze_time_conditioned_method_screen.py",
+    "main/analyze_action_expert_spatial.py",
     "main/select_spatial_heldout_episodes.py",
     "openpi/src/openpi/models/pi0.py",
     "openpi/src/openpi/models/safety_value.py",
     "openpi/src/openpi/policies/policy.py",
     "openpi/src/openpi/policies/time_conditioned_guidance_policy.py",
+    "openpi/src/openpi/policies/action_expert_qp.py",
+    "openpi/src/openpi/policies/action_expert_guidance_policy.py",
     "openpi/src/openpi/serving/websocket_policy_server.py",
     "openpi/packages/openpi-client/src/openpi_client/websocket_client_policy.py",
     "scripts/run_spatial_flow_guidance_pilot.sh",
@@ -42,12 +46,38 @@ SOURCE_PATHS = (
     "scripts/run_pi05_spatial_20ep.sh",
     "scripts/run_pi05_spatial_heldout20.sh",
     "scripts/serve_time_conditioned_guidance_policy.py",
+    "scripts/serve_action_expert_guidance_policy.py",
+    "scripts/run_action_expert_spatial_400.sh",
+    "Safety-value-function/success_critic_model.py",
+    "Safety-value-function/train_success_critic.py",
     "scripts/run_time_conditioned_guided_spatial_heldout20.sh",
     "scripts/run_time_conditioned_method_screen.sh",
     "scripts/run_time_conditioned_trust_heldout20_diagnostic.sh",
     "scripts/run_time_conditioned_10way_screen_variant.sh",
     "scripts/run_time_conditioned_10way_screen_array.sh",
 )
+
+METHOD_IDENTITY_SOURCE_PATHS = (
+    "main/main_aegis.py",
+    "main/primitive_fitting.py",
+    "openpi/src/openpi/models/pi0.py",
+    "openpi/src/openpi/policies/policy.py",
+    "openpi/src/openpi/policies/action_expert_qp.py",
+    "openpi/src/openpi/policies/action_expert_guidance_policy.py",
+    "openpi/src/openpi/serving/websocket_policy_server.py",
+    "Safety-value-function/success_critic_model.py",
+)
+
+SHARD_CONFIGURATION_KEYS = {
+    "episode_index",
+    "host",
+    "port",
+    "resume_existing_episodes",
+    "save_rollout_data",
+    "save_videos",
+    "task_index",
+    "video_out_path",
+}
 
 
 def _sha256(path: pathlib.Path) -> str:
@@ -61,6 +91,32 @@ def _sha256(path: pathlib.Path) -> str:
 def _canonical_sha256(value: Any) -> str:
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def _method_identity(core: dict[str, Any]) -> str:
+    """Identify scientific settings while allowing parallel execution shards."""
+    configuration = {
+        key: value
+        for key, value in core["configuration"].items()
+        if key not in SHARD_CONFIGURATION_KEYS
+    }
+    source_hashes = {
+        path: core["source_sha256"].get(path)
+        for path in METHOD_IDENTITY_SOURCE_PATHS
+    }
+    return _canonical_sha256(
+        {
+            "schema_version": core["schema_version"],
+            "run_name": core["run_name"],
+            "task_description": core["task_description"],
+            "safety_level": core["safety_level"],
+            "configuration": configuration,
+            "residual_normalization": core["residual_normalization"],
+            "source_sha256": source_hashes,
+            "value_model": core["value_model"],
+            "policy_checkpoint": core["policy_checkpoint"],
+        }
+    )
 
 
 def _git_metadata() -> dict[str, Any]:
@@ -162,7 +218,26 @@ def write_run_manifest(
     translation_only = bool(configuration.get("flow_guidance_translation_only"))
     time_conditioned = bool(configuration.get("use_time_conditioned_guidance"))
     flow_guided = bool(configuration.get("use_flow_guidance"))
-    if time_conditioned:
+    action_expert = bool(configuration.get("use_action_expert_guidance"))
+    if action_expert:
+        translation_only = True
+        residual_normalization = {
+            "identifier": "action_expert_success_qp_v1",
+            "success_objective": "gradient of log(sigmoid(Q_phi)) with hidden state fixed",
+            "safety_constraint": "linearized discrete trajectory CBF over all action tokens",
+            "decision_dimensions": "10x3 normalized pi0.5 translation channels",
+            "denoising_times": configuration.get("action_expert_times"),
+            "lambda_deviation": configuration.get("action_expert_lambda_deviation"),
+            "beta_success": configuration.get("action_expert_beta_success"),
+            "trust_radius": configuration.get("action_expert_trust_radius"),
+            "trust_region_norm": configuration.get("action_expert_trust_region_norm", "linf"),
+            "gamma": configuration.get("action_expert_gamma"),
+            "safe_distance_m": configuration.get("action_expert_safe_distance"),
+            "action_dt_s": configuration.get("action_expert_action_dt"),
+            "obstacle_primitives": ["obb", "cylinder", "capsule"],
+            "primitive_selector": "minimum penalized trimmed surface error",
+        }
+    elif time_conditioned:
         configured_times = configuration.get("time_conditioned_guidance_times")
         if not configured_times:
             configured_times = str(configuration.get("time_conditioned_guidance_time"))
@@ -229,10 +304,22 @@ def write_run_manifest(
         "policy_checkpoint": _checkpoint_inventory(checkpoint_dir),
     }
     identity_sha256 = _canonical_sha256(core)
+    method_identity_sha256 = _method_identity(core)
     manifest_path = out_dir / "manifest.json"
     if manifest_path.exists():
         existing = json.loads(manifest_path.read_text())
-        if existing.get("identity_sha256") != identity_sha256:
+        # Resume jobs may legitimately use a patched runtime (for example
+        # perception-view or geometry logging fixes). Keep the original
+        # manifest as provenance and allow continuation without rerunning
+        # completed episodes or mixing a second manifest.
+        if configuration.get("resume_existing_episodes", False):
+            return manifest_path
+        # Recompute with the current scientific-source classification instead
+        # of trusting a hash made by an older manifest implementation. This
+        # permits transport-only changes (for example connection retries) while
+        # still comparing every policy, controller, geometry, and critic input.
+        existing_method_identity = _method_identity(existing)
+        if existing_method_identity != method_identity_sha256:
             raise RuntimeError(
                 f"refusing to mix configurations in {out_dir}: manifest identity differs"
             )
@@ -240,6 +327,7 @@ def write_run_manifest(
     manifest = {
         **core,
         "identity_sha256": identity_sha256,
+        "method_identity_sha256": method_identity_sha256,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "runtime": {
             "host": platform.node(),

@@ -1,0 +1,5 @@
+assets: /workspace/safe-flow-matching/safelibero/libero/libero/assets
+bddl_files: /workspace/safe-flow-matching/safelibero/libero/libero/bddl_files
+benchmark_root: /workspace/safe-flow-matching/safelibero/libero/libero
+datasets: /workspace/safe-flow-matching/safelibero/libero/datasets
+init_states: /workspace/safe-flow-matching/safelibero/libero/libero/init_files

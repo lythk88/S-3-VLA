@@ -45,11 +45,16 @@ class WebsocketClientPolicy(_base_policy.BasePolicy):
                     websockets.sync.client.connect
                 ).parameters:
                     connect_kwargs["ping_interval"] = None
+                    # A policy server can spend longer than the websockets
+                    # default (10 s) servicing concurrent inference requests.
+                    # Give the opening handshake enough time without disabling
+                    # its timeout entirely.
+                    connect_kwargs["open_timeout"] = 60
                 conn = websockets.sync.client.connect(self._uri, **connect_kwargs)
                 metadata = msgpack_numpy.unpackb(conn.recv())
                 return conn, metadata
-            except ConnectionRefusedError:
-                logging.info("Still waiting for server...")
+            except (ConnectionRefusedError, TimeoutError, ConnectionResetError) as exc:
+                logging.info("Still waiting for server (%s: %s)...", type(exc).__name__, exc)
                 time.sleep(5)
 
     @override
