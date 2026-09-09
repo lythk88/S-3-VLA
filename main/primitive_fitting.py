@@ -420,14 +420,14 @@ def _fit_sphere(points: np.ndarray, padding: float):
     return center, np.eye(3, dtype=np.float64), size, _sphere_distance(points - center, radius)
 
 
-def fit_best_primitive(
+def fit_primitive_candidates(
     points: np.ndarray,
     *,
     padding: float = 0.005,
     maximum_score_points: int = 10000,
     allowed_kinds: tuple[str, ...] = ("obb", "cylinder", "capsule"),
-) -> PrimitiveFit:
-    """Fit the allowed conservative primitives and select the best surface model."""
+) -> dict[str, PrimitiveFit]:
+    """Fit one best conservative candidate for each requested primitive kind."""
     allowed = frozenset(allowed_kinds)
     supported = {"obb", "aabb", "ellipsoid", "cylinder", "capsule", "sphere"}
     if not allowed or not allowed <= supported:
@@ -473,17 +473,40 @@ def fit_best_primitive(
     for kind, candidate_center, rotation, size, distances, parameters in candidates:
         score, rmse = _score(distances, scale, parameters)
         scored.append((score, rmse, kind, candidate_center, rotation, size))
-    scored.sort(key=lambda item: item[0])
-    best = scored[0]
     candidate_scores = {}
     for score, _, kind, *_ in scored:
         candidate_scores[kind] = min(score, candidate_scores.get(kind, np.inf))
-    return PrimitiveFit(
-        kind=best[2],
-        center=np.asarray(best[3], dtype=np.float64),
-        rotation=np.asarray(best[4], dtype=np.float64),
-        size=np.asarray(best[5], dtype=np.float64),
-        score=float(best[0]),
-        surface_rmse=float(best[1]),
-        candidate_scores={key: float(value) for key, value in sorted(candidate_scores.items())},
+    shared_scores = {
+        key: float(value) for key, value in sorted(candidate_scores.items())
+    }
+    best_by_kind = {}
+    for score, rmse, kind, candidate_center, rotation, size in sorted(scored):
+        if kind in best_by_kind:
+            continue
+        best_by_kind[kind] = PrimitiveFit(
+            kind=kind,
+            center=np.asarray(candidate_center, dtype=np.float64),
+            rotation=np.asarray(rotation, dtype=np.float64),
+            size=np.asarray(size, dtype=np.float64),
+            score=float(score),
+            surface_rmse=float(rmse),
+            candidate_scores=shared_scores,
+        )
+    return {kind: best_by_kind[kind] for kind in allowed_kinds}
+
+
+def fit_best_primitive(
+    points: np.ndarray,
+    *,
+    padding: float = 0.005,
+    maximum_score_points: int = 10000,
+    allowed_kinds: tuple[str, ...] = ("obb", "cylinder", "capsule"),
+) -> PrimitiveFit:
+    """Fit the allowed conservative primitives and select the best surface model."""
+    candidates = fit_primitive_candidates(
+        points,
+        padding=padding,
+        maximum_score_points=maximum_score_points,
+        allowed_kinds=allowed_kinds,
     )
+    return min(candidates.values(), key=lambda fit: fit.score)

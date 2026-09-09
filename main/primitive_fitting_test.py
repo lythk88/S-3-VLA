@@ -4,6 +4,7 @@ import pytest
 from primitive_fitting import (
     PrimitiveFit,
     fit_best_primitive,
+    fit_primitive_candidates,
     plot_primitive_fit,
     primitive_bounding_box_half_extents,
 )
@@ -66,6 +67,16 @@ def test_selector_supports_requested_four_shape_set():
     )
     assert fit.kind in {"aabb", "ellipsoid", "cylinder", "sphere"}
     assert set(fit.candidate_scores) == {"aabb", "ellipsoid", "cylinder", "sphere"}
+
+
+def test_candidate_fitter_returns_one_fit_for_every_requested_kind():
+    requested = ("aabb", "ellipsoid", "cylinder", "sphere")
+    candidates = fit_primitive_candidates(
+        _box_surface(), padding=0.0, allowed_kinds=requested
+    )
+    assert tuple(candidates) == requested
+    assert all(fit.kind == kind for kind, fit in candidates.items())
+    assert all(set(fit.candidate_scores) == set(requested) for fit in candidates.values())
 
 
 def test_selector_supports_requested_aabb_cylinder_sphere_set():

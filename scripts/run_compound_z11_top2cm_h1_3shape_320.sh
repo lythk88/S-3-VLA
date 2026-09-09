@@ -7,6 +7,8 @@ PI_REPLAN_STEPS="${PI_REPLAN_STEPS:-1}"
 QP_HORIZON="${QP_HORIZON:-1}"
 OBSTACLE_PRIMITIVE_KINDS="${OBSTACLE_PRIMITIVE_KINDS:-aabb,cylinder,sphere}"
 SAVE_PERCEPTION_DIAGNOSTICS="${SAVE_PERCEPTION_DIAGNOSTICS:-1}"
+QP_SHAPE_SELECTION="${QP_SHAPE_SELECTION:-0}"
+SHAPE_SELECTION_LAMBDA_INTERVENTION="${SHAPE_SELECTION_LAMBDA_INTERVENTION:-1.0}"
 OUT="$ROOT/results/$RUN_NAME"
 
 export PYTHONPATH="$ROOT/.deps_qwen:$ROOT/main:$ROOT/openpi/src:$ROOT/openpi/packages/openpi-client/src:$ROOT/safelibero:$ROOT/GroundingDINO"
@@ -68,6 +70,13 @@ if [[ "$SAVE_PERCEPTION_DIAGNOSTICS" == 1 ]]; then
   COMMON+=(--save-perception-diagnostics)
 else
   COMMON+=(--no-save-perception-diagnostics)
+fi
+if [[ "$QP_SHAPE_SELECTION" == 1 ]]; then
+  COMMON+=(
+    --action-expert-qp-shape-selection
+    --action-expert-shape-selection-lambda-intervention \
+      "$SHAPE_SELECTION_LAMBDA_INTERVENTION"
+  )
 fi
 
 mkdir -p "$OUT/logs"

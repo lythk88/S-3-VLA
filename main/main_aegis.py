@@ -45,6 +45,7 @@ from grasp_rgbd import (
 from primitive_fitting import (
     PrimitiveFit,
     fit_best_primitive,
+    fit_primitive_candidates,
     plot_primitive_fit,
     primitive_bounding_box_half_extents,
 )
@@ -290,6 +291,10 @@ class Args:
     # ellipsoid used by the original VLSA implementation.
     action_expert_vlsa_mvee_obstacle: bool = False
     action_expert_obstacle_primitive_kinds: str = "obb,cylinder,capsule"
+    # Fit all requested shapes, probe their QPs on one shared pi0.5 sample,
+    # then freeze the selected shape for the rest of the episode.
+    action_expert_qp_shape_selection: bool = False
+    action_expert_shape_selection_lambda_intervention: float = 1.0
     # Optional diagnostic override for the text prompt used by the obstacle
     # detector. When unset, the prompt is resolved from the MuJoCo instance.
     obstacle_prompt_override: str | None = None
@@ -354,6 +359,10 @@ def eval_libero(args: Args) -> None:
         raise ValueError("time_conditioned_safety_threshold must be in [0, 1]")
     if args.action_expert_candidates < 1:
         raise ValueError("action_expert_candidates must be positive")
+    if args.action_expert_shape_selection_lambda_intervention < 0.0:
+        raise ValueError(
+            "action_expert_shape_selection_lambda_intervention must be non-negative"
+        )
     if not 1 <= args.replan_steps <= args.flow_noise_action_horizon:
         raise ValueError(
             "replan_steps must be between 1 and the pi0.5 action horizon "
@@ -692,6 +701,9 @@ def eval_libero(args: Args) -> None:
             response_gain_achieved_window = []
             response_gain_records = []
             active_action_expert_debug_chunk = None
+            obstacle_primitive_candidates = {}
+            obstacle_candidate_frames = {}
+            obstacle_shape_selection_record = None
             model = env.sim.model
             data = env.sim.data
             eef_body_id = model.body_name2id("eef_marker")
@@ -913,6 +925,19 @@ def eval_libero(args: Args) -> None:
                         )
                         if args.action_expert_vlsa_mvee_obstacle:
                             primitive_fit = _fit_vlsa_mvee_ellipsoid(filter_points)
+                        elif args.action_expert_qp_shape_selection:
+                            obstacle_primitive_candidates = fit_primitive_candidates(
+                                filter_points,
+                                padding=args.action_expert_obstacle_padding_m,
+                                allowed_kinds=obstacle_primitive_kinds,
+                            )
+                            # This provisional fit is used only to construct the
+                            # first request.  The shared-noise QP probe below
+                            # replaces it and freezes the winner before action 0.
+                            primitive_fit = min(
+                                obstacle_primitive_candidates.values(),
+                                key=lambda fit: fit.score,
+                            )
                         else:
                             primitive_fit = fit_best_primitive(
                                 filter_points,
@@ -966,6 +991,20 @@ def eval_libero(args: Args) -> None:
                         primitive_rotation_in_obstacle = (
                             initial_obstacle_rotation.T @ R2
                         )
+                        if obstacle_primitive_candidates:
+                            obstacle_candidate_frames = {
+                                kind: {
+                                    "fit": fit,
+                                    "center_in_obstacle": (
+                                        initial_obstacle_rotation.T
+                                        @ (fit.center - initial_obstacle_position)
+                                    ),
+                                    "rotation_in_obstacle": (
+                                        initial_obstacle_rotation.T @ fit.rotation
+                                    ),
+                                }
+                                for kind, fit in obstacle_primitive_candidates.items()
+                            }
                         if args.save_perception_diagnostics:
                             plot_primitive_fit(
                                 filter_points,
@@ -982,6 +1021,20 @@ def eval_libero(args: Args) -> None:
                                     "score": primitive_fit.score,
                                     "surface_rmse": primitive_fit.surface_rmse,
                                     "candidate_scores": primitive_fit.candidate_scores,
+                                    "qp_shape_selection": bool(
+                                        args.action_expert_qp_shape_selection
+                                    ),
+                                    "qp_selected": False,
+                                    "candidate_geometries": {
+                                        kind: {
+                                            "center": state["fit"].center.tolist(),
+                                            "rotation": state["fit"].rotation.tolist(),
+                                            "size": state["fit"].size.tolist(),
+                                            "surface_score": state["fit"].score,
+                                            "surface_rmse": state["fit"].surface_rmse,
+                                        }
+                                        for kind, state in obstacle_candidate_frames.items()
+                                    },
                                     "allowed_kinds": list(obstacle_primitive_kinds),
                                     "forced_axis_aligned": bool(
                                         args.action_expert_force_axis_aligned_obb
@@ -1267,7 +1320,205 @@ def eval_libero(args: Args) -> None:
                             )
 
                         candidate_results = []
-                        if scorer is not None:
+                        if (
+                            args.action_expert_qp_shape_selection
+                            and obstacle_shape_selection_record is None
+                            and obstacle_candidate_frames
+                        ):
+                            current_obstacle_position = np.asarray(
+                                obs[f"{tracked_obstacle_name}_pos"], dtype=np.float64
+                            )
+                            current_obstacle_rotation = R.from_quat(
+                                np.asarray(
+                                    obs[f"{tracked_obstacle_name}_quat"],
+                                    dtype=np.float64,
+                                )
+                            ).as_matrix()
+                            ranked_shapes = []
+                            shape_probe_records = []
+                            for candidate_kind in obstacle_primitive_kinds:
+                                candidate_state = obstacle_candidate_frames[candidate_kind]
+                                candidate_fit = candidate_state["fit"]
+                                candidate_center = (
+                                    current_obstacle_position
+                                    + current_obstacle_rotation
+                                    @ candidate_state["center_in_obstacle"]
+                                )
+                                candidate_rotation = (
+                                    current_obstacle_rotation
+                                    @ candidate_state["rotation_in_obstacle"]
+                                )
+                                candidate_element = dict(element)
+                                candidate_config = dict(
+                                    element["__action_expert_guidance__"]
+                                )
+                                candidate_geometry = dict(candidate_config["geometry"])
+                                candidate_geometry.update(
+                                    {
+                                        "obstacle_center": np.asarray(
+                                            candidate_center, dtype=np.float32
+                                        ),
+                                        "obstacle_rotation": np.asarray(
+                                            candidate_rotation, dtype=np.float32
+                                        ),
+                                        "obstacle_kind": candidate_kind,
+                                        "obstacle_size": np.asarray(
+                                            candidate_fit.size, dtype=np.float32
+                                        ),
+                                    }
+                                )
+                                candidate_config["geometry"] = candidate_geometry
+                                candidate_element["__action_expert_guidance__"] = (
+                                    candidate_config
+                                )
+                                candidate_response = client.infer(
+                                    candidate_element, noise=fixed_noise
+                                )
+                                candidate_barriers = np.asarray(
+                                    candidate_response[
+                                        "action_expert_final_trajectory_barriers"
+                                    ],
+                                    dtype=np.float64,
+                                )
+                                certified_horizon = int(
+                                    candidate_response.get(
+                                        "action_expert_certified_horizon",
+                                        len(candidate_barriers),
+                                    )
+                                )
+                                certified = bool(
+                                    candidate_response[
+                                        "action_expert_final_projection_success"
+                                    ]
+                                    and certified_horizon == args.action_expert_qp_horizon
+                                    and np.all(
+                                        candidate_barriers[:certified_horizon] >= -1e-7
+                                    )
+                                )
+                                success_probability = float(
+                                    candidate_response.get(
+                                        "action_expert_final_success_score_after", 0.0
+                                    )
+                                )
+                                safety_correction = float(
+                                    candidate_response.get(
+                                        "action_expert_final_safety_correction_rms",
+                                        0.0,
+                                    )
+                                )
+                                critic_correction = float(
+                                    candidate_response.get(
+                                        "action_expert_final_critic_correction_rms",
+                                        0.0,
+                                    )
+                                )
+                                correction_rms = math.sqrt(
+                                    safety_correction**2 + critic_correction**2
+                                )
+                                utility = math.log(
+                                    max(success_probability, 1e-8)
+                                ) - (
+                                    args.action_expert_shape_selection_lambda_intervention
+                                    * correction_rms**2
+                                )
+                                minimum_barrier = float(np.min(candidate_barriers))
+                                # Feasibility is lexicographically dominant.
+                                # Surface score is only a deterministic final
+                                # tie-breaker, never the control objective.
+                                rank = (
+                                    (
+                                        1.0,
+                                        utility,
+                                        minimum_barrier,
+                                        -float(candidate_fit.score),
+                                    )
+                                    if certified
+                                    else (
+                                        0.0,
+                                        minimum_barrier,
+                                        utility,
+                                        -float(candidate_fit.score),
+                                    )
+                                )
+                                record = {
+                                    "kind": candidate_kind,
+                                    "certified": certified,
+                                    "success_probability": success_probability,
+                                    "safety_correction_rms": safety_correction,
+                                    "critic_correction_rms": critic_correction,
+                                    "combined_correction_rms": correction_rms,
+                                    "utility": utility,
+                                    "minimum_final_barrier_m": minimum_barrier,
+                                    "surface_score": float(candidate_fit.score),
+                                    "surface_rmse_m": float(candidate_fit.surface_rmse),
+                                }
+                                shape_probe_records.append(record)
+                                ranked_shapes.append(
+                                    (rank, candidate_kind, candidate_response)
+                                )
+                            _, selected_kind, response = max(
+                                ranked_shapes, key=lambda item: item[0]
+                            )
+                            selected_state = obstacle_candidate_frames[selected_kind]
+                            primitive_fit = selected_state["fit"]
+                            obstacle_kind = selected_kind
+                            obstacle_size = primitive_fit.size
+                            primitive_center_in_obstacle = selected_state[
+                                "center_in_obstacle"
+                            ]
+                            primitive_rotation_in_obstacle = selected_state[
+                                "rotation_in_obstacle"
+                            ]
+                            p2 = (
+                                current_obstacle_position
+                                + current_obstacle_rotation
+                                @ primitive_center_in_obstacle
+                            )
+                            R2 = (
+                                current_obstacle_rotation
+                                @ primitive_rotation_in_obstacle
+                            )
+                            obstacle_shape_selection_record = {
+                                "selection_step": int(t),
+                                "selected_kind": selected_kind,
+                                "lambda_intervention": float(
+                                    args.action_expert_shape_selection_lambda_intervention
+                                ),
+                                "shared_fixed_flow_noise": bool(
+                                    args.use_fixed_flow_noise
+                                ),
+                                "candidates": shape_probe_records,
+                            }
+                            primitive_metadata_path = (
+                                img_out_dir / "obstacle_primitive.json"
+                            )
+                            primitive_metadata = json.loads(
+                                primitive_metadata_path.read_text()
+                            )
+                            primitive_metadata.update(
+                                {
+                                    "kind": obstacle_kind,
+                                    "center": p2.tolist(),
+                                    "rotation": R2.tolist(),
+                                    "size": obstacle_size.tolist(),
+                                    "score": primitive_fit.score,
+                                    "surface_rmse": primitive_fit.surface_rmse,
+                                    "qp_selected": True,
+                                    "qp_selection": obstacle_shape_selection_record,
+                                }
+                            )
+                            primitive_metadata_path.write_text(
+                                json.dumps(
+                                    primitive_metadata, indent=2, sort_keys=True
+                                )
+                                + "\n"
+                            )
+                            logging.info(
+                                "One-shot QP shape selector chose %s: %s",
+                                selected_kind,
+                                shape_probe_records,
+                            )
+                        elif scorer is not None:
                             base_response = client.infer(element, noise=fixed_noise)
                             candidate_results.append(
                                 (
@@ -3247,6 +3498,16 @@ def eval_libero(args: Args) -> None:
                             "candidate_selection": {
                                 "candidate_count": args.action_expert_candidates,
                                 "records": action_expert_candidate_records,
+                            },
+                            "obstacle_shape_selection": {
+                                "enabled": bool(
+                                    args.action_expert_qp_shape_selection
+                                ),
+                                "one_shot": True,
+                                "lambda_intervention": float(
+                                    args.action_expert_shape_selection_lambda_intervention
+                                ),
+                                "record": obstacle_shape_selection_record,
                             },
                         },
                         indent=2,
