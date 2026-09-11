@@ -26,6 +26,7 @@ VALUE_ARTIFACTS = (
 SOURCE_PATHS = (
     "main/main_aegis.py",
     "main/primitive_fitting.py",
+    "main/obstacle_selection.py",
     "main/run_manifest.py",
     "main/analyze_spatial_flow_guidance.py",
     "main/analyze_time_conditioned_heldout.py",
@@ -60,6 +61,7 @@ SOURCE_PATHS = (
 METHOD_IDENTITY_SOURCE_PATHS = (
     "main/main_aegis.py",
     "main/primitive_fitting.py",
+    "main/obstacle_selection.py",
     "openpi/src/openpi/models/pi0.py",
     "openpi/src/openpi/policies/policy.py",
     "openpi/src/openpi/policies/action_expert_qp.py",

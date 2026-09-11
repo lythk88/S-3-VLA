@@ -50,6 +50,7 @@ from primitive_fitting import (
     primitive_bounding_box_half_extents,
 )
 from run_manifest import write_run_manifest
+from obstacle_selection import select_obstacle_name, simulator_obstacle_prompt
 
 LIBERO_DUMMY_ACTION = [0.0] * 6 + [-1.0]
 LIBERO_ENV_RESOLUTION = 1024  # resolution used to render training data
@@ -298,6 +299,10 @@ class Args:
     # Optional diagnostic override for the text prompt used by the obstacle
     # detector. When unset, the prompt is resolved from the MuJoCo instance.
     obstacle_prompt_override: str | None = None
+    obstacle_selector: str = "simulator"
+    obstacle_api_model: str = "glm-4.5v"
+    obstacle_api_base_url: str = "https://open.bigmodel.cn/api/paas/v4/"
+    obstacle_api_timeout_s: float = 120.0
     action_expert_obstacle_padding_m: float = 0.005
     # Optional asymmetric padding of only the obstacle's upper world-z face.
     # When unset, the symmetric padding above is used on that face as well.
@@ -359,6 +364,14 @@ def eval_libero(args: Args) -> None:
         raise ValueError("time_conditioned_safety_threshold must be in [0, 1]")
     if args.action_expert_candidates < 1:
         raise ValueError("action_expert_candidates must be positive")
+    if args.obstacle_selector not in {"simulator", "vlsa-api"}:
+        raise ValueError("obstacle_selector must be 'simulator' or 'vlsa-api'")
+    if args.obstacle_selector == "vlsa-api" and args.obstacle_prompt_override:
+        raise ValueError(
+            "obstacle_prompt_override cannot be used with the VLSA API selector"
+        )
+    if args.obstacle_api_timeout_s <= 0.0:
+        raise ValueError("obstacle_api_timeout_s must be positive")
     if args.action_expert_shape_selection_lambda_intervention < 0.0:
         raise ValueError(
             "action_expert_shape_selection_lambda_intervention must be non-negative"
@@ -823,15 +836,38 @@ def eval_libero(args: Args) -> None:
                 agentview_img = np.ascontiguousarray(obs["agentview_image"][::-1, ::-1])
                 agentview_depth = np.ascontiguousarray(obs["agentview_depth"][::-1, ::-1])
 
-                obstacle_infromation = (
-                    args.obstacle_prompt_override
-                    if args.obstacle_prompt_override
-                    else _obstacle_prompt_from_instance(active_obstacle_names[0])
+                obstacle_selection = select_obstacle_name(
+                    mode=args.obstacle_selector,
+                    image=agentview_img,
+                    instruction=task_description,
+                    task_suite_name=args.task_suite_name,
+                    simulator_instance=active_obstacle_names[0],
+                    prompt_override=args.obstacle_prompt_override,
+                    api_model=args.obstacle_api_model,
+                    api_base_url=args.obstacle_api_base_url,
+                    api_timeout_s=args.obstacle_api_timeout_s,
+                )
+                obstacle_infromation = obstacle_selection.name
+                obstacle_selection_record = obstacle_selection.record()
+                # Ground truth is recorded only for offline accuracy analysis;
+                # it is never passed into the API selector or GroundingDINO.
+                obstacle_selection_record["evaluation_ground_truth_instance"] = (
+                    active_obstacle_names[0]
+                )
+                obstacle_selection_record["ground_truth_used_for_selection"] = False
+                (img_out_dir / "obstacle_name_selection.json").write_text(
+                    json.dumps(obstacle_selection_record, indent=2, sort_keys=True)
+                    + "\n"
                 )
                 logging.info(
-                    "Using simulator-resolved active obstacle prompt: %s (%s)",
+                    "Obstacle selector source=%s answer=%r latency=%s",
+                    obstacle_selection.source,
                     obstacle_infromation,
-                    active_obstacle_names[0],
+                    (
+                        "n/a"
+                        if obstacle_selection.latency_s is None
+                        else f"{obstacle_selection.latency_s:.3f}s"
+                    ),
                 )
                 # obstacle_infromation = "white storage box"
                 agent_view_points = get_point_cloud(
@@ -3313,6 +3349,7 @@ def eval_libero(args: Args) -> None:
                             "chunks_returned": len(action_expert_final_trajectory_barriers),
                             "task_suite": args.task_suite_name,
                             "task_index": task_id,
+                            "obstacle_name_selection": obstacle_selection_record,
                             "episode_index": episode_idx,
                             "safety_level": safety_level,
                             "success": bool(done),
@@ -3858,18 +3895,7 @@ def _make_flow_noise(
 
 def _obstacle_prompt_from_instance(obstacle_name: str) -> str:
     """Map a SafeLIBERO simulator instance to a deterministic detector prompt."""
-    prompt_by_type = {
-        "milk": "red milk carton",
-        "moka_pot": "blue moka pot",
-        "red_coffee_mug": "red mug",
-        "white_storage_box": "white storage box",
-        "wine_bottle": "black wine bottle",
-        "yellow_book": "gray rectangular book",
-    }
-    obstacle_type = obstacle_name.rsplit("_obstacle_", 1)[0]
-    if obstacle_type.endswith("_small"):
-        obstacle_type = obstacle_type[: -len("_small")]
-    return prompt_by_type.get(obstacle_type, obstacle_type.replace("_", " "))
+    return simulator_obstacle_prompt(obstacle_name)
 
 
 def _carried_object_prompt_from_task(task_description: str) -> str:
