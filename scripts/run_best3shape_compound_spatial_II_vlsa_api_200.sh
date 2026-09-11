@@ -76,6 +76,8 @@ COMMON=(
 )
 
 mkdir -p "$OUT/logs"
+# Keep all simulator-generated files out of the frozen source worktree.
+cd "$OUT"
 pids=()
 for task_index in 0 1 2 3; do
   "$RUNTIME_ROOT/.venv/bin/python" "$SOURCE_ROOT/main/main_aegis.py" \
