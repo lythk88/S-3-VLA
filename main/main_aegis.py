@@ -2681,29 +2681,30 @@ def eval_libero(args: Args) -> None:
                                 # inactive carried box in rollout metadata.
                                 carried_object_fit = candidate_carried_object_fit
 
-                                np.savez_compressed(
-                                    attempt_dir / "point_cloud_rgbd.npz",
-                                    points=rgbd_points.astype(np.float32),
-                                    colors=rgbd_colors.astype(np.uint8),
-                                    candidate_points=(
-                                        grasp_cloud.candidate_points.astype(np.float32)
-                                    ),
-                                    candidate_colors=(
-                                        grasp_cloud.candidate_colors.astype(np.uint8)
-                                    ),
-                                    selected_points=(
-                                        grasp_cloud.points.astype(np.float32)
-                                    ),
-                                    selected_colors=(
-                                        grasp_cloud.colors.astype(np.uint8)
-                                    ),
-                                )
-                                plot_primitive_fit(
-                                    fit_points,
-                                    carried_object_fit,
-                                    attempt_dir
-                                    / "point_cloud_axis_aligned_box_3d.png",
-                                )
+                                if args.save_perception_diagnostics:
+                                    np.savez_compressed(
+                                        attempt_dir / "point_cloud_rgbd.npz",
+                                        points=rgbd_points.astype(np.float32),
+                                        colors=rgbd_colors.astype(np.uint8),
+                                        candidate_points=(
+                                            grasp_cloud.candidate_points.astype(np.float32)
+                                        ),
+                                        candidate_colors=(
+                                            grasp_cloud.candidate_colors.astype(np.uint8)
+                                        ),
+                                        selected_points=(
+                                            grasp_cloud.points.astype(np.float32)
+                                        ),
+                                        selected_colors=(
+                                            grasp_cloud.colors.astype(np.uint8)
+                                        ),
+                                    )
+                                    plot_primitive_fit(
+                                        fit_points,
+                                        carried_object_fit,
+                                        attempt_dir
+                                        / "point_cloud_axis_aligned_box_3d.png",
+                                    )
 
                                 carried_object_active = True
                                 carried_object_activation_step = int(t)
