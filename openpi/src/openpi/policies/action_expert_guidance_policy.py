@@ -16,6 +16,7 @@ from openpi.policies.action_expert_qp import linearize_barriers
 from openpi.policies.action_expert_qp import project_action_chunk_with_adaptive_radius
 from openpi.policies.action_expert_qp import project_action_chunk_with_qp
 from openpi.policies.action_expert_qp import refine_action_chunk_for_success
+from openpi.policies.action_expert_qp import retain_nominal_nontranslation_channels
 from openpi.policies.action_expert_qp import rollout_eef_trajectory
 from openpi.policies.action_expert_qp import solve_action_expert_qp
 from openpi.policies.action_expert_qp import trajectory_barriers
@@ -388,6 +389,15 @@ class ActionExpertGuidancePolicy:
 
         guided_actions, guided_hidden, _, _, _, active = working_trace
         denoised_actions = np.asarray(guided_actions[0], dtype=np.float32)
+        if not translation_only_execution:
+            # Guidance and every QP correction are translational.  Resuming the
+            # coupled flow after an XYZ correction can nevertheless perturb
+            # the other action channels, so explicitly retain pi0.5's nominal
+            # rotation and gripper commands.  Barrier evaluation below then
+            # uses the exact 7D action that will be executed.
+            denoised_actions = retain_nominal_nontranslation_channels(
+                nominal_actions, denoised_actions
+            )
         active_indices = np.flatnonzero(np.asarray(active[0], dtype=np.bool_))
         pre_execution_hidden = (
             np.asarray(guided_hidden[0, active_indices[-1]], dtype=np.float32) if len(active_indices) else hidden
@@ -541,6 +551,12 @@ class ActionExpertGuidancePolicy:
             final_actions = projected_actions
             final_trajectory_barriers = final_projection.barriers_after
             final_score_after = final_score_before
+        if not translation_only_execution:
+            # Defensive invariant: neither the final safety projection nor
+            # success refinement may alter nominal rotation or gripper state.
+            final_actions = retain_nominal_nontranslation_channels(
+                nominal_actions, final_actions
+            )
         if not final_projection.success and not continue_on_unsafe:
             raise _UnsafeActionChunkError(
                 f"Refusing to execute an action chunk whose final {qp_horizon}-step QP prefix "

@@ -14,8 +14,10 @@ copies.
 - Safety geometry: gripper ellipsoid plus grasp-conditioned carried-object
   compound box.
 - Obstacle padding: upper world-Z face only.
-- Execution: translation-only, receding closed-loop QP, with a shorter QP
-  prefix executed one action at a time inside each policy chunk.
+- Execution: pi0.5's full nominal 7D action is retained, including rotation and
+  gripper commands. The receding closed-loop QP corrects translation only,
+  with a shorter QP prefix executed one action at a time inside each policy
+  chunk.
 - Success guidance: `success_critic_v1`.
 
 The rollout script expects the simulator, GroundingDINO, Python environment,

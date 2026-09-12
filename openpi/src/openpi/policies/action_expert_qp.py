@@ -80,6 +80,20 @@ class EefTrajectory:
     achieved_rotation_vectors: np.ndarray
 
 
+def retain_nominal_nontranslation_channels(
+    nominal_actions: np.ndarray,
+    corrected_actions: np.ndarray,
+) -> np.ndarray:
+    """Keep pi0.5 rotation and gripper channels after XYZ-only guidance."""
+    nominal = np.asarray(nominal_actions)
+    corrected = np.asarray(corrected_actions)
+    if nominal.shape != corrected.shape or nominal.ndim != 2 or nominal.shape[1] < 3:
+        raise ValueError("nominal and corrected actions must have matching (H, D>=3) shapes")
+    result = corrected.copy()
+    result[:, 3:] = nominal[:, 3:]
+    return result
+
+
 def ellipsoid_support(direction: np.ndarray, rotation: np.ndarray, radii: np.ndarray) -> float:
     direction = np.asarray(direction, dtype=np.float64)
     shape = (

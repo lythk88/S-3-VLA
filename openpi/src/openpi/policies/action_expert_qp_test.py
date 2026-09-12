@@ -11,6 +11,7 @@ from openpi.policies.action_expert_qp import predict_eef_positions
 from openpi.policies.action_expert_qp import primitive_obstacle_gap
 from openpi.policies.action_expert_qp import project_action_chunk_with_qp
 from openpi.policies.action_expert_qp import project_action_chunk_with_adaptive_radius
+from openpi.policies.action_expert_qp import retain_nominal_nontranslation_channels
 from openpi.policies.action_expert_qp import rollout_eef_trajectory
 from openpi.policies.action_expert_qp import solve_action_expert_qp
 from openpi.policies.action_expert_qp import trajectory_barriers
@@ -26,6 +27,16 @@ def _controller(step=0.05, rotation_step=0.5, response=1.0):
         translation_response_gain=np.asarray(response),
         rotation_response_gain=np.asarray(response),
     )
+
+
+def test_xyz_guidance_retains_pi05_rotation_and_gripper_channels():
+    nominal = np.arange(35, dtype=np.float32).reshape(5, 7)
+    guided = nominal + 100.0
+
+    retained = retain_nominal_nontranslation_channels(nominal, guided)
+
+    np.testing.assert_array_equal(retained[:, :3], guided[:, :3])
+    np.testing.assert_array_equal(retained[:, 3:], nominal[:, 3:])
 
 
 def test_ellipsoid_gap_for_spheres():
@@ -307,6 +318,8 @@ def test_final_qp_projection_makes_every_action_step_safe():
     obstacle = ObstaclePrimitive("cylinder", np.array([0.5, 0.0, 0.0]), np.eye(3), np.array([0.05, 0.05]))
     actions = np.zeros((10, 7))
     actions[:, 0] = 1.0
+    actions[:, 3:6] = np.linspace(-0.6, 0.6, 10)[:, None]
+    actions[:, 6] = np.where(np.arange(10) < 5, -1.0, 1.0)
 
     def barrier_function(physical_actions):
         return trajectory_barriers(
@@ -333,6 +346,7 @@ def test_final_qp_projection_makes_every_action_step_safe():
     assert np.all(result.barriers_after >= -1e-7)
     assert np.any(np.abs(result.correction) > 1e-6)
     assert not np.array_equal(result.actions, actions)
+    np.testing.assert_allclose(result.actions[:, 3:], actions[:, 3:], atol=1e-7)
     np.testing.assert_allclose(result.barriers_after, barrier_function(result.actions), atol=1e-7)
 
 

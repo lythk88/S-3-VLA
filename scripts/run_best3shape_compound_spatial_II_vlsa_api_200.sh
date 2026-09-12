@@ -47,7 +47,6 @@ COMMON=(
   --action-expert-adaptive-safety-trust-radii 0.1,0.2,0.3
   --action-expert-adaptive-escalate-on-first-barrier-only
   --no-action-expert-minimal-intervention
-  --action-expert-translation-only-execution
   --action-expert-candidates 1
   --action-expert-first-step-recovery
   --action-expert-continue-on-unsafe
