@@ -18,3 +18,4 @@ MUJOCO_LOG.TXT
 __pycache__/
 *.pyc
 .venv/
+.env
