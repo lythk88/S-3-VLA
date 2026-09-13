@@ -79,6 +79,14 @@ def test_candidate_fitter_returns_one_fit_for_every_requested_kind():
     assert all(set(fit.candidate_scores) == set(requested) for fit in candidates.values())
 
 
+def test_cylinder_axis_is_world_vertical():
+    fit = fit_primitive_candidates(
+        _box_surface(), padding=0.0, allowed_kinds=("cylinder",)
+    )["cylinder"]
+    assert np.allclose(fit.rotation, np.eye(3))
+    assert np.allclose(fit.rotation[:, 2], [0.0, 0.0, 1.0])
+
+
 def test_selector_supports_requested_aabb_cylinder_sphere_set():
     fit = fit_best_primitive(
         _box_surface(),

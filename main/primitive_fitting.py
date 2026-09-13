@@ -460,11 +460,15 @@ def fit_primitive_candidates(
     if "sphere" in allowed:
         sphere = _fit_sphere(points, padding)
         candidates.append(("sphere", *sphere[:3], sphere[3][score_indices], 4))
+    # Obstacles in SafeLIBERO rest upright on a horizontal support surface.
+    # Keep the cylinder's symmetry axis aligned with world +z; choosing the
+    # lowest-error PCA axis can otherwise turn the fit into a horizontal disc.
+    if "cylinder" in allowed:
+        cylinder = _fit_cylinder(points, np.eye(3, dtype=np.float64), padding)
+        candidates.append(("cylinder", *cylinder[:3], cylinder[3][score_indices], 7))
+
     for axis_index in range(3):
         rotation = _axis_rotation(pca_rotation, axis_index)
-        if "cylinder" in allowed:
-            cylinder = _fit_cylinder(points, rotation, padding)
-            candidates.append(("cylinder", *cylinder[:3], cylinder[3][score_indices], 7))
         if "capsule" in allowed:
             capsule = _fit_capsule(points, rotation, padding)
             candidates.append(("capsule", *capsule[:3], capsule[3][score_indices], 7))
