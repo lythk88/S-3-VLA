@@ -12,7 +12,7 @@ fi
 PYTHON_BIN="${PYTHON_BIN:-$RUNTIME_ROOT/.venv/bin/python}"
 RUN_NAME="${RUN_NAME:-smcbf_3shape_success_critic_on_object_I_ep0to9_40_v1}"
 OUT="${OUT:-/dev/shm/$RUN_NAME}"
-CRITIC_RUN_DIR="${CRITIC_RUN_DIR:-$SOURCE_ROOT/Safety-value-function/success_critic_v1}"
+CRITIC_RUN_DIR="${CRITIC_RUN_DIR:-$SOURCE_ROOT/Success-critic/success_critic_v1}"
 POLICY_CHECKPOINT_DIR="${POLICY_CHECKPOINT_DIR:-/root/.cache/openpi/openpi-assets/checkpoints/pi05_libero/pi05_libero}"
 GROUNDINGDINO_CHECKPOINT_PATH="${GROUNDINGDINO_CHECKPOINT_PATH:-$RUNTIME_ROOT/GroundingDINO/groundingdino_swint_ogc.pth}"
 GROUNDINGDINO_CONFIG_PATH="${GROUNDINGDINO_CONFIG_PATH:-$RUNTIME_ROOT/.venv/lib/python3.11/site-packages/groundingdino/config/GroundingDINO_SwinT_OGC.py}"

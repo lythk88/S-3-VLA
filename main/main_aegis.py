@@ -36,7 +36,6 @@ import warnings
 warnings.filterwarnings("ignore")
 from typing import List
 
-from continuous_score_guidance import ContinuousSafetyScorer
 from grasp_rgbd import (
     gripper_width,
     rgbd_to_world_point_cloud,
@@ -218,36 +217,9 @@ class Args:
     save_perception_diagnostics: bool = True
     fail_on_episode_error: bool = False  # Abort instead of saving a transport/runtime error as a failed rollout
     disable_safety_layer: bool = False  # Run the nominal pi0.5 policy without AEGIS intervention
-    use_score_guidance: bool = False  # Evaluate multiple pi0.5 samples and keep the safest one
-    score_run_dir: str = str(ROOT / "Safety-value-function/chunk_safety_value_run")
-    score_guidance_candidates: int = 4
-    score_guidance_device: str = "auto"
-    use_flow_guidance: bool = False
-    flow_guidance_scale: float = 0.25
-    flow_guidance_start_time: float = 0.5
-    flow_guidance_run_name: str = "pi05_flow_guided"
     baseline_run_name: str = "pi05_no_safety"
-    flow_guidance_translation_only: bool = False
-    flow_guidance_orthogonal: bool = False
-    use_time_conditioned_guidance: bool = False
-    time_conditioned_value_run_dir: str = str(
-        ROOT / "Safety-value-function/time_conditioned_clearance_v1"
-    )
-    time_conditioned_guidance_scale: float = 0.05
-    time_conditioned_guidance_time: float = 0.3
-    time_conditioned_guidance_times: str = ""
-    time_conditioned_clearance_score_weight: float = 0.5
-    time_conditioned_guidance_geometry: str = "direct"
-    time_conditioned_guidance_normalization: str = "global-rms"
-    time_conditioned_guidance_integration: str = "state"
-    time_conditioned_guidance_translation_only: bool = True
-    time_conditioned_value_backtracking: bool = False
-    time_conditioned_margin_scaled: bool = False  # Scale guidance authority by how far the score sits below the gate
-    time_conditioned_safety_threshold: float = 0.5
-    time_conditioned_value_device: str = "unspecified"
-    time_conditioned_run_name: str = "pi05_time_value_guided"
     use_action_expert_guidance: bool = False
-    action_expert_critic_run_dir: str = str(ROOT / "Safety-value-function/success_critic_v1")
+    action_expert_critic_run_dir: str = str(ROOT / "Success-critic/success_critic_v1")
     # Apply success-critic QPs only in the later denoising stages. The t=0.5
     # intervention was too early and produced large task-degrading corrections.
     action_expert_times: str = "0.3,0.1"
@@ -360,8 +332,6 @@ def eval_libero(args: Args) -> None:
         )
     # Set random seed
     np.random.seed(args.seed)
-    if not 0.0 <= args.time_conditioned_safety_threshold <= 1.0:
-        raise ValueError("time_conditioned_safety_threshold must be in [0, 1]")
     if args.action_expert_candidates < 1:
         raise ValueError("action_expert_candidates must be positive")
     if args.obstacle_selector not in {"simulator", "vlsa-api"}:
@@ -454,28 +424,8 @@ def eval_libero(args: Args) -> None:
 
     print("OK")
     client = _websocket_client_policy.WebsocketClientPolicy(args.host, args.port)
-    scorer = None
-    guidance_modes = sum(
-        (
-            bool(args.use_score_guidance),
-            bool(args.use_flow_guidance),
-            bool(args.use_time_conditioned_guidance),
-            bool(args.use_action_expert_guidance),
-        )
-    )
-    if guidance_modes > 1:
-        raise ValueError("Candidate, residual-flow, time-conditioned, and action-expert guidance are mutually exclusive.")
     if args.use_action_expert_guidance and not args.disable_safety_layer:
         raise ValueError("Action-expert primitive guidance requires --disable-safety-layer.")
-    if args.use_score_guidance:
-        if not args.disable_safety_layer:
-            raise ValueError("Score guidance is intended for pi0.5-only runs. Set --disable-safety-layer.")
-        scorer = ContinuousSafetyScorer.load(pathlib.Path(args.score_run_dir), device=args.score_guidance_device)
-        logging.info(
-            "Loaded continuous score guidance from %s with %d candidates",
-            args.score_run_dir,
-            args.score_guidance_candidates,
-        )
     model_groundingdino = None
     qwen_vlm_classifier = None
     # Compound geometry is now estimated from a grasp-conditioned RGB-D crop,
@@ -538,12 +488,6 @@ def eval_libero(args: Args) -> None:
         _out_dir.mkdir(parents=True, exist_ok=True)
         if args.use_action_expert_guidance:
             run_name = args.action_expert_run_name
-        elif args.use_time_conditioned_guidance:
-            run_name = args.time_conditioned_run_name
-        elif args.use_flow_guidance:
-            run_name = args.flow_guidance_run_name
-        elif args.use_score_guidance:
-            run_name = "pi05_score_guided"
         else:
             run_name = args.baseline_run_name
         out_dir = _out_dir / f"{run_name}_{safety_level}"
@@ -557,10 +501,6 @@ def eval_libero(args: Args) -> None:
             value_run_dir=(
                 pathlib.Path(args.action_expert_critic_run_dir)
                 if args.use_action_expert_guidance
-                else pathlib.Path(args.time_conditioned_value_run_dir)
-                if args.use_time_conditioned_guidance
-                else pathlib.Path(args.score_run_dir)
-                if args.use_flow_guidance
                 else None
             ),
             checkpoint_dir=(pathlib.Path(args.policy_checkpoint_dir) if args.policy_checkpoint_dir else None),
@@ -669,21 +609,6 @@ def eval_libero(args: Args) -> None:
             last_layer_hidden_states = []
             predicted_action_chunks = []
             chunk_infer_ms = []
-            guided_candidate_scores = []
-            selected_candidate_indices = []
-            flow_value_scores = []
-            flow_residual_ratios = []
-            time_conditioned_scores = []
-            time_conditioned_clearance_predictions = []
-            time_conditioned_scores_after = []
-            time_conditioned_clearance_predictions_after = []
-            time_conditioned_gradient_rms = []
-            time_conditioned_perturbation_rms = []
-            time_conditioned_correction_to_step = []
-            time_conditioned_accepted_factors = []
-            time_conditioned_injection_counts = []
-            time_conditioned_risk_gate_active = []
-            time_conditioned_safety_thresholds = []
             action_expert_scores_before = []
             action_expert_scores_after = []
             action_expert_qp_success = []
@@ -1202,49 +1127,6 @@ def eval_libero(args: Args) -> None:
                             "prompt": str(task_description),
                             "__debug_return_last_hidden_state__": True,
                         }
-                        if args.use_flow_guidance:
-                            element["__safety_value_flow_guidance__"] = {
-                                "scale": args.flow_guidance_scale,
-                                "start_time": args.flow_guidance_start_time,
-                                "translation_only": args.flow_guidance_translation_only,
-                                "orthogonal": args.flow_guidance_orthogonal,
-                            }
-                        if args.use_time_conditioned_guidance:
-                            guidance_times = (
-                                [
-                                    float(value.strip())
-                                    for value in args.time_conditioned_guidance_times.split(",")
-                                    if value.strip()
-                                ]
-                                if args.time_conditioned_guidance_times
-                                else [args.time_conditioned_guidance_time]
-                            )
-                            element["__time_conditioned_guidance__"] = {
-                                "scale": args.time_conditioned_guidance_scale,
-                                "times": guidance_times,
-                                "direction_sign": 1,
-                                "clearance_score_weight": (
-                                    args.time_conditioned_clearance_score_weight
-                                ),
-                                "translation_only": (
-                                    args.time_conditioned_guidance_translation_only
-                                ),
-                                "geometry": args.time_conditioned_guidance_geometry,
-                                "normalization": (
-                                    args.time_conditioned_guidance_normalization
-                                ),
-                                "integration": args.time_conditioned_guidance_integration,
-                                "value_backtracking": (
-                                    args.time_conditioned_value_backtracking
-                                ),
-                                "margin_scaled": bool(
-                                    args.time_conditioned_margin_scaled
-                                ),
-                                "safety_threshold": (
-                                    args.time_conditioned_safety_threshold
-                                ),
-                                "denoising_steps": 10,
-                            }
                         if args.use_action_expert_guidance and flag_safety_control:
                             controller = env.env.robots[0].controller
                             element["__action_expert_guidance__"] = {
@@ -1355,7 +1237,6 @@ def eval_libero(args: Args) -> None:
                                 candidate_idx=0,
                             )
 
-                        candidate_results = []
                         if (
                             args.action_expert_qp_shape_selection
                             and obstacle_shape_selection_record is None
@@ -1553,42 +1434,6 @@ def eval_libero(args: Args) -> None:
                                 "One-shot QP shape selector chose %s: %s",
                                 selected_kind,
                                 shape_probe_records,
-                            )
-                        elif scorer is not None:
-                            base_response = client.infer(element, noise=fixed_noise)
-                            candidate_results.append(
-                                (
-                                    scorer.score_response(base_response),
-                                    base_response,
-                                    "baseline",
-                                )
-                            )
-                            for candidate_idx in range(max(args.score_guidance_candidates - 1, 0)):
-                                noise = _make_flow_noise(
-                                    args,
-                                    task_id=task_id,
-                                    episode_idx=episode_idx,
-                                    step=t,
-                                    candidate_idx=candidate_idx + 1,
-                                )
-                                response = client.infer(element, noise=noise)
-                                candidate_results.append(
-                                    (
-                                        scorer.score_response(response),
-                                        response,
-                                        f"noise_{candidate_idx + 1}",
-                                    )
-                                )
-                            candidate_results.sort(key=lambda item: item[0], reverse=True)
-                            selected_score, response, selected_label = candidate_results[0]
-                            selected_candidate_indices.append(
-                                0 if selected_label == "baseline" else int(selected_label.rsplit("_", 1)[1])
-                            )
-                            logging.info(
-                                "Score guidance selected %s with safety score %.4f among %d candidates",
-                                selected_label,
-                                selected_score,
-                                len(candidate_results),
                             )
                         elif args.use_action_expert_guidance and args.action_expert_candidates > 1:
                             ranked_candidates = []
@@ -1935,52 +1780,6 @@ def eval_libero(args: Args) -> None:
                                 np.asarray(action_chunk[: args.replan_steps], dtype=np.float32)
                             )
                             chunk_infer_ms.append(float(response.get("policy_timing", {}).get("infer_ms", np.nan)))
-                            if candidate_results:
-                                guided_candidate_scores.append(
-                                    np.asarray([score for score, _, _ in candidate_results], dtype=np.float32)
-                                )
-                            if "safety_value_score" in response:
-                                flow_value_scores.append(
-                                    float(np.asarray(response["safety_value_score"]).reshape(-1)[0])
-                                )
-                            if "safety_residual_ratio" in response:
-                                flow_residual_ratios.append(
-                                    float(np.asarray(response["safety_residual_ratio"]))
-                                )
-                            if "time_conditioned_score_before" in response:
-                                time_conditioned_scores.append(
-                                    float(response["time_conditioned_score_before"])
-                                )
-                                time_conditioned_clearance_predictions.append(
-                                    float(response["time_conditioned_clearance_before"])
-                                )
-                                time_conditioned_scores_after.append(
-                                    float(response["time_conditioned_score_after"])
-                                )
-                                time_conditioned_clearance_predictions_after.append(
-                                    float(response["time_conditioned_clearance_after"])
-                                )
-                                time_conditioned_gradient_rms.append(
-                                    float(response["time_conditioned_gradient_rms"])
-                                )
-                                time_conditioned_perturbation_rms.append(
-                                    float(response["time_conditioned_perturbation_rms"])
-                                )
-                                time_conditioned_correction_to_step.append(
-                                    float(response["time_conditioned_correction_to_step"])
-                                )
-                                time_conditioned_accepted_factors.append(
-                                    float(response["time_conditioned_accepted_factor"])
-                                )
-                                time_conditioned_injection_counts.append(
-                                    int(response["time_conditioned_injection_count"])
-                                )
-                                time_conditioned_risk_gate_active.append(
-                                    bool(response["time_conditioned_risk_gate_active"])
-                                )
-                                time_conditioned_safety_thresholds.append(
-                                    float(response["time_conditioned_safety_threshold"])
-                                )
                             if "action_expert_intervened" in response:
                                 action_expert_intervened.append(bool(response["action_expert_intervened"]))
                                 trajectory_barriers = np.asarray(
@@ -3265,47 +3064,6 @@ def eval_libero(args: Args) -> None:
                     collision_action_steps, dtype=np.int32
                 ),
                 chunk_infer_ms=np.asarray(chunk_infer_ms, dtype=np.float32),
-                guided_candidate_scores=(
-                    np.asarray(guided_candidate_scores, dtype=object)
-                    if guided_candidate_scores
-                    else np.empty((0,), dtype=np.float32)
-                ),
-                selected_candidate_indices=np.asarray(selected_candidate_indices, dtype=np.int32),
-                flow_value_scores=np.asarray(flow_value_scores, dtype=np.float32),
-                flow_residual_ratios=np.asarray(flow_residual_ratios, dtype=np.float32),
-                time_conditioned_scores=np.asarray(
-                    time_conditioned_scores, dtype=np.float32
-                ),
-                time_conditioned_clearance_predictions=np.asarray(
-                    time_conditioned_clearance_predictions, dtype=np.float32
-                ),
-                time_conditioned_scores_after=np.asarray(
-                    time_conditioned_scores_after, dtype=np.float32
-                ),
-                time_conditioned_clearance_predictions_after=np.asarray(
-                    time_conditioned_clearance_predictions_after, dtype=np.float32
-                ),
-                time_conditioned_gradient_rms=np.asarray(
-                    time_conditioned_gradient_rms, dtype=np.float32
-                ),
-                time_conditioned_perturbation_rms=np.asarray(
-                    time_conditioned_perturbation_rms, dtype=np.float32
-                ),
-                time_conditioned_correction_to_step=np.asarray(
-                    time_conditioned_correction_to_step, dtype=np.float32
-                ),
-                time_conditioned_accepted_factors=np.asarray(
-                    time_conditioned_accepted_factors, dtype=np.float32
-                ),
-                time_conditioned_injection_counts=np.asarray(
-                    time_conditioned_injection_counts, dtype=np.int32
-                ),
-                time_conditioned_risk_gate_active=np.asarray(
-                    time_conditioned_risk_gate_active, dtype=np.bool_
-                ),
-                time_conditioned_safety_thresholds=np.asarray(
-                    time_conditioned_safety_thresholds, dtype=np.float32
-                ),
                 action_expert_scores_before=np.asarray(action_expert_scores_before, dtype=np.float32),
                 action_expert_scores_after=np.asarray(action_expert_scores_after, dtype=np.float32),
                 action_expert_qp_success=np.asarray(action_expert_qp_success, dtype=np.bool_),
@@ -3322,10 +3080,6 @@ def eval_libero(args: Args) -> None:
                 ),
                 action_expert_perception_available=np.asarray(flag_safety_control, dtype=np.bool_),
                 episode_steps=np.asarray(t, dtype=np.int32),
-                flow_guidance_scale=np.asarray(args.flow_guidance_scale, dtype=np.float32),
-                flow_guidance_start_time=np.asarray(args.flow_guidance_start_time, dtype=np.float32),
-                flow_guidance_translation_only=np.asarray(args.flow_guidance_translation_only),
-                flow_guidance_orthogonal=np.asarray(args.flow_guidance_orthogonal),
                 success=np.asarray(done),
                 collision=np.asarray(collide_flag),
                 safe_success=np.asarray(done and not collide_flag),

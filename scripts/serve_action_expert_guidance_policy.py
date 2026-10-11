@@ -29,13 +29,13 @@ class Args:
     checkpoint_dir: str = str(
         pathlib.Path.home() / ".cache/openpi/openpi-assets/checkpoints/pi05_libero"
     )
-    critic_run_dir: str = str(ROOT / "Safety-value-function/success_critic_v1")
+    critic_run_dir: str = str(ROOT / "Success-critic/success_critic_v1")
     torch_device: str = "cpu"
 
 
 def _load_critic(run_dir: pathlib.Path):
     manifest = json.loads((run_dir / "training_manifest.json").read_text())
-    model_path = ROOT / "Safety-value-function/success_critic_model.py"
+    model_path = ROOT / "Success-critic/success_critic_model.py"
     spec = importlib.util.spec_from_file_location("success_critic_model", model_path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None

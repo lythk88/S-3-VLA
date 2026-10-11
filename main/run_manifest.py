@@ -29,20 +29,19 @@ SOURCE_PATHS = (
     "main/obstacle_selection.py",
     "main/grasp_rgbd.py",
     "main/utils.py",
-    "main/continuous_score_guidance.py",
     "main/run_manifest.py",
     "openpi/src/openpi/models/pi0.py",
-    "openpi/src/openpi/models/safety_value.py",
+    "openpi/src/openpi/models/pi0_denoising_trace.py",
     "openpi/src/openpi/policies/policy.py",
-    "openpi/src/openpi/policies/time_conditioned_guidance_policy.py",
     "openpi/src/openpi/policies/action_expert_qp.py",
     "openpi/src/openpi/policies/action_expert_guidance_policy.py",
     "openpi/src/openpi/serving/websocket_policy_server.py",
     "openpi/packages/openpi-client/src/openpi_client/websocket_client_policy.py",
     "scripts/serve_action_expert_guidance_policy.py",
     "scripts/run_best3shape_compound_spatial_II_vlsa_api_200.sh",
-    "Safety-value-function/success_critic_model.py",
-    "Safety-value-function/train_success_critic.py",
+    "scripts/run_3shape_critic_on_object_I_ep0to9_40.sh",
+    "Success-critic/success_critic_model.py",
+    "Success-critic/train_success_critic.py",
 )
 
 METHOD_IDENTITY_SOURCE_PATHS = (
@@ -54,7 +53,7 @@ METHOD_IDENTITY_SOURCE_PATHS = (
     "openpi/src/openpi/policies/action_expert_qp.py",
     "openpi/src/openpi/policies/action_expert_guidance_policy.py",
     "openpi/src/openpi/serving/websocket_policy_server.py",
-    "Safety-value-function/success_critic_model.py",
+    "Success-critic/success_critic_model.py",
 )
 
 SHARD_CONFIGURATION_KEYS = {
@@ -204,12 +203,8 @@ def write_run_manifest(
     value_run_dir: pathlib.Path | None,
     checkpoint_dir: pathlib.Path | None,
 ) -> pathlib.Path:
-    translation_only = bool(configuration.get("flow_guidance_translation_only"))
-    time_conditioned = bool(configuration.get("use_time_conditioned_guidance"))
-    flow_guided = bool(configuration.get("use_flow_guidance"))
     action_expert = bool(configuration.get("use_action_expert_guidance"))
     if action_expert:
-        translation_only = True
         residual_normalization = {
             "identifier": "action_expert_success_qp_v1",
             "success_objective": "gradient of log(sigmoid(Q_phi)) with hidden state fixed",
@@ -225,55 +220,6 @@ def write_run_manifest(
             "action_dt_s": configuration.get("action_expert_action_dt"),
             "obstacle_primitives": ["obb", "cylinder", "capsule"],
             "primitive_selector": "minimum penalized trimmed surface error",
-        }
-    elif time_conditioned:
-        configured_times = configuration.get("time_conditioned_guidance_times")
-        if not configured_times:
-            configured_times = str(configuration.get("time_conditioned_guidance_time"))
-        residual_normalization = {
-            "identifier": "time_conditioned_noisy_action_gradient_integration_v2",
-            "gradient_convention": (
-                "partial derivative of log(sigmoid(safety_logit)) + clearance_score_weight*"
-                "normalized_clearance with respect to noisy_action_t; hidden_t stop-gradient"
-            ),
-            "gradient_dimensions": (
-                "10x3 XYZ translation channels"
-                if configuration.get("time_conditioned_guidance_translation_only")
-                else "10x32 padded action channels"
-            ),
-            "normalization": configuration.get(
-                "time_conditioned_guidance_normalization"
-            ),
-            "geometry": configuration.get("time_conditioned_guidance_geometry"),
-            "integration": configuration.get(
-                "time_conditioned_guidance_integration"
-            ),
-            "denoising_times": configured_times,
-            "scale": configuration.get("time_conditioned_guidance_scale"),
-            "fixed_context_value_backtracking": configuration.get(
-                "time_conditioned_value_backtracking"
-            ),
-            "value_gradient_device": configuration.get(
-                "time_conditioned_value_device"
-            ),
-            "determinism_convention": (
-                "torch.manual_seed(0); torch.use_deterministic_algorithms(True); "
-                "CPU value gradients for promoted held-out run"
-                if configuration.get("time_conditioned_value_device") == "cpu"
-                else "server setting recorded in server log; CUDA diagnostic screen"
-            ),
-        }
-    elif flow_guided:
-        residual_normalization = {
-            "identifier": (
-                "active_xyz_gradient_rms__global_task_rms__global_reported_ratio_v1"
-                if translation_only
-                else "global_gradient_rms__global_task_rms__global_reported_ratio_v1"
-            ),
-            "gradient_rms_dimensions": "XYZ translation only" if translation_only else "all 32 action dimensions",
-            "task_flow_rms_dimensions": "all 32 action dimensions",
-            "reported_ratio_dimensions": "all 32 action dimensions",
-            "schedule": "quadratic (1-t)^2 when t <= start_time; zero otherwise",
         }
     else:
         residual_normalization = {
