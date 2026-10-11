@@ -484,7 +484,9 @@ def fit_primitive_candidates(
         key: float(value) for key, value in sorted(candidate_scores.items())
     }
     best_by_kind = {}
-    for score, rmse, kind, candidate_center, rotation, size in sorted(scored):
+    # Sort on the scalar prefix only: tied candidates (e.g. capsules along
+    # symmetric PCA axes) would otherwise fall through to comparing arrays.
+    for score, rmse, kind, candidate_center, rotation, size in sorted(scored, key=lambda item: item[:3]):
         if kind in best_by_kind:
             continue
         best_by_kind[kind] = PrimitiveFit(

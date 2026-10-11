@@ -146,13 +146,9 @@ sha256 `a78d5e99…f044b`.
 ## Tests
 
 ```bash
-cd main && python -m pytest -q          # needs robosuite for grasp/obstacle tests
+cd main && python -m pytest -q          # needs robosuite + cvxpy (imported by utils.py)
 cd openpi && pytest src/openpi/policies/action_expert_qp_test.py
 ```
-
-Known issue: 4 tests in `main/primitive_fitting_test.py` currently fail
-(`ValueError: truth value of an array ... is ambiguous` in
-`primitive_fitting.py:487`).
 
 ## Acknowledgements
 
